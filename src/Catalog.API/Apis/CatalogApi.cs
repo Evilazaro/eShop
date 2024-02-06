@@ -15,7 +15,7 @@ public static class CatalogApi
         app.MapGet("/items/{catalogItemId:int}/pic", GetItemPictureById);
 
         // Routes for resolving catalog items using AI.
-        app.MapGet("/items/withsemanticrelevance/{text:minlength(1)}",  GetItemsBySemanticRelevance);
+        app.MapGet("/items/withsemanticrelevance/{text:minlength(1)}", GetItemsBySemanticRelevance);
 
         // Routes for resolving catalog items by type and brand.
         app.MapGet("/items/type/{typeId}/brand/{brandId?}", GetItemsByBrandAndTypeId);
@@ -24,7 +24,7 @@ public static class CatalogApi
         app.MapGet("/catalogbrands", async (CatalogContext context) => await context.CatalogBrands.OrderBy(x => x.Brand).ToListAsync());
 
         // Routes for modifying catalog items.
-        app.MapPut("/items",  UpdateItem);
+        app.MapPut("/items", UpdateItem);
         app.MapPost("/items", CreateItem);
         app.MapDelete("/items/{id:int}", DeleteItemById);
 
@@ -132,7 +132,7 @@ public static class CatalogApi
 
         if (!services.CatalogAI.IsEnabled)
         {
-           return await GetItemsByName(paginationRequest, services, text);
+            return await GetItemsByName(paginationRequest, services, text);
         }
 
         // Create an embedding for the input search
