@@ -2,13 +2,13 @@
 
 A reference .NET application implementing an eCommerce web site using a services-based architecture.
 
-![eShop Reference Application architecture diagram](img/eshop_architecture.png)
-
-![eShop homepage screenshot](img/eshop_homepage.png)
-
 ## Building Status
 
 [![eShop Pull Request Validation](https://github.com/Evilazaro/eShop/actions/workflows/pr-validation.yml/badge.svg)](https://github.com/Evilazaro/eShop/actions/workflows/pr-validation.yml)
+
+![eShop Reference Application architecture diagram](img/eshop_architecture.png)
+
+![eShop homepage screenshot](img/eshop_homepage.png)
 
 ## Getting Started
 
