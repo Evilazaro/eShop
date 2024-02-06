@@ -1,7 +1,7 @@
 ﻿using System.Net.Http.Json;
 using System.Text.Json;
-using Microsoft.AspNetCore.Mvc.Testing;
 using eShop.Catalog.API.Model;
+using Microsoft.AspNetCore.Mvc.Testing;
 
 namespace eShop.Catalog.FunctionalTests;
 
@@ -142,8 +142,8 @@ public sealed class CatalogApiTests : IClassFixture<CatalogApiFixture>
     [Fact]
     public async Task GetCatalogItemWithPartialName()
     {
-       // Act
-       var response = await _httpClient.GetAsync("api/v1/catalog/items/by/Alpine?PageSize=5&PageIndex=0");
+        // Act
+        var response = await _httpClient.GetAsync("api/v1/catalog/items/by/Alpine?PageSize=5&PageIndex=0");
 
         // Arrange   
         response.EnsureSuccessStatusCode();
@@ -267,7 +267,8 @@ public sealed class CatalogApiTests : IClassFixture<CatalogApiFixture>
     public async Task AddCatalogItem()
     {
         // Act - 1
-        var bodyContent = new CatalogItem {
+        var bodyContent = new CatalogItem
+        {
             Id = 10015,
             Name = "TestCatalog1",
             Description = "Test catalog description 1",

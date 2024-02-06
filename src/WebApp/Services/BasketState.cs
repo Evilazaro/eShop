@@ -1,8 +1,8 @@
 ﻿using System.Security.Claims;
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Authorization;
 using eShop.WebAppComponents.Catalog;
 using eShop.WebAppComponents.Services;
+using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
 
 namespace eShop.WebApp.Services;
 
@@ -99,7 +99,7 @@ public class BasketState(
             ZipCode: checkoutInfo.ZipCode!,
             CardNumber: checkoutInfo.CardNumber!,
             CardHolderName: checkoutInfo.CardHolderName!,
-            CardExpiration: checkoutInfo.CardExpiration!.Value, 
+            CardExpiration: checkoutInfo.CardExpiration!.Value,
             CardSecurityNumber: checkoutInfo.CardSecurityNumber!,
             CardTypeId: checkoutInfo.CardTypeId,
             Buyer: buyerId,

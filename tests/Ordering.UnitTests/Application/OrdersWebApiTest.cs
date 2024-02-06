@@ -1,9 +1,9 @@
 ﻿namespace eShop.Ordering.UnitTests.Application;
 
-using Microsoft.AspNetCore.Http.HttpResults;
 using eShop.Ordering.API.Application.Queries;
-using Order = eShop.Ordering.API.Application.Queries.Order;
+using Microsoft.AspNetCore.Http.HttpResults;
 using NSubstitute.ExceptionExtensions;
+using Order = eShop.Ordering.API.Application.Queries.Order;
 
 public class OrdersWebApiTest
 {
@@ -125,7 +125,7 @@ public class OrdersWebApiTest
         // Arrange
         var fakeOrderId = 123;
         _orderQueriesMock.GetOrderAsync(Arg.Any<int>())
-            .Throws(new KeyNotFoundException());
+        .ThrowsAsync(new KeyNotFoundException());
 
         // Act
         var orderServices = new OrderServices(_mediatorMock, _orderQueriesMock, _identityServiceMock, _loggerMock);
