@@ -90,7 +90,7 @@ tasks:
   - name: eShop/powershell
     description: "Install VS Code extensions"
     parameters:  
-      command: "../tasks/install-vs-extension/Install-VSIXExtension.ps1"
+      command: ".././tasks/install-vs-extension/Install-VSIXExtension.ps1"
       workingDirectory: C:\\provisioning\\temp
     runAsUser: true
   - name: eShop/git-clone
@@ -98,4 +98,4 @@ tasks:
     parameters:
       repositoryUrl: "https://github.com/Evilazaro/eShop"
       branch: "main"
-      directory: $"C:\projects\eShop"
+      directory: "C:\\projects\\eShop"
