@@ -13,9 +13,19 @@ tasks:
       package: Microsoft.DotNet.SDK.8
       runAsUser: true
   - name: winget
+    description: "Install App Microsoft.DotNet.SDK.Preview "
+    parameters:
+      package: Microsoft.DotNet.SDK.Preview 
+      runAsUser: true
+  - name: winget
     description: "Install App Microsoft.DotNet.Runtime.8"
     parameters:
       package: Microsoft.DotNet.Runtime.8
+      runAsUser: true
+  - name: winget
+    description: "Install App Microsoft.DotNet.Runtime.Preview"
+    parameters:
+      package: Microsoft.DotNet.Runtime.Preview
       runAsUser: true
   - name: winget
     description: "Install App Microsoft.WindowsTerminal"
