@@ -1,7 +1,7 @@
-﻿using System.Text.Json.Serialization;
-using eShop.Basket.API.Repositories;
-using eShop.Basket.API.IntegrationEvents.EventHandling;
+﻿using eShop.Basket.API.IntegrationEvents.EventHandling;
 using eShop.Basket.API.IntegrationEvents.EventHandling.Events;
+using eShop.Basket.API.Repositories;
+using System.Text.Json.Serialization;
 
 namespace eShop.Basket.API.Extensions;
 

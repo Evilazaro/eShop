@@ -1,8 +1,8 @@
-﻿using System.ComponentModel;
+﻿using eShop.WebAppComponents.Services;
+using Microsoft.Extensions.AI;
+using System.ComponentModel;
 using System.Security.Claims;
 using System.Text.Json;
-using eShop.WebAppComponents.Services;
-using Microsoft.Extensions.AI;
 
 namespace eShop.WebApp.Chatbot;
 

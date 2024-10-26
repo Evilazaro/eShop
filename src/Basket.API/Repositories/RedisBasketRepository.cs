@@ -1,5 +1,5 @@
-﻿using System.Text.Json.Serialization;
-using eShop.Basket.API.Model;
+﻿using eShop.Basket.API.Model;
+using System.Text.Json.Serialization;
 
 namespace eShop.Basket.API.Repositories;
 

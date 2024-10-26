@@ -1,5 +1,5 @@
-﻿using System.Security.Claims;
-using Microsoft.AspNetCore.Http.HttpResults;
+﻿using Microsoft.AspNetCore.Http.HttpResults;
+using System.Security.Claims;
 using Webhooks.API.Extensions;
 
 namespace Webhooks.API;

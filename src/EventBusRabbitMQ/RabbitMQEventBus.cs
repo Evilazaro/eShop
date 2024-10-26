@@ -1,14 +1,14 @@
 ﻿namespace eShop.EventBusRabbitMQ;
 
-using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
-using System.Threading;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using OpenTelemetry;
 using OpenTelemetry.Context.Propagation;
 using Polly.Retry;
+using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
+using System.Threading;
 
 public sealed class RabbitMQEventBus(
     ILogger<RabbitMQEventBus> logger,
@@ -196,7 +196,7 @@ public sealed class RabbitMQEventBus(
 
         // Deserialize the event
         var integrationEvent = DeserializeMessage(message, eventType);
-        
+
         // REVIEW: This could be done in parallel
 
         // Get all the handlers using the event type as the key

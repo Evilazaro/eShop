@@ -1,6 +1,6 @@
-﻿using System.Text.Json;
-using eShop.Catalog.API.Services;
+﻿using eShop.Catalog.API.Services;
 using Pgvector;
+using System.Text.Json;
 
 namespace eShop.Catalog.API.Infrastructure;
 

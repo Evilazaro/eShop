@@ -1,7 +1,6 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using eShop.EventBus.Abstractions;
+using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
-using eShop.EventBus.Abstractions;
-using eShop.EventBus.Extensions;
 
 namespace Microsoft.Extensions.DependencyInjection;
 

@@ -1,5 +1,5 @@
-﻿using System.Text.Json.Serialization;
-using eShop.OrderProcessor.Events;
+﻿using eShop.OrderProcessor.Events;
+using System.Text.Json.Serialization;
 
 namespace eShop.OrderProcessor.Extensions;
 

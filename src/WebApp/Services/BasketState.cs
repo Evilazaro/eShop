@@ -1,8 +1,8 @@
-﻿using System.Security.Claims;
+﻿using eShop.WebAppComponents.Catalog;
+using eShop.WebAppComponents.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
-using eShop.WebAppComponents.Catalog;
-using eShop.WebAppComponents.Services;
+using System.Security.Claims;
 
 namespace eShop.WebApp.Services;
 

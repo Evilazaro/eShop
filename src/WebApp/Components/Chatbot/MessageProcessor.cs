@@ -1,7 +1,7 @@
-﻿using System.Text;
+﻿using Microsoft.AspNetCore.Components;
+using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.RegularExpressions;
-using Microsoft.AspNetCore.Components;
 
 namespace eShop.WebApp.Chatbot;
 

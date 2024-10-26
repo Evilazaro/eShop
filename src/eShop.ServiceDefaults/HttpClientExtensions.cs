@@ -1,8 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
-using System.Net.Http.Headers;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Microsoft.AspNetCore.Authentication;
+using System.Net.Http.Headers;
 
 namespace eShop.ServiceDefaults;
 

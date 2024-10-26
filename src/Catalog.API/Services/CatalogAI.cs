@@ -1,6 +1,6 @@
-﻿using System.Diagnostics;
-using Microsoft.Extensions.AI;
+﻿using Microsoft.Extensions.AI;
 using Pgvector;
+using System.Diagnostics;
 
 namespace eShop.Catalog.API.Services;
 

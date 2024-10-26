@@ -1,2 +1,2 @@
-﻿global using System.Text.Json.Serialization;
-global using eShop.EventBus.Events;
+﻿global using eShop.EventBus.Events;
+global using System.Text.Json.Serialization;
