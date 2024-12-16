@@ -1,4 +1,4 @@
 tasks:
   - name: winget
     parameters:
-      configure: "backEndEngineer.dsc.yaml"
+      configurationFile: "https://raw.githubusercontent.com/Evilazaro/eShop/refs/heads/main/devEx/customizations/workloads/backEndEngineer/backEndEngineer.dsc.yaml"
