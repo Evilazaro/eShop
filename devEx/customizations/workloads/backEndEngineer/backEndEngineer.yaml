@@ -1,4 +1,5 @@
 tasks:
   - name: winget
     parameters:
-      configurationFile: "https://raw.githubusercontent.com/Evilazaro/eShop/refs/heads/main/devEx/customizations/workloads/backEndEngineer/backEndEngineer.dsc.yaml"
+      downloadUrl: 'https://raw.githubusercontent.com/Evilazaro/eShop/refs/heads/main/devEx/customizations/workloads/backEndEngineer/backEndEngineer.dsc.yaml'
+      configurationFile: 'c:\WinGetConfig\backEndEngineer.dsc.yaml'
