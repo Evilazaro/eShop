@@ -1,0 +1,1584 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "_generator": {
+      "name": "bicep",
+      "version": "0.32.4.45862",
+      "templateHash": "8001974540658260839"
+    }
+  },
+  "parameters": {
+    "workloadName": {
+      "type": "string",
+      "metadata": {
+        "description": "Workload Name"
+      }
+    },
+    "devBoxResourceGroupName": {
+      "type": "string",
+      "metadata": {
+        "description": "DevBox Workload Resource Group Name"
+      }
+    },
+    "connectivityResourceGroupName": {
+      "type": "string",
+      "metadata": {
+        "description": "Connectivity Resource Group Name"
+      }
+    }
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2022-09-01",
+      "name": "connectivity",
+      "resourceGroup": "[parameters('devBoxResourceGroupName')]",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "workloadName": {
+            "value": "[parameters('workloadName')]"
+          },
+          "connectivityResourceGroupName": {
+            "value": "[parameters('connectivityResourceGroupName')]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.32.4.45862",
+              "templateHash": "17362845373508409349"
+            }
+          },
+          "parameters": {
+            "workloadName": {
+              "type": "string",
+              "metadata": {
+                "description": "Workload name"
+              }
+            },
+            "connectivityResourceGroupName": {
+              "type": "string",
+              "metadata": {
+                "description": "Connectivity Resource Group Name"
+              }
+            },
+            "contosoConnectivityInfo": {
+              "type": "array",
+              "defaultValue": [
+                {
+                  "name": "eShop",
+                  "networkConnection": {
+                    "domainJoinType": "AzureADJoin"
+                  }
+                },
+                {
+                  "name": "Contoso-Traders",
+                  "networkConnection": {
+                    "domainJoinType": "AzureADJoin"
+                  }
+                }
+              ],
+              "metadata": {
+                "description": "Connectivity Info"
+              }
+            },
+            "addressPrefixes": {
+              "type": "array",
+              "defaultValue": [
+                "10.0.0.0/16"
+              ],
+              "metadata": {
+                "description": "Address Prefixes"
+              }
+            },
+            "tags": {
+              "type": "object",
+              "defaultValue": {
+                "workload": "[parameters('workloadName')]",
+                "landingZone": "connectivity",
+                "resourceType": "virtualNetwork",
+                "ProductTeam": "Platform Engineering",
+                "Environment": "Production",
+                "Department": "IT",
+                "offering": "DevBox-as-a-Service"
+              },
+              "metadata": {
+                "description": "Tags"
+              }
+            }
+          },
+          "resources": [
+            {
+              "type": "Microsoft.Resources/deployments",
+              "apiVersion": "2022-09-01",
+              "name": "ddosProtectionPlan",
+              "resourceGroup": "[parameters('connectivityResourceGroupName')]",
+              "properties": {
+                "expressionEvaluationOptions": {
+                  "scope": "inner"
+                },
+                "mode": "Incremental",
+                "parameters": {
+                  "name": {
+                    "value": "[parameters('workloadName')]"
+                  }
+                },
+                "template": {
+                  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                  "contentVersion": "1.0.0.0",
+                  "metadata": {
+                    "_generator": {
+                      "name": "bicep",
+                      "version": "0.32.4.45862",
+                      "templateHash": "15618186651395015832"
+                    }
+                  },
+                  "parameters": {
+                    "name": {
+                      "type": "string",
+                      "metadata": {
+                        "description": "DDoS Protection Plan Name"
+                      }
+                    }
+                  },
+                  "resources": [
+                    {
+                      "type": "Microsoft.Network/ddosProtectionPlans",
+                      "apiVersion": "2024-05-01",
+                      "name": "[format('ddosPlan-{0}', uniqueString(resourceGroup().id, format('{0}', parameters('name'))))]",
+                      "location": "[resourceGroup().location]",
+                      "metadata": {
+                        "description": "DDoS Protection Plan"
+                      }
+                    }
+                  ],
+                  "outputs": {
+                    "ddosProtectionPlanId": {
+                      "type": "string",
+                      "metadata": {
+                        "description": "DDoS Protection Plan Resource ID"
+                      },
+                      "value": "[resourceId('Microsoft.Network/ddosProtectionPlans', format('ddosPlan-{0}', uniqueString(resourceGroup().id, format('{0}', parameters('name')))))]"
+                    },
+                    "ddosProtectionPlanName": {
+                      "type": "string",
+                      "metadata": {
+                        "description": "DDoS Protection Plan Resource Name"
+                      },
+                      "value": "[format('ddosPlan-{0}', uniqueString(resourceGroup().id, format('{0}', parameters('name'))))]"
+                    }
+                  }
+                }
+              },
+              "metadata": {
+                "description": "DDoS Protection Plan"
+              }
+            },
+            {
+              "type": "Microsoft.Resources/deployments",
+              "apiVersion": "2022-09-01",
+              "name": "virtualNetwork",
+              "resourceGroup": "[parameters('connectivityResourceGroupName')]",
+              "properties": {
+                "expressionEvaluationOptions": {
+                  "scope": "inner"
+                },
+                "mode": "Incremental",
+                "parameters": {
+                  "name": {
+                    "value": "[parameters('workloadName')]"
+                  },
+                  "location": {
+                    "value": "[resourceGroup().location]"
+                  },
+                  "tags": {
+                    "value": "[parameters('tags')]"
+                  },
+                  "addressPrefixes": {
+                    "value": "[parameters('addressPrefixes')]"
+                  },
+                  "enableDdosProtection": {
+                    "value": true
+                  },
+                  "ddosProtectionPlanId": {
+                    "value": "[reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, parameters('connectivityResourceGroupName')), 'Microsoft.Resources/deployments', 'ddosProtectionPlan'), '2022-09-01').outputs.ddosProtectionPlanId.value]"
+                  },
+                  "subnets": {
+                    "value": "[parameters('contosoConnectivityInfo')]"
+                  }
+                },
+                "template": {
+                  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                  "contentVersion": "1.0.0.0",
+                  "metadata": {
+                    "_generator": {
+                      "name": "bicep",
+                      "version": "0.32.4.45862",
+                      "templateHash": "12954008312294201674"
+                    }
+                  },
+                  "parameters": {
+                    "name": {
+                      "type": "string",
+                      "metadata": {
+                        "description": "Virtual Network Name"
+                      }
+                    },
+                    "location": {
+                      "type": "string",
+                      "metadata": {
+                        "description": "Virtual Network Location"
+                      }
+                    },
+                    "addressPrefixes": {
+                      "type": "array",
+                      "metadata": {
+                        "description": "Virtual Network Address Prefixes"
+                      }
+                    },
+                    "subnets": {
+                      "type": "array",
+                      "metadata": {
+                        "description": "Subnets"
+                      }
+                    },
+                    "enableDdosProtection": {
+                      "type": "bool",
+                      "metadata": {
+                        "description": "Enable DDoS Protection Plan"
+                      }
+                    },
+                    "ddosProtectionPlanId": {
+                      "type": "string",
+                      "metadata": {
+                        "description": "DDoS Protection Plan Resource ID"
+                      }
+                    },
+                    "tags": {
+                      "type": "object",
+                      "metadata": {
+                        "description": "Tags"
+                      }
+                    }
+                  },
+                  "resources": [
+                    {
+                      "type": "Microsoft.Network/virtualNetworks",
+                      "apiVersion": "2024-03-01",
+                      "name": "[format('Vnet-{0}-{1}', parameters('name'), uniqueString(resourceGroup().id, parameters('name')))]",
+                      "location": "[parameters('location')]",
+                      "tags": "[parameters('tags')]",
+                      "properties": {
+                        "copy": [
+                          {
+                            "name": "subnets",
+                            "count": "[length(parameters('subnets'))]",
+                            "input": {
+                              "name": "[format('{0}-App', parameters('subnets')[copyIndex('subnets')].name)]",
+                              "properties": {
+                                "addressPrefixes": [
+                                  "[format('10.0.{0}.0/24', copyIndex('subnets'))]"
+                                ]
+                              }
+                            }
+                          }
+                        ],
+                        "addressSpace": {
+                          "addressPrefixes": "[parameters('addressPrefixes')]"
+                        },
+                        "enableDdosProtection": "[if(parameters('enableDdosProtection'), true(), false())]",
+                        "ddosProtectionPlan": "[if(parameters('enableDdosProtection'), createObject('id', parameters('ddosProtectionPlanId')), null())]"
+                      },
+                      "metadata": {
+                        "description": "Virtual Network Resource"
+                      }
+                    }
+                  ],
+                  "outputs": {
+                    "virtualNetworkId": {
+                      "type": "string",
+                      "metadata": {
+                        "description": "Virtual Network Resource ID"
+                      },
+                      "value": "[resourceId('Microsoft.Network/virtualNetworks', format('Vnet-{0}-{1}', parameters('name'), uniqueString(resourceGroup().id, parameters('name'))))]"
+                    },
+                    "virtualNetworkName": {
+                      "type": "string",
+                      "metadata": {
+                        "description": "Virtual Network Resource Name"
+                      },
+                      "value": "[format('Vnet-{0}-{1}', parameters('name'), uniqueString(resourceGroup().id, parameters('name')))]"
+                    },
+                    "virtualNetworkAddressPrefixes": {
+                      "type": "array",
+                      "metadata": {
+                        "description": "Virtual Network Resource Address Prefixes"
+                      },
+                      "value": "[reference(resourceId('Microsoft.Network/virtualNetworks', format('Vnet-{0}-{1}', parameters('name'), uniqueString(resourceGroup().id, parameters('name')))), '2024-03-01').addressSpace.addressPrefixes]"
+                    },
+                    "virtualNetworkSubnets": {
+                      "type": "array",
+                      "metadata": {
+                        "description": "Virtual Network Resource Subnets"
+                      },
+                      "value": "[reference(resourceId('Microsoft.Network/virtualNetworks', format('Vnet-{0}-{1}', parameters('name'), uniqueString(resourceGroup().id, parameters('name')))), '2024-03-01').subnets]"
+                    }
+                  }
+                }
+              },
+              "dependsOn": [
+                "[extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, parameters('connectivityResourceGroupName')), 'Microsoft.Resources/deployments', 'ddosProtectionPlan')]"
+              ],
+              "metadata": {
+                "description": "Virtual Network Resource"
+              }
+            },
+            {
+              "copy": {
+                "name": "networkConnection",
+                "count": "[length(parameters('contosoConnectivityInfo'))]"
+              },
+              "type": "Microsoft.Resources/deployments",
+              "apiVersion": "2022-09-01",
+              "name": "[format('netCon-{0}', parameters('contosoConnectivityInfo')[copyIndex()].name)]",
+              "resourceGroup": "[parameters('connectivityResourceGroupName')]",
+              "properties": {
+                "expressionEvaluationOptions": {
+                  "scope": "inner"
+                },
+                "mode": "Incremental",
+                "parameters": {
+                  "virtualNetworkName": {
+                    "value": "[reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, parameters('connectivityResourceGroupName')), 'Microsoft.Resources/deployments', 'virtualNetwork'), '2022-09-01').outputs.virtualNetworkName.value]"
+                  },
+                  "subnetName": {
+                    "value": "[reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, parameters('connectivityResourceGroupName')), 'Microsoft.Resources/deployments', 'virtualNetwork'), '2022-09-01').outputs.virtualNetworkSubnets.value[copyIndex()].name]"
+                  },
+                  "virtualNetworkResourceGroupName": {
+                    "value": "[parameters('connectivityResourceGroupName')]"
+                  },
+                  "domainJoinType": {
+                    "value": "[parameters('contosoConnectivityInfo')[copyIndex()].networkConnection.domainJoinType]"
+                  }
+                },
+                "template": {
+                  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                  "contentVersion": "1.0.0.0",
+                  "metadata": {
+                    "_generator": {
+                      "name": "bicep",
+                      "version": "0.32.4.45862",
+                      "templateHash": "10840124543542029451"
+                    }
+                  },
+                  "parameters": {
+                    "virtualNetworkName": {
+                      "type": "string",
+                      "metadata": {
+                        "description": "Virtual Network Name"
+                      }
+                    },
+                    "subnetName": {
+                      "type": "string",
+                      "metadata": {
+                        "description": "Subnet Name for the Virtual Network"
+                      }
+                    },
+                    "virtualNetworkResourceGroupName": {
+                      "type": "string",
+                      "metadata": {
+                        "description": "Virtual Network Resource Group Name"
+                      }
+                    },
+                    "domainJoinType": {
+                      "type": "string",
+                      "allowedValues": [
+                        "None",
+                        "AzureADJoin",
+                        "HybridADJoin"
+                      ],
+                      "metadata": {
+                        "description": "Domain Join Type"
+                      }
+                    }
+                  },
+                  "resources": [
+                    {
+                      "type": "Microsoft.DevCenter/networkConnections",
+                      "apiVersion": "2024-10-01-preview",
+                      "name": "[format('netCon-{0}-{1}', parameters('subnetName'), uniqueString(resourceGroup().id, format('{0}-{1}', parameters('virtualNetworkName'), parameters('subnetName'))))]",
+                      "location": "[resourceGroup().location]",
+                      "properties": {
+                        "subnetId": "[extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, parameters('virtualNetworkResourceGroupName')), 'Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworkName'), parameters('subnetName'))]",
+                        "domainJoinType": "[parameters('domainJoinType')]"
+                      },
+                      "metadata": {
+                        "description": "The network connection resource"
+                      }
+                    }
+                  ],
+                  "outputs": {
+                    "networkConnectionId": {
+                      "type": "string",
+                      "metadata": {
+                        "description": "The ID of the network connection"
+                      },
+                      "value": "[resourceId('Microsoft.DevCenter/networkConnections', format('netCon-{0}-{1}', parameters('subnetName'), uniqueString(resourceGroup().id, format('{0}-{1}', parameters('virtualNetworkName'), parameters('subnetName')))))]"
+                    },
+                    "networkConnectionName": {
+                      "type": "string",
+                      "metadata": {
+                        "description": "The name of the network connection"
+                      },
+                      "value": "[format('netCon-{0}-{1}', parameters('subnetName'), uniqueString(resourceGroup().id, format('{0}-{1}', parameters('virtualNetworkName'), parameters('subnetName'))))]"
+                    },
+                    "domainJoinType": {
+                      "type": "string",
+                      "metadata": {
+                        "description": "The domain join type of the network connection"
+                      },
+                      "value": "[reference(resourceId('Microsoft.DevCenter/networkConnections', format('netCon-{0}-{1}', parameters('subnetName'), uniqueString(resourceGroup().id, format('{0}-{1}', parameters('virtualNetworkName'), parameters('subnetName'))))), '2024-10-01-preview').domainJoinType]"
+                    },
+                    "subnetId": {
+                      "type": "string",
+                      "metadata": {
+                        "description": "Subnet ID"
+                      },
+                      "value": "[reference(resourceId('Microsoft.DevCenter/networkConnections', format('netCon-{0}-{1}', parameters('subnetName'), uniqueString(resourceGroup().id, format('{0}-{1}', parameters('virtualNetworkName'), parameters('subnetName'))))), '2024-10-01-preview').subnetId]"
+                    }
+                  }
+                }
+              },
+              "dependsOn": [
+                "[extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, parameters('connectivityResourceGroupName')), 'Microsoft.Resources/deployments', 'virtualNetwork')]"
+              ],
+              "metadata": {
+                "description": "Network Connection Resource"
+              }
+            }
+          ],
+          "outputs": {
+            "networkConnectionsCreated": {
+              "type": "array",
+              "metadata": {
+                "description": "Network Connections"
+              },
+              "copy": {
+                "count": "[length(parameters('contosoConnectivityInfo'))]",
+                "input": {
+                  "name": "[reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, parameters('connectivityResourceGroupName')), 'Microsoft.Resources/deployments', format('netCon-{0}', parameters('contosoConnectivityInfo')[copyIndex()].name)), '2022-09-01').outputs.networkConnectionName.value]",
+                  "id": "[reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, parameters('connectivityResourceGroupName')), 'Microsoft.Resources/deployments', format('netCon-{0}', parameters('contosoConnectivityInfo')[copyIndex()].name)), '2022-09-01').outputs.networkConnectionId.value]"
+                }
+              }
+            }
+          }
+        }
+      },
+      "metadata": {
+        "description": "Deploy Connectivity Resources"
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2022-09-01",
+      "name": "devBox",
+      "resourceGroup": "[parameters('devBoxResourceGroupName')]",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "workloadName": {
+            "value": "[parameters('workloadName')]"
+          },
+          "networkConnectionsCreated": {
+            "value": "[reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, parameters('devBoxResourceGroupName')), 'Microsoft.Resources/deployments', 'connectivity'), '2022-09-01').outputs.networkConnectionsCreated.value]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.32.4.45862",
+              "templateHash": "10550197585749048181"
+            }
+          },
+          "parameters": {
+            "workloadName": {
+              "type": "string",
+              "metadata": {
+                "description": "Workload Name"
+              }
+            },
+            "networkConnectionsCreated": {
+              "type": "array",
+              "defaultValue": [
+                {
+                  "name": "eShop",
+                  "domainJoinType": "AzureADJoin",
+                  "id": "eShop"
+                },
+                {
+                  "name": "Contoso-Traders",
+                  "domainJoinType": "AzureADJoin",
+                  "id": "Contoso-Traders"
+                }
+              ],
+              "metadata": {
+                "description": "Network Connections"
+              }
+            },
+            "contosoDevCenterCatalogInfo": {
+              "type": "object",
+              "defaultValue": {
+                "name": "Contoso-Custom-Tasks",
+                "syncType": "Scheduled",
+                "type": "GitHub",
+                "uri": "https://github.com/Evilazaro/DevExp-DevBox.git",
+                "branch": "main",
+                "path": "/customizations/tasks"
+              },
+              "metadata": {
+                "description": "Contoso Dev Center Catalog"
+              }
+            },
+            "tags": {
+              "type": "object",
+              "defaultValue": {
+                "workload": "[parameters('workloadName')]",
+                "landingZone": "DevEx",
+                "resourceType": "DevCenter",
+                "ProductTeam": "Platform Engineering",
+                "Environment": "Production",
+                "Department": "IT",
+                "offering": "DevBox-as-a-Service"
+              },
+              "metadata": {
+                "description": "Tags"
+              }
+            },
+            "environmentTypesInfo": {
+              "type": "array",
+              "defaultValue": [
+                {
+                  "name": "DEV",
+                  "tags": {
+                    "workload": "[parameters('workloadName')]",
+                    "landingZone": "DevEx",
+                    "resourceType": "DevCenter",
+                    "ProductTeam": "Platform Engineering",
+                    "Environment": "Dev",
+                    "Department": "IT",
+                    "offering": "DevBox-as-a-Service"
+                  }
+                },
+                {
+                  "name": "PROD",
+                  "tags": {
+                    "workload": "[parameters('workloadName')]",
+                    "landingZone": "DevEx",
+                    "resourceType": "DevCenter",
+                    "ProductTeam": "Platform Engineering",
+                    "Environment": "Production",
+                    "Department": "IT",
+                    "offering": "DevBox-as-a-Service"
+                  }
+                },
+                {
+                  "name": "STAGING",
+                  "tags": {
+                    "workload": "[parameters('workloadName')]",
+                    "landingZone": "DevEx",
+                    "resourceType": "DevCenter",
+                    "ProductTeam": "Platform Engineering",
+                    "Environment": "Staging",
+                    "Department": "IT",
+                    "offering": "DevBox-as-a-Service"
+                  }
+                },
+                {
+                  "name": "UAT",
+                  "tags": {
+                    "workload": "[parameters('workloadName')]",
+                    "landingZone": "DevEx",
+                    "resourceType": "DevCenter",
+                    "ProductTeam": "Platform Engineering",
+                    "Environment": "Uat",
+                    "Department": "IT",
+                    "offering": "DevBox-as-a-Service"
+                  }
+                }
+              ],
+              "metadata": {
+                "description": "Environment Types Info"
+              }
+            },
+            "contosoDevCenterDevBoxDefinitionsInfo": {
+              "type": "array",
+              "defaultValue": [
+                {
+                  "name": "BackEnd-Engineer",
+                  "imageName": "microsoftvisualstudio_visualstudioplustools_vs-2022-ent-general-win11-m365-gen2",
+                  "sku": "general_i_32c128gb512ssd_v2",
+                  "hibernateSupport": "Disabled",
+                  "tags": {
+                    "workload": "[parameters('workloadName')]",
+                    "landingZone": "DevEx",
+                    "resourceType": "DevCenter",
+                    "ProductTeam": "Platform Engineering",
+                    "Environment": "Production",
+                    "Department": "IT",
+                    "offering": "DevBox-as-a-Service",
+                    "roleName": "BackEnd-Engineer"
+                  }
+                },
+                {
+                  "name": "FrontEnd-Engineer",
+                  "imageName": "microsoftwindowsdesktop_windows-ent-cpc_win11-21h2-ent-cpc-m365",
+                  "sku": "general_i_16c64gb256ssd_v2",
+                  "hibernateSupport": "Enabled",
+                  "tags": {
+                    "workload": "[parameters('workloadName')]",
+                    "landingZone": "DevEx",
+                    "resourceType": "DevCenter",
+                    "ProductTeam": "Platform Engineering",
+                    "Environment": "Production",
+                    "Department": "IT",
+                    "offering": "DevBox-as-a-Service",
+                    "roleName": "FrontEnd-Engineer"
+                  }
+                },
+                {
+                  "name": "Web-Designer",
+                  "imageName": "microsoftwindowsdesktop_windows-ent-cpc_win11-21h2-ent-cpc-m365",
+                  "sku": "general_i_16c64gb256ssd_v2",
+                  "hibernateSupport": "Enabled",
+                  "tags": {
+                    "workload": "[parameters('workloadName')]",
+                    "landingZone": "DevEx",
+                    "resourceType": "DevCenter",
+                    "ProductTeam": "Platform Engineering",
+                    "Environment": "Production",
+                    "Department": "IT",
+                    "offering": "DevBox-as-a-Service",
+                    "roleName": "Web-Designer-Engineer"
+                  }
+                },
+                {
+                  "name": "DevOps-Engineer",
+                  "imageName": "microsoftvisualstudio_visualstudioplustools_vs-2022-ent-general-win11-m365-gen2",
+                  "sku": "general_i_32c128gb512ssd_v2",
+                  "hibernateSupport": "Disabled",
+                  "tags": {
+                    "workload": "[parameters('workloadName')]",
+                    "landingZone": "DevEx",
+                    "resourceType": "DevCenter",
+                    "ProductTeam": "Platform Engineering",
+                    "Environment": "Production",
+                    "Department": "IT",
+                    "offering": "DevBox-as-a-Service",
+                    "roleName": "DevOps-Engineer"
+                  }
+                }
+              ],
+              "metadata": {
+                "description": "Contoso Dev Center Dev Box Definitions"
+              }
+            },
+            "contosoProjectsInfo": {
+              "type": "array",
+              "defaultValue": [
+                {
+                  "name": "eShop",
+                  "networkConnectionName": "[parameters('networkConnectionsCreated')[0].name]",
+                  "catalogs": [
+                    {
+                      "catalogName": "tasks",
+                      "uri": "https://github.com/Evilazaro/eShop.git",
+                      "branch": "main",
+                      "path": "/devEx/tasks"
+                    },
+                    {
+                      "catalogName": "workloads",
+                      "uri": "https://github.com/Evilazaro/eShop.git",
+                      "branch": "main",
+                      "path": "/devEx/customizations"
+                    },
+                    {
+                      "catalogName": "environments",
+                      "uri": "https://github.com/Evilazaro/eShop.git",
+                      "branch": "main",
+                      "path": "/devEx/environments"
+                    }
+                  ],
+                  "tags": {
+                    "workload": "[parameters('workloadName')]",
+                    "landingZone": "DevEx",
+                    "resourceType": "DevCenter",
+                    "ProductTeam": "Platform Engineering",
+                    "Environment": "Production",
+                    "Department": "IT",
+                    "offering": "DevBox-as-a-Service",
+                    "project": "eShop"
+                  }
+                },
+                {
+                  "name": "Contoso-Traders",
+                  "networkConnectionName": "[parameters('networkConnectionsCreated')[1].name]",
+                  "catalogs": [
+                    {
+                      "catalogName": "tasks",
+                      "uri": "https://github.com/Evilazaro/contosotraders.git",
+                      "branch": "main",
+                      "path": "/devEx/tasks"
+                    },
+                    {
+                      "catalogName": "workloads",
+                      "uri": "https://github.com/Evilazaro/contosotraders.git",
+                      "branch": "main",
+                      "path": "/devEx/customizations"
+                    },
+                    {
+                      "catalogName": "environments",
+                      "uri": "https://github.com/Evilazaro/contosotraders.git",
+                      "branch": "main",
+                      "path": "/devEx/environments"
+                    }
+                  ],
+                  "tags": {
+                    "workload": "[parameters('workloadName')]",
+                    "landingZone": "DevEx",
+                    "resourceType": "DevCenter",
+                    "ProductTeam": "Platform Engineering",
+                    "Environment": "Production",
+                    "Department": "IT",
+                    "offering": "DevBox-as-a-Service",
+                    "project": "Contoso-Traders"
+                  }
+                }
+              ],
+              "metadata": {
+                "description": "Projects"
+              }
+            }
+          },
+          "resources": [
+            {
+              "type": "Microsoft.Resources/deployments",
+              "apiVersion": "2022-09-01",
+              "name": "devCenter",
+              "properties": {
+                "expressionEvaluationOptions": {
+                  "scope": "inner"
+                },
+                "mode": "Incremental",
+                "parameters": {
+                  "name": {
+                    "value": "[parameters('workloadName')]"
+                  },
+                  "location": {
+                    "value": "[resourceGroup().location]"
+                  },
+                  "catalogItemSyncEnableStatus": {
+                    "value": "Enabled"
+                  },
+                  "microsoftHostedNetworkEnableStatus": {
+                    "value": "Enabled"
+                  },
+                  "installAzureMonitorAgentEnableStatus": {
+                    "value": "Enabled"
+                  },
+                  "tags": {
+                    "value": "[parameters('tags')]"
+                  }
+                },
+                "template": {
+                  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                  "contentVersion": "1.0.0.0",
+                  "metadata": {
+                    "_generator": {
+                      "name": "bicep",
+                      "version": "0.32.4.45862",
+                      "templateHash": "3541479001281181388"
+                    }
+                  },
+                  "parameters": {
+                    "name": {
+                      "type": "string",
+                      "metadata": {
+                        "description": "Dev Center name"
+                      }
+                    },
+                    "location": {
+                      "type": "string",
+                      "metadata": {
+                        "description": "Location"
+                      }
+                    },
+                    "catalogItemSyncEnableStatus": {
+                      "type": "string",
+                      "allowedValues": [
+                        "Enabled",
+                        "Disabled"
+                      ],
+                      "metadata": {
+                        "description": "Catalog Item Sync Enable Status"
+                      }
+                    },
+                    "microsoftHostedNetworkEnableStatus": {
+                      "type": "string",
+                      "allowedValues": [
+                        "Enabled",
+                        "Disabled"
+                      ],
+                      "metadata": {
+                        "description": "Microsoft Hosted Network Enable Status"
+                      }
+                    },
+                    "installAzureMonitorAgentEnableStatus": {
+                      "type": "string",
+                      "allowedValues": [
+                        "Enabled",
+                        "Disabled"
+                      ],
+                      "metadata": {
+                        "description": "Install Azure Monitor Agent Enable Status"
+                      }
+                    },
+                    "tags": {
+                      "type": "object",
+                      "metadata": {
+                        "description": "Tags"
+                      }
+                    }
+                  },
+                  "resources": [
+                    {
+                      "type": "Microsoft.DevCenter/devcenters",
+                      "apiVersion": "2024-10-01-preview",
+                      "name": "[format('{0}-devcenter', uniqueString(resourceGroup().id, parameters('name')))]",
+                      "location": "[parameters('location')]",
+                      "tags": "[parameters('tags')]",
+                      "properties": {
+                        "projectCatalogSettings": {
+                          "catalogItemSyncEnableStatus": "[parameters('catalogItemSyncEnableStatus')]"
+                        },
+                        "networkSettings": {
+                          "microsoftHostedNetworkEnableStatus": "[parameters('microsoftHostedNetworkEnableStatus')]"
+                        },
+                        "devBoxProvisioningSettings": {
+                          "installAzureMonitorAgentEnableStatus": "[parameters('installAzureMonitorAgentEnableStatus')]"
+                        }
+                      }
+                    }
+                  ],
+                  "outputs": {
+                    "devCenterId": {
+                      "type": "string",
+                      "metadata": {
+                        "description": "DevCenter Resource ID"
+                      },
+                      "value": "[resourceId('Microsoft.DevCenter/devcenters', format('{0}-devcenter', uniqueString(resourceGroup().id, parameters('name'))))]"
+                    },
+                    "devCenterName": {
+                      "type": "string",
+                      "metadata": {
+                        "description": "DevCenter Resource Name"
+                      },
+                      "value": "[format('{0}-devcenter', uniqueString(resourceGroup().id, parameters('name')))]"
+                    },
+                    "devCenterLocation": {
+                      "type": "string",
+                      "metadata": {
+                        "description": "DevCenter Resource Location"
+                      },
+                      "value": "[reference(resourceId('Microsoft.DevCenter/devcenters', format('{0}-devcenter', uniqueString(resourceGroup().id, parameters('name')))), '2024-10-01-preview', 'full').location]"
+                    },
+                    "devCenterCatalogItemSyncEnableStatus": {
+                      "type": "string",
+                      "metadata": {
+                        "description": "DevCenter Resource Catalog Item Sync Enable Status"
+                      },
+                      "value": "[reference(resourceId('Microsoft.DevCenter/devcenters', format('{0}-devcenter', uniqueString(resourceGroup().id, parameters('name')))), '2024-10-01-preview').projectCatalogSettings.catalogItemSyncEnableStatus]"
+                    },
+                    "devCenterMicrosoftHostedNetworkEnableStatus": {
+                      "type": "string",
+                      "metadata": {
+                        "description": "DevCenter Resource Microsoft Hosted Network Enable Status"
+                      },
+                      "value": "[reference(resourceId('Microsoft.DevCenter/devcenters', format('{0}-devcenter', uniqueString(resourceGroup().id, parameters('name')))), '2024-10-01-preview').networkSettings.microsoftHostedNetworkEnableStatus]"
+                    },
+                    "devCenterInstallAzureMonitorAgentEnableStatus": {
+                      "type": "string",
+                      "metadata": {
+                        "description": "DevCenter Resource Install Azure Monitor Agent Enable Status"
+                      },
+                      "value": "[reference(resourceId('Microsoft.DevCenter/devcenters', format('{0}-devcenter', uniqueString(resourceGroup().id, parameters('name')))), '2024-10-01-preview').devBoxProvisioningSettings.installAzureMonitorAgentEnableStatus]"
+                    },
+                    "devCenterTags": {
+                      "type": "object",
+                      "metadata": {
+                        "description": "DevCenter Resource Tags"
+                      },
+                      "value": "[reference(resourceId('Microsoft.DevCenter/devcenters', format('{0}-devcenter', uniqueString(resourceGroup().id, parameters('name')))), '2024-10-01-preview', 'full').tags]"
+                    }
+                  }
+                }
+              },
+              "metadata": {
+                "description": "Dev Center Resource"
+              }
+            },
+            {
+              "copy": {
+                "name": "environmentTypes",
+                "count": "[length(parameters('environmentTypesInfo'))]"
+              },
+              "type": "Microsoft.Resources/deployments",
+              "apiVersion": "2022-09-01",
+              "name": "[format('{0}-environmentType', parameters('environmentTypesInfo')[copyIndex()].name)]",
+              "properties": {
+                "expressionEvaluationOptions": {
+                  "scope": "inner"
+                },
+                "mode": "Incremental",
+                "parameters": {
+                  "devCenterName": {
+                    "value": "[reference(resourceId('Microsoft.Resources/deployments', 'devCenter'), '2022-09-01').outputs.devCenterName.value]"
+                  },
+                  "name": {
+                    "value": "[parameters('environmentTypesInfo')[copyIndex()].name]"
+                  },
+                  "tags": {
+                    "value": "[parameters('tags')]"
+                  }
+                },
+                "template": {
+                  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                  "contentVersion": "1.0.0.0",
+                  "metadata": {
+                    "_generator": {
+                      "name": "bicep",
+                      "version": "0.32.4.45862",
+                      "templateHash": "2477731681436415628"
+                    }
+                  },
+                  "parameters": {
+                    "devCenterName": {
+                      "type": "string",
+                      "metadata": {
+                        "description": "Dev Center Name"
+                      }
+                    },
+                    "name": {
+                      "type": "string",
+                      "metadata": {
+                        "description": "Environment Type Name"
+                      }
+                    },
+                    "tags": {
+                      "type": "object",
+                      "metadata": {
+                        "description": "Tags"
+                      }
+                    }
+                  },
+                  "resources": [
+                    {
+                      "type": "Microsoft.DevCenter/devcenters/environmentTypes",
+                      "apiVersion": "2024-10-01-preview",
+                      "name": "[format('{0}/{1}', parameters('devCenterName'), parameters('name'))]",
+                      "tags": "[parameters('tags')]",
+                      "metadata": {
+                        "description": "Environment Type Resource"
+                      }
+                    }
+                  ],
+                  "outputs": {
+                    "environmentTypeId": {
+                      "type": "string",
+                      "metadata": {
+                        "description": "Environment Type Resource ID"
+                      },
+                      "value": "[resourceId('Microsoft.DevCenter/devcenters/environmentTypes', parameters('devCenterName'), parameters('name'))]"
+                    },
+                    "environmentTypeName": {
+                      "type": "string",
+                      "metadata": {
+                        "description": "Environment Type Resource Name"
+                      },
+                      "value": "[parameters('name')]"
+                    },
+                    "environmentTypeTags": {
+                      "type": "object",
+                      "metadata": {
+                        "description": "Environment Type Resource Tags"
+                      },
+                      "value": "[reference(resourceId('Microsoft.DevCenter/devcenters/environmentTypes', parameters('devCenterName'), parameters('name')), '2024-10-01-preview', 'full').tags]"
+                    }
+                  }
+                }
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments', 'devCenter')]"
+              ],
+              "metadata": {
+                "description": "Environment Type Resource"
+              }
+            },
+            {
+              "type": "Microsoft.Resources/deployments",
+              "apiVersion": "2022-09-01",
+              "name": "networkAttachments",
+              "properties": {
+                "expressionEvaluationOptions": {
+                  "scope": "inner"
+                },
+                "mode": "Incremental",
+                "parameters": {
+                  "devCenterName": {
+                    "value": "[reference(resourceId('Microsoft.Resources/deployments', 'devCenter'), '2022-09-01').outputs.devCenterName.value]"
+                  },
+                  "networkConnectionsCreated": {
+                    "value": "[parameters('networkConnectionsCreated')]"
+                  }
+                },
+                "template": {
+                  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                  "contentVersion": "1.0.0.0",
+                  "metadata": {
+                    "_generator": {
+                      "name": "bicep",
+                      "version": "0.32.4.45862",
+                      "templateHash": "1477817775382483986"
+                    }
+                  },
+                  "parameters": {
+                    "devCenterName": {
+                      "type": "string",
+                      "metadata": {
+                        "description": "Dev Center Name"
+                      }
+                    },
+                    "networkConnectionsCreated": {
+                      "type": "array",
+                      "metadata": {
+                        "description": "Network Connections Created"
+                      }
+                    }
+                  },
+                  "resources": [
+                    {
+                      "copy": {
+                        "name": "networkConnectionAttachment",
+                        "count": "[length(parameters('networkConnectionsCreated'))]"
+                      },
+                      "type": "Microsoft.DevCenter/devcenters/attachednetworks",
+                      "apiVersion": "2024-10-01-preview",
+                      "name": "[format('{0}/{1}', parameters('devCenterName'), parameters('networkConnectionsCreated')[copyIndex()].name)]",
+                      "properties": {
+                        "networkConnectionId": "[parameters('networkConnectionsCreated')[copyIndex()].id]"
+                      },
+                      "metadata": {
+                        "description": "Network Connection Attachment resource"
+                      }
+                    }
+                  ],
+                  "outputs": {
+                    "networkConnectionAttachmentsCreated": {
+                      "type": "array",
+                      "metadata": {
+                        "description": "Output network attachments created"
+                      },
+                      "copy": {
+                        "count": "[length(parameters('networkConnectionsCreated'))]",
+                        "input": {
+                          "name": "[parameters('networkConnectionsCreated')[copyIndex()].name]",
+                          "id": "[resourceId('Microsoft.DevCenter/devcenters/attachednetworks', parameters('devCenterName'), parameters('networkConnectionsCreated')[copyIndex()].name)]",
+                          "networkConnectionId": "[reference(resourceId('Microsoft.DevCenter/devcenters/attachednetworks', parameters('devCenterName'), parameters('networkConnectionsCreated')[copyIndex()].name), '2024-10-01-preview').networkConnectionId]"
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments', 'devCenter')]"
+              ],
+              "metadata": {
+                "description": "Network Connection Attachment Resource"
+              }
+            },
+            {
+              "type": "Microsoft.Resources/deployments",
+              "apiVersion": "2022-09-01",
+              "name": "devCenterCatalog",
+              "properties": {
+                "expressionEvaluationOptions": {
+                  "scope": "inner"
+                },
+                "mode": "Incremental",
+                "parameters": {
+                  "name": {
+                    "value": "[parameters('contosoDevCenterCatalogInfo').name]"
+                  },
+                  "tags": {
+                    "value": "[parameters('tags')]"
+                  },
+                  "branch": {
+                    "value": "[parameters('contosoDevCenterCatalogInfo').branch]"
+                  },
+                  "devCenterName": {
+                    "value": "[reference(resourceId('Microsoft.Resources/deployments', 'devCenter'), '2022-09-01').outputs.devCenterName.value]"
+                  },
+                  "path": {
+                    "value": "[parameters('contosoDevCenterCatalogInfo').path]"
+                  },
+                  "syncType": {
+                    "value": "[parameters('contosoDevCenterCatalogInfo').syncType]"
+                  },
+                  "type": {
+                    "value": "[parameters('contosoDevCenterCatalogInfo').type]"
+                  },
+                  "uri": {
+                    "value": "[parameters('contosoDevCenterCatalogInfo').uri]"
+                  }
+                },
+                "template": {
+                  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                  "contentVersion": "1.0.0.0",
+                  "metadata": {
+                    "_generator": {
+                      "name": "bicep",
+                      "version": "0.32.4.45862",
+                      "templateHash": "15878368794595870163"
+                    }
+                  },
+                  "parameters": {
+                    "devCenterName": {
+                      "type": "string",
+                      "metadata": {
+                        "description": "Dev Center Name"
+                      }
+                    },
+                    "name": {
+                      "type": "string",
+                      "metadata": {
+                        "description": "Catalog Name"
+                      }
+                    },
+                    "syncType": {
+                      "type": "string",
+                      "allowedValues": [
+                        "Manual",
+                        "Scheduled"
+                      ],
+                      "metadata": {
+                        "description": "Catalog Sync Type"
+                      }
+                    },
+                    "tags": {
+                      "type": "object",
+                      "metadata": {
+                        "description": "Tags"
+                      }
+                    },
+                    "type": {
+                      "type": "string",
+                      "allowedValues": [
+                        "GitHub",
+                        "AzureDevOps"
+                      ],
+                      "metadata": {
+                        "description": "Catalog Type"
+                      }
+                    },
+                    "uri": {
+                      "type": "string",
+                      "metadata": {
+                        "description": "Catalog Type"
+                      }
+                    },
+                    "branch": {
+                      "type": "string",
+                      "metadata": {
+                        "description": "Catalog Branch"
+                      }
+                    },
+                    "path": {
+                      "type": "string",
+                      "metadata": {
+                        "description": "Catalog Path"
+                      }
+                    }
+                  },
+                  "resources": [
+                    {
+                      "type": "Microsoft.DevCenter/devcenters/catalogs",
+                      "apiVersion": "2024-10-01-preview",
+                      "name": "[format('{0}/{1}', parameters('devCenterName'), parameters('name'))]",
+                      "properties": {
+                        "tags": "[parameters('tags')]",
+                        "syncType": "[parameters('syncType')]",
+                        "gitHub": "[if(equals(parameters('type'), 'GitHub'), createObject('uri', parameters('uri'), 'branch', parameters('branch'), 'path', parameters('path')), null())]",
+                        "adoGit": "[if(equals(parameters('type'), 'AzureDevOps'), createObject('uri', parameters('uri'), 'branch', parameters('branch'), 'path', parameters('path')), null())]"
+                      },
+                      "metadata": {
+                        "description": "Catalog Resource"
+                      }
+                    }
+                  ],
+                  "outputs": {
+                    "id": {
+                      "type": "string",
+                      "metadata": {
+                        "description": "Catalog Resource ID"
+                      },
+                      "value": "[resourceId('Microsoft.DevCenter/devcenters/catalogs', parameters('devCenterName'), parameters('name'))]"
+                    },
+                    "catalogName": {
+                      "type": "string",
+                      "metadata": {
+                        "description": "Catalog Resource Name"
+                      },
+                      "value": "[parameters('name')]"
+                    },
+                    "catalogTags": {
+                      "type": "object",
+                      "metadata": {
+                        "description": "Catalog Resource Tags"
+                      },
+                      "value": "[reference(resourceId('Microsoft.DevCenter/devcenters/catalogs', parameters('devCenterName'), parameters('name')), '2024-10-01-preview').tags]"
+                    },
+                    "catalogSyncType": {
+                      "type": "string",
+                      "metadata": {
+                        "description": "Catalog Resource Sync Type"
+                      },
+                      "value": "[reference(resourceId('Microsoft.DevCenter/devcenters/catalogs', parameters('devCenterName'), parameters('name')), '2024-10-01-preview').syncType]"
+                    }
+                  }
+                }
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments', 'devCenter')]"
+              ],
+              "metadata": {
+                "description": "Contoso Dev Center Catalog"
+              }
+            },
+            {
+              "type": "Microsoft.Resources/deployments",
+              "apiVersion": "2022-09-01",
+              "name": "devBoxDefinitions",
+              "properties": {
+                "expressionEvaluationOptions": {
+                  "scope": "inner"
+                },
+                "mode": "Incremental",
+                "parameters": {
+                  "devCenterName": {
+                    "value": "[reference(resourceId('Microsoft.Resources/deployments', 'devCenter'), '2022-09-01').outputs.devCenterName.value]"
+                  },
+                  "devBoxDefinitionsInfo": {
+                    "value": "[parameters('contosoDevCenterDevBoxDefinitionsInfo')]"
+                  }
+                },
+                "template": {
+                  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                  "contentVersion": "1.0.0.0",
+                  "metadata": {
+                    "_generator": {
+                      "name": "bicep",
+                      "version": "0.32.4.45862",
+                      "templateHash": "11116502205902689820"
+                    }
+                  },
+                  "parameters": {
+                    "devCenterName": {
+                      "type": "string",
+                      "metadata": {
+                        "description": "Dev Center Name"
+                      }
+                    },
+                    "devBoxDefinitionsInfo": {
+                      "type": "array",
+                      "metadata": {
+                        "description": "Dev Box Definitions Info"
+                      }
+                    }
+                  },
+                  "resources": [
+                    {
+                      "copy": {
+                        "name": "devBoxDefinitionResource",
+                        "count": "[length(parameters('devBoxDefinitionsInfo'))]"
+                      },
+                      "type": "Microsoft.DevCenter/devcenters/devboxdefinitions",
+                      "apiVersion": "2024-10-01-preview",
+                      "name": "[format('{0}/{1}', parameters('devCenterName'), parameters('devBoxDefinitionsInfo')[copyIndex()].name)]",
+                      "location": "[resourceGroup().location]",
+                      "tags": "[parameters('devBoxDefinitionsInfo')[copyIndex()].tags]",
+                      "properties": {
+                        "hibernateSupport": "[parameters('devBoxDefinitionsInfo')[copyIndex()].hibernateSupport]",
+                        "imageReference": {
+                          "id": "[format('{0}/galleries/default/images/{1}', resourceId('Microsoft.DevCenter/devcenters', parameters('devCenterName')), parameters('devBoxDefinitionsInfo')[copyIndex()].imageName)]"
+                        },
+                        "sku": {
+                          "name": "[parameters('devBoxDefinitionsInfo')[copyIndex()].sku]"
+                        }
+                      },
+                      "metadata": {
+                        "description": "Dev Box Definition Resource"
+                      }
+                    }
+                  ],
+                  "outputs": {
+                    "devBoxDefinitions": {
+                      "type": "array",
+                      "metadata": {
+                        "description": "Dev Box Definitions created"
+                      },
+                      "copy": {
+                        "count": "[length(parameters('devBoxDefinitionsInfo'))]",
+                        "input": {
+                          "name": "[parameters('devBoxDefinitionsInfo')[copyIndex()].name]",
+                          "id": "[resourceId('Microsoft.DevCenter/devcenters/devboxdefinitions', parameters('devCenterName'), parameters('devBoxDefinitionsInfo')[copyIndex()].name)]",
+                          "sku": "[reference(resourceId('Microsoft.DevCenter/devcenters/devboxdefinitions', parameters('devCenterName'), parameters('devBoxDefinitionsInfo')[copyIndex()].name), '2024-10-01-preview').sku.name]",
+                          "hibernateSupport": "[reference(resourceId('Microsoft.DevCenter/devcenters/devboxdefinitions', parameters('devCenterName'), parameters('devBoxDefinitionsInfo')[copyIndex()].name), '2024-10-01-preview').hibernateSupport]",
+                          "imageName": "[split(reference(resourceId('Microsoft.DevCenter/devcenters/devboxdefinitions', parameters('devCenterName'), parameters('devBoxDefinitionsInfo')[copyIndex()].name), '2024-10-01-preview').imageReference.id, '/')[9]]",
+                          "devCenterName": "[parameters('devCenterName')]",
+                          "tags": "[reference(resourceId('Microsoft.DevCenter/devcenters/devboxdefinitions', parameters('devCenterName'), parameters('devBoxDefinitionsInfo')[copyIndex()].name), '2024-10-01-preview', 'full').tags]"
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments', 'devCenter')]"
+              ],
+              "metadata": {
+                "description": "Dev Center Dev Box Definitions"
+              }
+            },
+            {
+              "copy": {
+                "name": "contosoDevCenterProjects",
+                "count": "[length(parameters('contosoProjectsInfo'))]"
+              },
+              "type": "Microsoft.Resources/deployments",
+              "apiVersion": "2022-09-01",
+              "name": "[format('{0}-project', parameters('contosoProjectsInfo')[copyIndex()].name)]",
+              "properties": {
+                "expressionEvaluationOptions": {
+                  "scope": "inner"
+                },
+                "mode": "Incremental",
+                "parameters": {
+                  "devCenterName": {
+                    "value": "[reference(resourceId('Microsoft.Resources/deployments', 'devCenter'), '2022-09-01').outputs.devCenterName.value]"
+                  },
+                  "name": {
+                    "value": "[parameters('contosoProjectsInfo')[copyIndex()].name]"
+                  },
+                  "tags": {
+                    "value": "[parameters('contosoProjectsInfo')[copyIndex()].tags]"
+                  },
+                  "projectCatalogsInfo": {
+                    "value": "[parameters('contosoProjectsInfo')[copyIndex()].catalogs]"
+                  },
+                  "devBoxDefinitions": {
+                    "value": "[reference(resourceId('Microsoft.Resources/deployments', 'devBoxDefinitions'), '2022-09-01').outputs.devBoxDefinitions.value]"
+                  },
+                  "networkConnectionName": {
+                    "value": "[parameters('contosoProjectsInfo')[copyIndex()].networkConnectionName]"
+                  },
+                  "projectEnvironmentTypesInfo": {
+                    "value": "[parameters('environmentTypesInfo')]"
+                  }
+                },
+                "template": {
+                  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                  "contentVersion": "1.0.0.0",
+                  "metadata": {
+                    "_generator": {
+                      "name": "bicep",
+                      "version": "0.32.4.45862",
+                      "templateHash": "10352805346278879154"
+                    }
+                  },
+                  "parameters": {
+                    "devCenterName": {
+                      "type": "string",
+                      "metadata": {
+                        "description": "Dev Center Name"
+                      }
+                    },
+                    "name": {
+                      "type": "string",
+                      "metadata": {
+                        "description": "Project Name"
+                      }
+                    },
+                    "tags": {
+                      "type": "object",
+                      "metadata": {
+                        "description": "Tags"
+                      }
+                    },
+                    "projectCatalogsInfo": {
+                      "type": "array",
+                      "metadata": {
+                        "description": "Project Catalog Info"
+                      }
+                    },
+                    "devBoxDefinitions": {
+                      "type": "array",
+                      "metadata": {
+                        "description": "Dev Box Definitions"
+                      }
+                    },
+                    "networkConnectionName": {
+                      "type": "string",
+                      "metadata": {
+                        "description": "Network Connection Name"
+                      }
+                    },
+                    "projectEnvironmentTypesInfo": {
+                      "type": "array",
+                      "metadata": {
+                        "description": "Project Environment Types Info"
+                      }
+                    }
+                  },
+                  "resources": [
+                    {
+                      "type": "Microsoft.DevCenter/projects",
+                      "apiVersion": "2024-10-01-preview",
+                      "name": "[parameters('name')]",
+                      "location": "[resourceGroup().location]",
+                      "properties": {
+                        "displayName": "[parameters('name')]",
+                        "devCenterId": "[resourceId('Microsoft.DevCenter/devcenters', parameters('devCenterName'))]",
+                        "catalogSettings": {
+                          "catalogItemSyncTypes": [
+                            "EnvironmentDefinition",
+                            "ImageDefinition"
+                          ]
+                        },
+                        "maxDevBoxesPerUser": 3,
+                        "description": "[format('Dev Center Project - {0}', parameters('name'))]"
+                      },
+                      "tags": "[parameters('tags')]",
+                      "metadata": {
+                        "description": "Dev Center Project Resource"
+                      }
+                    },
+                    {
+                      "copy": {
+                        "name": "projectCatalogs",
+                        "count": "[length(parameters('projectCatalogsInfo'))]"
+                      },
+                      "type": "Microsoft.DevCenter/projects/catalogs",
+                      "apiVersion": "2024-10-01-preview",
+                      "name": "[format('{0}/{1}', parameters('name'), format('{0}', parameters('projectCatalogsInfo')[copyIndex()].catalogName))]",
+                      "properties": {
+                        "gitHub": {
+                          "uri": "[parameters('projectCatalogsInfo')[copyIndex()].uri]",
+                          "branch": "[parameters('projectCatalogsInfo')[copyIndex()].branch]",
+                          "path": "[parameters('projectCatalogsInfo')[copyIndex()].path]"
+                        }
+                      },
+                      "dependsOn": [
+                        "[resourceId('Microsoft.DevCenter/projects', parameters('name'))]"
+                      ],
+                      "metadata": {
+                        "description": "Project Catalog Resource"
+                      }
+                    },
+                    {
+                      "copy": {
+                        "name": "devCenterProjectPools",
+                        "count": "[length(parameters('devBoxDefinitions'))]"
+                      },
+                      "type": "Microsoft.DevCenter/projects/pools",
+                      "apiVersion": "2024-10-01-preview",
+                      "name": "[format('{0}/{1}', parameters('name'), format('{0}-{1}-pool', parameters('name'), parameters('devBoxDefinitions')[copyIndex()].name))]",
+                      "location": "[resourceGroup().location]",
+                      "properties": {
+                        "displayName": "[format('{0}-{1}-pool', parameters('name'), parameters('devBoxDefinitions')[copyIndex()].name)]",
+                        "devBoxDefinitionName": "[parameters('devBoxDefinitions')[copyIndex()].name]",
+                        "licenseType": "Windows_Client",
+                        "localAdministrator": "Enabled",
+                        "networkConnectionName": "[parameters('networkConnectionName')]"
+                      },
+                      "dependsOn": [
+                        "[resourceId('Microsoft.DevCenter/projects', parameters('name'))]"
+                      ],
+                      "metadata": {
+                        "description": "Dev Center Project Pools"
+                      }
+                    },
+                    {
+                      "copy": {
+                        "name": "projectEnvironmentTypes",
+                        "count": "[length(parameters('projectEnvironmentTypesInfo'))]"
+                      },
+                      "type": "Microsoft.DevCenter/projects/environmentTypes",
+                      "apiVersion": "2024-10-01-preview",
+                      "name": "[format('{0}/{1}', parameters('name'), format('{0}-environmentType', parameters('projectEnvironmentTypesInfo')[copyIndex()].name))]",
+                      "identity": {
+                        "type": "SystemAssigned"
+                      },
+                      "properties": {
+                        "displayName": "[parameters('projectEnvironmentTypesInfo')[copyIndex()].name]",
+                        "deploymentTargetId": "[resourceId('Microsoft.Resources/subscriptions', subscription().subscriptionId)]",
+                        "status": "Enabled",
+                        "creatorRoleAssignment": {
+                          "roles": {
+                            "8e3af657-a8ff-443c-a75c-2fe8c4bcb635": {}
+                          }
+                        }
+                      },
+                      "dependsOn": [
+                        "[resourceId('Microsoft.DevCenter/projects', parameters('name'))]"
+                      ],
+                      "metadata": {
+                        "description": "Project Environment Types Resources"
+                      }
+                    }
+                  ]
+                }
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments', 'devCenter')]",
+                "[resourceId('Microsoft.Resources/deployments', 'devBoxDefinitions')]"
+              ],
+              "metadata": {
+                "description": "Contoso Dev Center Projects"
+              }
+            }
+          ]
+        }
+      },
+      "dependsOn": [
+        "[extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, parameters('devBoxResourceGroupName')), 'Microsoft.Resources/deployments', 'connectivity')]"
+      ],
+      "metadata": {
+        "description": "Deploy DevEx Resources"
+      }
+    }
+  ]
+}
