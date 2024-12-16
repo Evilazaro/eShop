@@ -1,3 +1,6 @@
+$schema: "1.0"
+name: "backEndEngineer"
+description: "Customize the backend workload for the devbox"
 tasks:
   - name: winget
     parameters:
