@@ -1,0 +1,4 @@
+tasks:
+  - name: winget
+    parameters:
+      configure: "backEndEngineer.dsc.yaml"
