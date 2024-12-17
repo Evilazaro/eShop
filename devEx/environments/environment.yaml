@@ -4,10 +4,10 @@ version: 1.0.0
 summary: Azure Web App Environment
 description: Deploys an Azure Web App without a data store
 runner: ARM
-templatePath: deploy.json
+templatePath: deploy.bicep
 
 parameters:
-  - id: name
+  - id: resourceGroupName
     name: Name
     description: 'Name of the Web App.'
     type: string
