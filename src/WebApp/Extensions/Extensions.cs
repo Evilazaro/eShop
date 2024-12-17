@@ -1,13 +1,16 @@
-﻿using eShop.Basket.API.Grpc;
+﻿using System;
+using Azure.AI.OpenAI;
 using eShop.WebApp;
-using eShop.WebApp.Services.OrderStatus.IntegrationEvents;
 using eShop.WebAppComponents.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Server;
 using Microsoft.Extensions.AI;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.JsonWebTokens;
+using eShop.WebApp.Services.OrderStatus.IntegrationEvents;
+using eShop.Basket.API.Grpc;
 using OpenAI;
 
 public static class Extensions
@@ -98,13 +101,11 @@ public static class Extensions
         string? ollamaEndpoint = builder.Configuration["AI:Ollama:Endpoint"];
         if (!string.IsNullOrWhiteSpace(ollamaEndpoint))
         {
-            builder.Services.AddChatClient(b => b
+            builder.Services.AddChatClient(new OllamaChatClient(ollamaEndpoint, builder.Configuration["AI:Ollama:ChatModel"] ?? "llama3.1"))
                 .UseFunctionInvocation()
                 .UseOpenTelemetry(configure: t => t.EnableSensitiveData = true)
                 .UseLogging()
-                .Use(new OllamaChatClient(
-                    new Uri(ollamaEndpoint),
-                    builder.Configuration["AI:Ollama:ChatModel"] ?? "llama3.1")));
+                .Build();
         }
         else
         {
@@ -112,11 +113,11 @@ public static class Extensions
             if (!string.IsNullOrWhiteSpace(builder.Configuration.GetConnectionString("openai")) && !string.IsNullOrWhiteSpace(chatModel))
             {
                 builder.AddOpenAIClientFromConfiguration("openai");
-                builder.Services.AddChatClient(b => b
+                builder.Services.AddChatClient(sp => sp.GetRequiredService<OpenAIClient>().AsChatClient(chatModel ?? "gpt-4o-mini"))
                     .UseFunctionInvocation()
                     .UseOpenTelemetry(configure: t => t.EnableSensitiveData = true)
                     .UseLogging()
-                    .Use(b.Services.GetRequiredService<OpenAIClient>().AsChatClient(chatModel ?? "gpt-4o-mini")));
+                    .Build();
             }
         }
     }

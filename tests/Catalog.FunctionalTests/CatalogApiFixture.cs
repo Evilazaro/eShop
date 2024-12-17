@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.Testing;
+﻿using System.Reflection;
+using Microsoft.AspNetCore.Mvc.Testing;
 
 namespace eShop.Catalog.FunctionalTests;
 

@@ -1,6 +1,6 @@
-﻿using Pgvector;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
+using Pgvector;
 
 namespace eShop.Catalog.API.Model;
 

@@ -1,6 +1,6 @@
-﻿using eShop.WebAppComponents.Catalog;
-using System.Net.Http.Json;
+﻿using System.Net.Http.Json;
 using System.Web;
+using eShop.WebAppComponents.Catalog;
 
 namespace eShop.WebAppComponents.Services;
 

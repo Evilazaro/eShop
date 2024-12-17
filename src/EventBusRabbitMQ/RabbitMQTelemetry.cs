@@ -1,5 +1,5 @@
-﻿using OpenTelemetry.Context.Propagation;
-using System.Diagnostics;
+﻿using System.Diagnostics;
+using OpenTelemetry.Context.Propagation;
 
 namespace eShop.EventBusRabbitMQ;
 

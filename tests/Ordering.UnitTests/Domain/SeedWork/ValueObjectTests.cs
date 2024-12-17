@@ -111,8 +111,7 @@ public class ValueObjectTests
                     new ValueObjectB(1, "2",  1, 2, 3, 4 ),
                     "they should be not be equal because the 'C' lists are not equal"
                 }
-            };
-        }
+            };        }
 
     }
 

@@ -1,12 +1,12 @@
-﻿using Asp.Versioning;
+﻿using System.Net;
+using System.Text;
+using System.Text.Json;
+using Asp.Versioning;
 using Asp.Versioning.Http;
 using eShop.Ordering.API.Application.Commands;
 using eShop.Ordering.API.Application.Models;
 using eShop.Ordering.API.Application.Queries;
 using Microsoft.AspNetCore.Mvc.Testing;
-using System.Net;
-using System.Text;
-using System.Text.Json;
 
 namespace eShop.Ordering.FunctionalTests;
 

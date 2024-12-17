@@ -1,4 +1,6 @@
-﻿namespace eShop.WebhookClient.Services;
+﻿using System.Text.Json;
+
+namespace eShop.WebhookClient.Services;
 
 public class WebhookData
 {

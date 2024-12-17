@@ -1,6 +1,7 @@
-﻿using eShop.Basket.API.Model;
+﻿using System.Diagnostics.CodeAnalysis;
 using eShop.Basket.API.Repositories;
-using System.Diagnostics.CodeAnalysis;
+using eShop.Basket.API.Extensions;
+using eShop.Basket.API.Model;
 
 namespace eShop.Basket.API.Grpc;
 

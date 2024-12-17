@@ -1,6 +1,6 @@
-﻿using Microsoft.Extensions.AI;
+﻿using System.Diagnostics;
+using Microsoft.Extensions.AI;
 using Pgvector;
-using System.Diagnostics;
 
 namespace eShop.Catalog.API.Services;
 
@@ -58,7 +58,7 @@ public sealed class CatalogAI : ICatalogAI
         {
             long timestamp = Stopwatch.GetTimestamp();
 
-            var embedding = (await _embeddingGenerator.GenerateAsync(text))[0].Vector;
+            var embedding = await _embeddingGenerator.GenerateEmbeddingVectorAsync(text);
             embedding = embedding[0..EmbeddingDimensions];
 
             if (_logger.IsEnabled(LogLevel.Trace))
