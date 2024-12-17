@@ -8,7 +8,7 @@ templatePath: deploy.bicep
 
 parameters:
   - id: resourceGroupName
-    name: Name
+    name: resourceGroupName
     description: 'Name of the Web App.'
     type: string
     required: true
