@@ -5,10 +5,3 @@ summary: Azure Web App Environment
 description: Deploys an Azure Web App without a data store
 runner: ARM
 templatePath: azuredeploy.json
-
-parameters:
-  - id: resourceGroupName
-    name: resourceGroupName
-    description: 'Name of the Web App.'
-    type: string
-    required: true
