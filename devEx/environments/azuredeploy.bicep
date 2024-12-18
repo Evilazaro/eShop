@@ -5,7 +5,7 @@
 param name string = ''
 
 @description('Location to deploy the environment resources')
-param location string = resourceGroup().location
+param location string = 'westus'
 
 var resourceName = !empty(name) ? replace(name, ' ', '-') : 'a${uniqueString(resourceGroup().id)}'
 
