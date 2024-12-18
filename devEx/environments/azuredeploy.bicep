@@ -22,7 +22,7 @@ resource hostingPlan 'Microsoft.Web/serverfarms@2022-03-01' = {
     tier: 'Basic'
     name: 'B1'
     family: 'B'
-    capacity: 2
+    capacity: 3
   }
   tags: tags
 }
