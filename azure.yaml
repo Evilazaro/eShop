@@ -1,13 +1,11 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/Azure/azure-dev/main/schemas/v1.0/azure.yaml.json
 
 name: e-shop
-services:  
+services:
   app:
     language: csharp
     project: ./src/eShop.AppHost/eShop.AppHost.csproj
     host: containerapp
-
-
 
 platform:
   type: devcenter

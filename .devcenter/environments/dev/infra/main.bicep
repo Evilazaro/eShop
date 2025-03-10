@@ -10,20 +10,22 @@ param location string
 @description('Id of the user or app to assign application roles')
 param principalId string = deployer().objectId
 
-@metadata({azd: {
-  type: 'generate'
-  config: {length:22,noSpecial:true}
+@metadata({
+  azd: {
+    type: 'generate'
+    config: { length: 22, noSpecial: true }
   }
 })
 @secure()
-param eventbus_password string 
-@metadata({azd: {
-  type: 'generate'
-  config: {length:22}
+param eventbus_password string
+@metadata({
+  azd: {
+    type: 'generate'
+    config: { length: 22 }
   }
 })
 @secure()
-param postgres_password string 
+param postgres_password string
 
 var tags = {
   'azd-env-name': environmentName
