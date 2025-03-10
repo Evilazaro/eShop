@@ -3,7 +3,7 @@
 name: e-shop
 services:  
   app:
-    language: dotnet
+    language: csharp
     project: ./src/eShop.AppHost/eShop.AppHost.csproj
     host: containerapp
 
