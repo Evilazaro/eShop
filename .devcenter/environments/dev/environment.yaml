@@ -4,14 +4,3 @@ summary: Dev environment for eShop
 description: Dev environment for eShop
 templatePath: ./infra/main.bicep
 runner: bicep
-parameters:
-  - id: environmentName
-    type: string
-    name: environmentName
-    description: The name of the environment
-    default: dev
-  - id: location
-    type: string
-    name: location
-    description: The location of the environment
-    default: eastus2
