@@ -16,14 +16,14 @@ param principalId string = deployer().objectId
   }
 })
 @secure()
-param eventbus_password string
+param eventbus_password string = ''
 @metadata({azd: {
   type: 'generate'
   config: {length:22}
   }
 })
 @secure()
-param postgres_password string
+param postgres_password string = ''
 
 var tags = {
   'azd-env-name': environmentName
