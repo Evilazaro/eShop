@@ -1,11 +1,11 @@
 @minLength(1)
 @maxLength(64)
 @description('Name of the environment that can be used as part of naming resource convention, the name of the resource group for your application will use this name, prefixed with rg-')
-param environmentName string
+param environmentName string = 'dev'
 
 @minLength(1)
 @description('The location used for all deployed resources')
-param location string
+param location string = resourceGroup().location
 
 @description('Id of the user or app to assign application roles')
 param principalId string = deployer().objectId
@@ -17,7 +17,7 @@ param principalId string = deployer().objectId
   }
 })
 @secure()
-param eventbus_password string
+param eventbus_password string = ''
 @metadata({
   azd: {
     type: 'generate'
@@ -25,7 +25,7 @@ param eventbus_password string
   }
 })
 @secure()
-param postgres_password string
+param postgres_password string = ''
 
 var tags = {
   'azd-env-name': environmentName
