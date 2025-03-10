@@ -1,5 +1,3 @@
-targetScope = 'subscription'
-
 @minLength(1)
 @maxLength(64)
 @description('Name of the environment that can be used as part of naming resource convention, the name of the resource group for your application will use this name, prefixed with rg-')
@@ -31,14 +29,8 @@ var tags = {
   'azd-env-name': environmentName
 }
 
-resource rg 'Microsoft.Resources/resourceGroups@2022-09-01' = {
-  name: 'rg-${environmentName}'
-  location: location
-  tags: tags
-}
-
 module resources 'resources.bicep' = {
-  scope: rg
+  scope: resourceGroup()
   name: 'resources'
   params: {
     location: location
