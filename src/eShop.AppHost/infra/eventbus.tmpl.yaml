@@ -35,7 +35,7 @@ properties:
           - name: RABBITMQ_DEFAULT_PASS
             secretRef: rabbitmq-default-pass
     scale:
-      minReplicas: 1
+      minReplicas: 3
 tags:
   azd-service-name: eventbus
   aspire-resource-name: eventbus
