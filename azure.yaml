@@ -3,15 +3,16 @@
 name: e-shop
 services:
   app:
-    language: csharp
+    language: dotnet
     project: ./src/eShop.AppHost/eShop.AppHost.csproj
     host: containerapp
+resourceGroup: rg-dev
 
-platform:
-  type: devcenter
-  config:
-    name: DevExp-devcenter2
-    catalog: environments
-    environmentDefinition: eshop
-    environmentType: dev
-    project: eShop
+# platform:
+#   type: devcenter
+#   config:
+#     name: DevExp-devcenter2
+#     catalog: environments
+#     environmentDefinition: eshop
+#     environmentType: dev
+#     project: eShop
