@@ -1,0 +1,6 @@
+# yaml-language-server: $schema=https://github.com/Azure/deployment-environments/releases/download/2022-11-11-preview/manifest.schema.json
+name: e-shop
+summary: Dev environment for e-Shop
+description: Dev environment Shop
+templatePath: main.bicep
+runner: bicep
