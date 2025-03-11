@@ -97,6 +97,45 @@ resource explicitContributorUserRoleAssignment 'Microsoft.Authorization/roleAssi
   }
 }
 
+resource containerApp 'Microsoft.App/containerApps@2022-06-01-preview' = {
+  name: 'app'
+  location: location
+  tags:{
+    'azd-service-name': 'app'
+  }
+  properties: {
+    managedEnvironmentId: containerAppEnvironment.id
+    configuration: {
+      ingress: {
+        external: true
+        targetPort: 8080
+        allowInsecure: false
+        traffic: [
+          {
+            latestRevision: true
+            weight: 100
+          }
+        ]
+      }
+    }
+    template: {
+      revisionSuffix: 'firstrevision'
+      containers: [
+        {
+          name: 'ca-${resourceToken}'
+          image: 'ca-${resourceToken}'
+        }
+      ]
+      scale: {
+        minReplicas: 1
+        maxReplicas: 1
+      }
+    }
+  }
+}
+
+output containerAppFQDN string = containerApp.properties.configuration.ingress.fqdn
+
 output MANAGED_IDENTITY_CLIENT_ID string = managedIdentity.properties.clientId
 output MANAGED_IDENTITY_NAME string = managedIdentity.name
 output MANAGED_IDENTITY_PRINCIPAL_ID string = managedIdentity.properties.principalId
