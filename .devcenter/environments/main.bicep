@@ -1,5 +1,5 @@
 resource storageAccount 'Microsoft.Storage/storageAccounts@2023-05-01' = {
-  name: 'eshopstorageaccount'
+  name: 'eshop${uniqueString(resourceGroup().id)}sa'
   location: resourceGroup().location
   sku: {
     name: 'Standard_LRS'
