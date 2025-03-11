@@ -6,3 +6,13 @@ services:
     language: dotnet
     project: ./src/eShop.AppHost/eShop.AppHost.csproj
     host: containerapp
+
+
+platform:
+  type: devcenter
+  config:
+    name: e-shop
+    catalog: environments
+    environmentDefinition: eshop
+    environmentType: dev
+    project: eShop
