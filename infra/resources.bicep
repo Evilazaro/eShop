@@ -70,7 +70,7 @@ resource containerAppEnvironment 'Microsoft.App/managedEnvironments@2024-02-02-p
     }
   }
   tags: {
-    'azd-service-name': 'e-shop'
+    'azd-service-name': 'app'
   }
 
   resource aspireDashboard 'dotNetComponents' = {
