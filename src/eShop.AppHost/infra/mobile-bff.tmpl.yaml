@@ -54,7 +54,7 @@ properties:
           - name: services__ordering-api__https__0
             value: https://ordering-api.{{ .Env.AZURE_CONTAINER_APPS_ENVIRONMENT_DEFAULT_DOMAIN }}
     scale:
-      minReplicas: 5
+      minReplicas: 1
 tags:
   azd-service-name: mobile-bff
   aspire-resource-name: mobile-bff

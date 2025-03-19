@@ -49,7 +49,7 @@ properties:
           - name: ConnectionStrings__orderingdb
             secretRef: connectionstrings--orderingdb
     scale:
-      minReplicas: 5
+      minReplicas: 1
 tags:
   azd-service-name: ordering-api
   aspire-resource-name: ordering-api

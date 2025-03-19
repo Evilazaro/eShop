@@ -43,7 +43,7 @@ properties:
           - name: ConnectionStrings__eventbus
             secretRef: connectionstrings--eventbus
     scale:
-      minReplicas: 5
+      minReplicas: 1
 tags:
   azd-service-name: payment-processor
   aspire-resource-name: payment-processor

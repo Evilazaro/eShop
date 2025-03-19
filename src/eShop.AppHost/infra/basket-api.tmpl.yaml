@@ -49,7 +49,7 @@ properties:
           - name: ConnectionStrings__redis
             secretRef: connectionstrings--redis
     scale:
-      minReplicas: 5
+      minReplicas: 1
 tags:
   azd-service-name: basket-api
   aspire-resource-name: basket-api

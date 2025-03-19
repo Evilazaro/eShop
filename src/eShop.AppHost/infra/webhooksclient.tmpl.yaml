@@ -46,7 +46,7 @@ properties:
           - name: services__webhooks-api__https__0
             value: https://webhooks-api.{{ .Env.AZURE_CONTAINER_APPS_ENVIRONMENT_DEFAULT_DOMAIN }}
     scale:
-      minReplicas: 5
+      minReplicas: 1
 tags:
   azd-service-name: webhooksclient
   aspire-resource-name: webhooksclient

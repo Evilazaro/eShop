@@ -28,7 +28,7 @@ properties:
           - name: AZURE_CLIENT_ID
             value: {{ .Env.MANAGED_IDENTITY_CLIENT_ID }}
     scale:
-      minReplicas: 5
+      minReplicas: 1
 tags:
   azd-service-name: redis
   aspire-resource-name: redis

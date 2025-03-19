@@ -47,7 +47,7 @@ properties:
           - name: ConnectionStrings__orderingdb
             secretRef: connectionstrings--orderingdb
     scale:
-      minReplicas: 5
+      minReplicas: 1
 tags:
   azd-service-name: order-processor
   aspire-resource-name: order-processor
