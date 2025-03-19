@@ -39,7 +39,7 @@ properties:
           - name: POSTGRES_PASSWORD
             secretRef: postgres-password
     scale:
-      minReplicas: 1
+      minReplicas: 3
 tags:
   azd-service-name: postgres
   aspire-resource-name: postgres
