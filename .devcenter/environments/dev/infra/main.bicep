@@ -8,7 +8,7 @@ param environmentName string
 param location string
 
 @description('Id of the user or app to assign application roles')
-param principalId string = ''
+param principalId string = deployer().objectId
 
 @metadata({
   azd: {
