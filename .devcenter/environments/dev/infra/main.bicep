@@ -1,5 +1,3 @@
-targetScope = 'subscription'
-
 @minLength(1)
 @maxLength(64)
 @description('Name of the environment that can be used as part of naming resource convention, the name of the resource group for your application will use this name, prefixed with rg-')
@@ -12,16 +10,18 @@ param location string
 @description('Id of the user or app to assign application roles')
 param principalId string = ''
 
-@metadata({azd: {
-  type: 'generate'
-  config: {length:22,noSpecial:true}
+@metadata({
+  azd: {
+    type: 'generate'
+    config: { length: 22, noSpecial: true }
   }
 })
 @secure()
 param eventbus_password string
-@metadata({azd: {
-  type: 'generate'
-  config: {length:22}
+@metadata({
+  azd: {
+    type: 'generate'
+    config: { length: 22 }
   }
 })
 @secure()
@@ -31,13 +31,8 @@ var tags = {
   'azd-env-name': environmentName
 }
 
-resource rg 'Microsoft.Resources/resourceGroups@2022-09-01' = {
-  name: 'eShop-${environmentName}-rg'
-  location: location
-  tags: tags
-}
 module resources 'resources.bicep' = {
-  scope: rg
+  scope: resourceGroup()
   name: 'resources'
   params: {
     location: location
@@ -45,7 +40,6 @@ module resources 'resources.bicep' = {
     principalId: principalId
   }
 }
-
 
 output MANAGED_IDENTITY_CLIENT_ID string = resources.outputs.MANAGED_IDENTITY_CLIENT_ID
 output MANAGED_IDENTITY_NAME string = resources.outputs.MANAGED_IDENTITY_NAME
