@@ -4,3 +4,14 @@ summary: Dev environment for eShop
 description: Dev environment for eShop
 templatePath: ./infra/main.bicep
 runner: bicep
+parameters:
+  - id: environmentName
+    type: string
+    name: Environment Name
+    description: Name of the environment
+    default: {{ .env.AZURE_ENV_NAME }}
+  - id: location
+    type: string
+    name: Location
+    description: Azure region for the environment
+    default: {{ .env.AZURE_LOCATION }}
