@@ -1,0 +1,4 @@
+name: eshopwebapp
+summary: This is a deployment of a Azure Container App using Bicep for eShop.
+description: Deploys a Container App within a Container App Environment, along with a Log Analytics Workspace
+templatePath: ../../../infra/main.bicep
