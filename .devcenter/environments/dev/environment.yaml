@@ -3,7 +3,7 @@ name: eshopweb
 summary: Dev environment for eShop
 description: Dev environment for eShop
 templatePath: ./infra/main.bicep
-runner: ARM
+runner: bicep
 parameters:
   - id: environmentName
     type: string
