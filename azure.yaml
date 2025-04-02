@@ -2,7 +2,19 @@
 
 name: e-shop
 services:  
-  app:
+  basket-api:
     language: dotnet
-    project: ./src/eShop.AppHost/eShop.AppHost.csproj
+    project: ./src/Basket.API/Basket.API.csproj
     host: containerapp
+
+
+platform:
+  type: devcenter
+  config:
+    name: devexp-devcenter
+    catalog: environments
+    environmentDefinition: eshopweb
+    environmentType: dev
+    project: eShop
+
+
