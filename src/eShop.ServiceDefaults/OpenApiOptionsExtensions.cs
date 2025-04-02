@@ -157,7 +157,8 @@ internal static class OpenApiOptionsExtensions
             if (apiVersionParameter is not null)
             {
                 apiVersionParameter.Description = "The API version, in the format 'major.minor'.";
-                switch (context.DocumentName) {
+                switch (context.DocumentName)
+                {
                     case "v1":
                         apiVersionParameter.Schema.Example = new OpenApiString("1.0");
                         break;
