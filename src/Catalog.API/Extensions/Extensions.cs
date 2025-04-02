@@ -1,5 +1,6 @@
 ﻿using eShop.Catalog.API.Services;
 using Microsoft.Extensions.AI;
+using OllamaSharp;
 using OpenAI;
 
 public static class Extensions

@@ -3,7 +3,7 @@
     public static void AddApplicationServices(this IHostApplicationBuilder builder)
     {
         var services = builder.Services;
-
+        
         // Add the authentication services to DI
         builder.AddDefaultAuthentication();
 
