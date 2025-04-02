@@ -9,9 +9,9 @@ parameters:
     type: string
     name: Environment Name
     description: Name of the environment
-    default: {{ .env.AZURE_ENV_NAME }}
+    default: dev
   - id: location
     type: string
     name: Location
     description: Azure region for the environment
-    default: {{ .env.AZURE_LOCATION }}
+    default: eastus2
