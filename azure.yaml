@@ -7,7 +7,6 @@ services:
     project: ./src/eShop.AppHost/eShop.AppHost.csproj
     host: containerapp
 
-
 platform:
   type: devcenter
   config:
