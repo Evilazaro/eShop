@@ -2,5 +2,5 @@
 name: eshopwebapp
 summary: Dev environment for eShop
 description: Dev environment for eShop
-templatePath: ../../../infra/main.bicep
+templatePath: ./infra/main.bicep
 runner: bicep
