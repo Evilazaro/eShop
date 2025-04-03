@@ -4,3 +4,19 @@ summary: Dev environment for eShop
 description: Dev environment for eShop
 templatePath: ./infra/main.bicep
 runner: bicep
+parameters:
+  - id: eventbus_password
+    name: eventbus_password
+    type: string
+    description: The password for the event bus.
+    default: 'P@ssw0rd!'
+  - id: postgres_password
+    name: postgres_password
+    type: string
+    description: The password for the PostgreSQL database.
+    default: 'P@ssw0rd!'
+  - id: environmentName
+    name: environmentName
+    type: string
+    description: The name of the environment.
+    default: 'dev'
