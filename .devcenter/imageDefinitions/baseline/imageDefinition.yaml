@@ -9,22 +9,22 @@ tasks:
         Set-ExecutionPolicy Bypass -Scope Process -Force
         Install-PackageProvider -Name NuGet -Force
         Install-Module -Name PSDscResources -Force -AllowClobber
-  - name: ~/winget
+  - name: winget
     parameters:
       package: Git.Git
-  - name: ~/winget
+  - name: winget
     parameters:
       package: GitHub.GitHubDesktop
-  - name: ~/winget
+  - name: winget
     parameters:
       package: GitHub.cli
   ########################################################
     ### Installs Dotnet SDK and Runtime
   ########################################################
-  - name: ~/winget
+  - name: winget
     parameters:
       package: Microsoft.DotNet.SDK.9
-  - name: ~/winget
+  - name: winget
     parameters:
       package: Microsoft.DotNet.Runtime.9
   ########################################
@@ -38,35 +38,33 @@ tasks:
   ### Install: Microsoft Bicep
   ### Install: Microsoft.VisualStudioCode
   ########################################
-  - name: ~/winget
+  - name: winget
     parameters:
       package: Microsoft.AzureCLI
-  - name: ~/winget
+  - name: winget
     parameters:
       package: Microsoft.Azd
-  - name: ~/winget
+  - name: winget
     parameters:
       package: Microsoft.Azure.StorageEmulator
-  - name: ~/winget
+  - name: winget
     parameters:
       package: Microsoft.Azure.StorageExplorer
-  - name: ~/winget
+  - name: winget
     parameters:
       package: Microsoft.Azure.FunctionsCoreTools
-  - name: ~/winget
+  - name: winget
     parameters:
       package: Microsoft.Azure.CosmosEmulator
-  - name: ~/winget
+  - name: winget
     parameters:
       package: Microsoft.Bicep
-  - name: ~/winget
+  - name: winget
     parameters:
       package: Microsoft.VisualStudioCode
 
-userTasks:
-  - name: ~/winget
+  - name: winget
     description: Install workload baseline prerequisites
     parameters:
       downloadUrl: "https://raw.githubusercontent.com/Evilazaro/DevExp-DevBox/refs/heads/main/.configuration/devcenter/workloads/baseline.dsc.yaml"
-      configurationFile: 'C:\WinGetConfig\baseline.dsc.yaml'
       

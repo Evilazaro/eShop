@@ -1,92 +1,124 @@
+#######################################################################################
+# eShop - Frontend Engineer Image Definition
+# Purpose: Configures a development environment for frontend engineering tasks
+# Last Updated: April 21, 2025
+#######################################################################################
+
+# Schema version for the image definition format
 $schema: "1.0"
+
+# Unique identifier for this image definition
 name: eShop-frontend-engineer
+
+# Human-readable description of the environment purpose
+description: "This image definition sets up a development environment for frontend engineers."
+
+# Base image to use from Microsoft's catalog
+# Note: This image includes Windows 11 with basic development tools
 image: microsoftvisualstudio_windowsplustools_base-win11-gen2
 
+# Installation tasks to configure the development environment
 tasks:
-  # PowerShell setup
+  #######################################################################################
+  # SECTION: Core Environment Setup
+  # Purpose: Install foundational tools and configure the PowerShell environment
+  #######################################################################################
+
+  # Install PSDSCResources module for PowerShell environment configuration
+  # This enables PowerShell DSC functionality for subsequent configuration tasks
   - name: ~/powershell
+    description: "Configure PowerShell environment and install DSC resources"
     parameters:
       command: |
-        Set-ExecutionPolicy Bypass -Scope Process -Force
-        Install-PackageProvider -Name NuGet -Force
-        Install-Module -Name PSDscResources -Force -AllowClobber
+        # Set execution policy to allow running scripts for this session
+        Set-ExecutionPolicy -ExecutionPolicy Bypass -Force -Scope Process
+        # Install NuGet package provider required for PowerShell modules
+        Install-PackageProvider -Name NuGet -Force -Scope AllUsers
+        # Configure PowerShell Gallery as a trusted source
+        Set-PSRepository -Name "PSGallery" -InstallationPolicy Trusted
+        # Install DSC resources for system configuration
+        Install-Module -Name PSDSCResources -Force -AllowClobber -Scope AllUsers
 
-  # Git and GitHub tools
+  # Import common engineering tools configuration
+  # This imports a predefined set of tools commonly used across engineering teams
   - name: ~/winget
+    description: "Import common engineering tools and configurations"
     parameters:
-      package: Git.Git
+      downloadUrl: "https://raw.githubusercontent.com/Evilazaro/DevExp-DevBox/refs/heads/main/.configuration/devcenter/workloads/common-config.dsc.yaml"
+      configurationFile: "c:\\winget\\common-config.dsc.yaml"
+
+  #######################################################################################
+  # SECTION: Development Tools
+  # Purpose: Install core development applications and utilities
+  #######################################################################################
+
+  # Install GitHub Desktop - GUI tool for Git repository management
   - name: ~/winget
+    description: "Install GitHub Desktop for visual Git management"
     parameters:
       package: GitHub.GitHubDesktop
-  - name: ~/winget
-    parameters:
-      package: GitHub.cli
 
-  # .NET SDK and Runtime
+  # Install Visual Studio Code - lightweight code editor optimized for web development
   - name: ~/winget
-    parameters:
-      package: Microsoft.DotNet.SDK.9
-  - name: ~/winget
-    parameters:
-      package: Microsoft.DotNet.Runtime.9
-
-  # Azure tools
-  - name: ~/winget
-    parameters:
-      package: Microsoft.AzureCLI
-  - name: ~/winget
-    parameters:
-      package: Microsoft.Azd
-  - name: ~/winget
-    parameters:
-      package: Microsoft.Azure.StorageEmulator
-  - name: ~/winget
-    parameters:
-      package: Microsoft.Azure.StorageExplorer
-  - name: ~/winget
-    parameters:
-      package: Microsoft.Bicep
-  - name: ~/winget
+    description: "Install Visual Studio Code for web development"
     parameters:
       package: Microsoft.VisualStudioCode
 
+  # Clone IdenityProvider repository for frontend development
+  - name: ~/git-clone
+    description: "Clone Azure DevOps repository for frontend development"
+    parameters:
+      # URL of the Azure DevOps repository to clone
+      repositoryUrl: "https://github.com/Evilazaro/IdentityProvider.git"
+      # Local path where the repository will be cloned
+      directory: "Z:\\workspaces"
+
+# User-specific tasks that can be customized by individual developers
 userTasks:
-  - name: ~/winget
-    description: Install workload baseline prerequisites
-    parameters:
-      downloadUrl: "https://raw.githubusercontent.com/Evilazaro/DevExp-DevBox/refs/heads/main/.configuration/devcenter/workloads/baseline.dsc.yaml"
-      configurationFile: 'C:\WinGetConfig\baseline.dsc.yaml'
-      
+  #######################################################################################
+  # SECTION: IDE Extensions and Configurations
+  # Purpose: Set up development environment with specialized extensions
+  #######################################################################################
 
+  # Configure Visual Studio Code with frontend-specific extensions and settings
+  # This installs extensions for JavaScript, TypeScript, React, Angular, and Vue development
+  # along with linters, formatters, and debugging tools optimized for frontend workflows
   - name: ~/winget
-    description: Install Visual Studio Code and its Extensions
+    description: "Install VS Code extensions for frontend development"
     parameters:
+      # Source URL for the configuration file containing extension definitions
       downloadUrl: "https://raw.githubusercontent.com/Evilazaro/DevExp-DevBox/refs/heads/main/.configuration/devcenter/workloads/customizations/ides/vscode.dsc.yaml"
-      configurationFile: 'C:\WinGetConfig\vscode.dsc.yaml'
-      
+      # Local path where the configuration file will be saved
+      configurationFile: "c:\\winget\\vscode.dsc.yaml"
 
+  # Configure additional source code management and quality tools
+  # This installs extensions for Git integration, code metrics, and quality analysis
+  # to enhance developer productivity and maintain code standards
   - name: ~/winget
-    description: Install APIs Resources
+    description: "Install source code management and quality tools"
+    parameters:
+      # Source URL for the configuration file containing source code tool definitions
+      downloadUrl: "https://raw.githubusercontent.com/Evilazaro/DevExp-DevBox/refs/heads/main/.configuration/devcenter/workloads/customizations/sourceCode/sourcecode.dsc.yaml"
+      # Local path where the configuration file will be saved
+      configurationFile: "c:\\winget\\sourcecode.dsc.yaml"
+
+  #######################################################################################
+  # SECTION: API Development Tools
+  # Purpose: Install tools for API development, testing and documentation
+  #######################################################################################
+
+  # Import API development tools and utilities
+  # This includes Postman, Swagger tools, and API testing utilities
+  - name: ~/winget
+    description: "Install API development and testing tools"
     parameters:
       downloadUrl: "https://raw.githubusercontent.com/Evilazaro/DevExp-DevBox/refs/heads/main/.configuration/devcenter/workloads/customizations/apis/apis.dsc.yaml"
-      configurationFile: 'C:\WinGetConfig\apis.dsc.yaml'
-      
+      configurationFile: "c:\\winget\\apis.dsc.yaml"
 
-  - name: git-clone
-    description: Clone IdentityProvider repository into C:\Workspaces
+  # Updates the Winget Packages Installed
+  - name: ~/powershell
+    description: "Update all installed packages to the latest versions"
     parameters:
-      repositoryUrl: https://github.com/Evilazaro/IdentityProvider.git
-      directory: C:\Workspaces
-
-  - name: git-clone
-    description: Clone eShop repository's feature/winui2.6 branch into C:\Workspaces
-    parameters:
-      repositoryUrl: https://github.com/Evilazaro/eShop.git
-      directory: C:\Workspaces
-
-  - name: ~/winget
-    description: Clone Identity Provider and eShop-k8s repositories
-    parameters:
-      downloadUrl: "https://raw.githubusercontent.com/Evilazaro/DevExp-DevBox/refs/heads/main/.configuration/devcenter/workloads/customizations/sourceCode/sourcecode.dsc.yaml"
-      configurationFile: 'C:\WinGetConfig\sourcecode.dsc.yaml'
-      
+      command: |
+        # Update all installed packages to their latest versions
+        winget upgrade --all --accept-source-agreements --accept-package-agreements
