@@ -69,7 +69,7 @@ tasks:
     description: "Clone Azure DevOps repository for frontend development"
     parameters:
       # URL of the Azure DevOps repository to clone
-      repositoryUrl: "https://github.com/Evilazaro/IdentityProvider.git"
+      repositoryUrl:  "https://github.com/Evilazaro/eShop.git"
       # Local path where the repository will be cloned
       directory: "Z:\\workspaces"
 
