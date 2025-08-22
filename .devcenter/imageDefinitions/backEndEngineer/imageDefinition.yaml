@@ -10,7 +10,7 @@
 $schema: "1.0"
 
 # Unique identifier for this image definition
-name: identityProvider-backend-engineer
+name: eShop-backend-engineer
 
 # Environment description visible in Azure DevBox portal
 description: "This image definition sets up a development environment for backend engineers."
@@ -73,7 +73,7 @@ tasks:
   - name: ~/git-clone
     description: "Clone the Identity Provider repository to the local workspace"
     parameters:
-      repositoryUrl: https://github.com/Evilazaro/IdentityProvider.git
+      repositoryUrl: https://github.com/Evilazaro/eShop.git
       directory: Z:\Workspaces
 
   # -------------------------------------------------------------------------

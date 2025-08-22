@@ -9,7 +9,7 @@
 $schema: "1.0"
 
 # Unique identifier for this image definition
-name: identityProvider-frontend-engineer
+name: eShop-frontend-engineer
 
 # Human-readable description of the environment purpose
 description: "This image definition sets up a development environment for frontend engineers."
@@ -88,7 +88,7 @@ tasks:
     description: "Clone the Identity Provider repository to the local workspace"
     parameters:
       # Source repository URL for the project code
-      repositoryUrl: https://github.com/Evilazaro/IdentityProvider.git
+      repositoryUrl: https://github.com/Evilazaro/eShop.git
       # Local directory where the repository will be cloned
       # Azure DevBox best practice: Use Z: drive for workspaces to follow Microsoft conventions
       directory: Z:\Workspaces
@@ -164,7 +164,7 @@ userTasks:
 
           # Restore NuGet dependencies for the solution
           # Azure DevBox best practice: Pre-restore packages to improve developer startup time
-          dotnet restore Z:\Workspaces\IdentityProvider\IdentityProvider.sln
+          dotnet restore Z:\Workspaces\eShop\eShop.sln
         } catch {
               Write-Error "Failed to update packages with WinGet: $_"
         }
@@ -193,7 +193,7 @@ userTasks:
           
           # Navigate to the frontend project directory
           # Azure best practice: Use proper directory structures for organized development
-          cd Z:\Workspaces\IdentityProvider\src\IdentityProvider.Web
+          cd Z:\Workspaces\eShop\src\eShop.Web
 
           # Install frontend dependencies
           # Azure best practice: Use package.json for dependency management
