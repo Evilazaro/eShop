@@ -1,4 +1,4 @@
-﻿namespace eShop.ClientApp.Helpers;
+namespace eShop.ClientApp.Helpers;
 
 public static class UriHelper
 {

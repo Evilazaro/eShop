@@ -1,4 +1,4 @@
-﻿namespace Webhooks.API.Model;
+namespace Webhooks.API.Model;
 
 public class WebhookData
 {

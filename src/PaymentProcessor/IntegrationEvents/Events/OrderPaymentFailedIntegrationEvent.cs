@@ -1,3 +1,3 @@
-﻿namespace eShop.PaymentProcessor.IntegrationEvents.Events;
+namespace eShop.PaymentProcessor.IntegrationEvents.Events;
 
 public record OrderPaymentFailedIntegrationEvent(int OrderId) : IntegrationEvent;

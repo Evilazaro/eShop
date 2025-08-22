@@ -1,4 +1,4 @@
-﻿using ClientApp.UnitTests.Mocks;
+using ClientApp.UnitTests.Mocks;
 using eShop.ClientApp.Services.Identity;
 
 namespace ClientApp.UnitTests.ViewModels;

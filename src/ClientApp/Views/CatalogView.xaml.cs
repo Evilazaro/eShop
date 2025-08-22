@@ -1,4 +1,4 @@
-﻿using CommunityToolkit.Mvvm.Messaging;
+using CommunityToolkit.Mvvm.Messaging;
 using eShop.ClientApp.Messages;
 
 namespace eShop.ClientApp.Views;

@@ -1,4 +1,4 @@
-﻿namespace Webhooks.API.Services;
+namespace Webhooks.API.Services;
 
 public class WebhooksSender(IHttpClientFactory httpClientFactory, ILogger<WebhooksSender> logger) : IWebhooksSender
 {

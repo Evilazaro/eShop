@@ -1,4 +1,4 @@
-﻿namespace eShop.ClientApp.Models.Location;
+namespace eShop.ClientApp.Models.Location;
 
 public class Position
 {

@@ -1,4 +1,4 @@
-﻿@Catalog.API_HostAddress = http://localhost:5222
+@Catalog.API_HostAddress = http://localhost:5222
 @ApiVersion = 1.0
 
 GET {{Catalog.API_HostAddress}}/openapi/v1.json

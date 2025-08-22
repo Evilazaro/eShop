@@ -1,4 +1,4 @@
-﻿namespace eShop.ClientApp.Models.Permissions;
+namespace eShop.ClientApp.Models.Permissions;
 
 public enum Permission
 {

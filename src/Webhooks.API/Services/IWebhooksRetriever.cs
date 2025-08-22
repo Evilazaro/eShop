@@ -1,4 +1,4 @@
-﻿namespace Webhooks.API.Services;
+namespace Webhooks.API.Services;
 
 public interface IWebhooksRetriever
 {

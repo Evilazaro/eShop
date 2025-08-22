@@ -1,4 +1,4 @@
-﻿namespace eShop.ClientApp.Models.Marketing;
+namespace eShop.ClientApp.Models.Marketing;
 
 public class Campaign
 {

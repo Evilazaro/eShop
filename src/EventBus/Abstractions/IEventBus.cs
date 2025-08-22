@@ -1,4 +1,4 @@
-﻿namespace eShop.EventBus.Abstractions;
+namespace eShop.EventBus.Abstractions;
 
 public interface IEventBus
 {

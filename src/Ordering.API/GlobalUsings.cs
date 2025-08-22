@@ -1,4 +1,4 @@
-﻿global using Asp.Versioning.Conventions;
+global using Asp.Versioning.Conventions;
 global using System.Runtime.Serialization;
 global using FluentValidation;
 global using MediatR;

@@ -1,4 +1,4 @@
-﻿using eShop.EventBus.Events;
+using eShop.EventBus.Events;
 
 namespace eShop.WebApp.Services.OrderStatus.IntegrationEvents;
 

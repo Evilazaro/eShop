@@ -1,4 +1,4 @@
-﻿
+
 namespace eShop.Identity.API;
 
 public class UsersSeed(ILogger<UsersSeed> logger, UserManager<ApplicationUser> userManager) : IDbSeeder<ApplicationDbContext>

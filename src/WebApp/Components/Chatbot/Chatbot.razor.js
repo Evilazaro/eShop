@@ -1,4 +1,4 @@
-﻿export function scrollToEnd(element) {
+export function scrollToEnd(element) {
     element.scrollTo({ top: element.scrollHeight, behavior: 'smooth' });
 }
 

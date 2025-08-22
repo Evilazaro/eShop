@@ -1,4 +1,4 @@
-﻿namespace eShop.ClientApp.Services;
+namespace eShop.ClientApp.Services;
 
 public interface IDialogService
 {

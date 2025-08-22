@@ -1,4 +1,4 @@
-﻿namespace eShop.Identity.API.Models.AccountViewModels
+namespace eShop.Identity.API.Models.AccountViewModels
 {
     public record ForgotPasswordViewModel
     {

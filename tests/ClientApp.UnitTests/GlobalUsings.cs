@@ -1,4 +1,4 @@
-﻿global using eShop.ClientApp.Services;
+global using eShop.ClientApp.Services;
 global using eShop.ClientApp.Services.AppEnvironment;
 global using eShop.ClientApp.Services.Basket;
 global using eShop.ClientApp.Services.Catalog;

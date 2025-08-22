@@ -1,4 +1,4 @@
-﻿namespace Webhooks.API.Services;
+namespace Webhooks.API.Services;
 
 public class WebhooksRetriever(WebhooksContext db) : IWebhooksRetriever
 {

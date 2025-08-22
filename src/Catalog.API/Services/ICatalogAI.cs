@@ -1,4 +1,4 @@
-﻿using Pgvector;
+using Pgvector;
 
 namespace eShop.Catalog.API.Services;
 

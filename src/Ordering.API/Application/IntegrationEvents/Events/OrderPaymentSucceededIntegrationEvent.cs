@@ -1,4 +1,4 @@
-﻿namespace eShop.Ordering.API.Application.IntegrationEvents.Events;
+namespace eShop.Ordering.API.Application.IntegrationEvents.Events;
 
 public record OrderPaymentSucceededIntegrationEvent : IntegrationEvent
 {

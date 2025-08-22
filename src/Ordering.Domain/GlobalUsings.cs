@@ -1,4 +1,4 @@
-﻿global using System.Reflection;
+global using System.Reflection;
 global using eShop.Ordering.Domain.Exceptions;
 global using MediatR;
 global using eShop.Ordering.Domain.AggregatesModel.BuyerAggregate;

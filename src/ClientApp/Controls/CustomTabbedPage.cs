@@ -1,4 +1,4 @@
-﻿namespace eShop.ClientApp.Controls;
+namespace eShop.ClientApp.Controls;
 
 public class CustomTabbedPage : TabbedPage
 {

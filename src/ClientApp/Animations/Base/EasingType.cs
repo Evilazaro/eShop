@@ -1,4 +1,4 @@
-﻿namespace eShop.ClientApp.Animations.Base;
+namespace eShop.ClientApp.Animations.Base;
 
 public enum EasingType
 {

@@ -1,4 +1,4 @@
-﻿namespace ClientApp.UnitTests.Services;
+namespace ClientApp.UnitTests.Services;
 
 [TestClass]
 public class CatalogServiceTests

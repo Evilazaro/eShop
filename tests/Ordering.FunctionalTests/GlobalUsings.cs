@@ -1,4 +1,4 @@
-﻿global using System.IO;
+global using System.IO;
 global using System.Net.Http;
 global using System.Security.Claims;
 global using Microsoft.AspNetCore.Builder;

@@ -1,4 +1,4 @@
-﻿<Solution>
+<Solution>
   <Folder Name="/src/">
     <Project Path="src/eShop.AppHost/eShop.AppHost.csproj" />
     <Project Path="src/Basket.API/Basket.API.csproj" />

@@ -1,4 +1,4 @@
-﻿namespace eShop.ClientApp.Views.Templates;
+namespace eShop.ClientApp.Views.Templates;
 
 public partial class OrderItemTemplate : ContentView
 {

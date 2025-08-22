@@ -1,4 +1,4 @@
-﻿global using MediatR;
+global using MediatR;
 global using Microsoft.AspNetCore.Mvc;
 global using eShop.Ordering.API.Application.Commands;
 global using eShop.Ordering.API.Application.Models;

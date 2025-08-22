@@ -1,4 +1,4 @@
-﻿namespace eShop.Ordering.API.Application.IntegrationEvents;
+namespace eShop.Ordering.API.Application.IntegrationEvents;
 
 public class OrderingIntegrationEventService(IEventBus eventBus,
     OrderingContext orderingContext,

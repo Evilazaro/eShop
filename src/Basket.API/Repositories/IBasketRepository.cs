@@ -1,4 +1,4 @@
-﻿using eShop.Basket.API.Model;
+using eShop.Basket.API.Model;
 
 namespace eShop.Basket.API.Repositories;
 

@@ -1,4 +1,4 @@
-﻿namespace eShop.WebhookClient.Services;
+namespace eShop.WebhookClient.Services;
 
 public class WebhookResponse
 {

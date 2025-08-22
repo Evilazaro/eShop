@@ -1,4 +1,4 @@
-﻿
+
 namespace eShop.Ordering.Domain.Events;
 
 /// <summary>

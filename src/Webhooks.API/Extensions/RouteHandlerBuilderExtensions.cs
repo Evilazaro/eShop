@@ -1,4 +1,4 @@
-﻿namespace Webhooks.API.Extensions;
+namespace Webhooks.API.Extensions;
 
 public static class RouteHandlerBuilderExtensions
 {

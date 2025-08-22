@@ -1,4 +1,4 @@
-﻿namespace eShop.HybridApp;
+namespace eShop.HybridApp;
 
 public partial class MainPage : ContentPage
 {
