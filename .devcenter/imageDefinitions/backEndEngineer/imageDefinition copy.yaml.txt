@@ -1,0 +1,164 @@
+#######################################################################################
+# Identity Provider - Backend Engineer Image Definition
+# Purpose: Configures a development environment for backend engineering tasks
+# Last Updated: April 21, 2025
+#######################################################################################
+
+# Schema version for the image definition format
+$schema: "1.0"
+
+# Unique identifier for this image definition
+name: identityProvider-backend-engineer
+
+# Human-readable description of the environment purpose
+description: "This image definition sets up a development environment for backend engineers."
+
+# Base image to use from Microsoft's catalog
+# Note: This image includes Visual Studio 2022 Enterprise with Windows 11 and M365
+image: microsoftvisualstudio_visualstudioplustools_vs-2022-ent-general-win11-m365-gen2
+
+# Installation tasks to configure the development environment
+tasks:
+  #######################################################################################
+  # SECTION: Core Environment Setup
+  # Purpose: Install foundational tools and configure the PowerShell environment
+  #######################################################################################
+
+  # Install PSDSCResources module for PowerShell environment configuration
+  # This enables PowerShell DSC functionality for subsequent configuration tasks
+  - name: ~/powershell
+    description: "Configure PowerShell environment and install DSC resources"
+    parameters:
+      command: |
+        # Set execution policy to allow running scripts for this session
+        Set-ExecutionPolicy -ExecutionPolicy Bypass -Force -Scope Process
+
+        # Install NuGet package provider required for PowerShell modules
+        Install-PackageProvider -Name NuGet -Force -Scope AllUsers
+
+        # Configure PowerShell Gallery as a trusted source
+        Set-PSRepository -Name "PSGallery" -InstallationPolicy Trusted
+
+        # Install DSC resources for system configuration
+        Install-Module -Name PSDSCResources -Force -AllowClobber -Scope AllUsers
+
+  # Import common engineering tools configuration
+  # This imports a predefined set of tools commonly used across engineering teams
+  - name: ~/winget
+    description: "Import common engineering tools and configurations"
+    parameters:
+      # Source URL for the configuration file containing common tools
+      downloadUrl: "https://raw.githubusercontent.com/Evilazaro/DevExp-DevBox/refs/heads/main/.configuration/devcenter/workloads/common-config.dsc.yaml"
+      # Local path where the configuration file will be saved
+      configurationFile: "c:\\winget\\common-config.dsc.yaml"
+
+  #######################################################################################
+  # SECTION: Development Tools
+  # Purpose: Install core development applications and utilities
+  #######################################################################################
+
+  # Install GitHub Desktop - GUI tool for Git repository management
+  - name: ~/winget
+    description: "Install GitHub Desktop for visual Git management"
+    parameters:
+      package: GitHub.GitHubDesktop
+
+  #######################################################################################
+  # SECTION: Azure Development Environment
+  # Purpose: Install tools and SDKs for Azure cloud development
+  #######################################################################################
+
+  # Import Azure tools and configurations
+  # This includes SDKs, CLI tools, and extensions for Azure development
+  - name: ~/winget
+    description: "Install Azure development tools and cloud service integrations"
+    parameters:
+      # Source URL for the configuration file containing Azure tools
+      downloadUrl: "https://raw.githubusercontent.com/Evilazaro/DevExp-DevBox/refs/heads/main/.configuration/devcenter/workloads/customizations/azure/azure.dsc.yaml"
+      # Local path where the configuration file will be saved
+      configurationFile: "c:\\winget\\azure.dsc.yaml"
+
+  # Clone IdenityProvider repository for backend development
+  - name: ~/git-clone
+    description: "Clone Azure DevOps repository for backend development"
+    parameters:
+      # URL of the Azure DevOps repository to clone
+      repositoryUrl: "https://github.com/Evilazaro/IdentityProvider.git"
+      # Local path where the repository will be cloned
+      directory: "Z:\\workspaces"
+
+userTasks:
+  #######################################################################################
+  # SECTION: IDE Extensions and Configurations
+  # Purpose: Set up development environment with specialized extensions
+  #######################################################################################
+
+  # Configure Visual Studio Code with backend-specific extensions and settings
+  # This installs extensions for C#, .NET, Azure, and database development
+  # along with linters, formatters, and debugging tools optimized for backend workflows
+  - name: ~/winget
+    description: "Install VS Code extensions for backend development"
+    parameters:
+      # Source URL for the configuration file containing VS Code extension definitions
+      downloadUrl: "https://raw.githubusercontent.com/Evilazaro/DevExp-DevBox/refs/heads/main/.configuration/devcenter/workloads/customizations/ides/vscode.dsc.yaml"
+      # Local path where the configuration file will be saved
+      configurationFile: "c:\\winget\\vscode.dsc.yaml"
+
+  # Configure additional source code management and quality tools
+  # This installs extensions for Git integration, code metrics, and quality analysis
+  # to enhance developer productivity and maintain code standards
+  - name: ~/winget
+    description: "Install source code management and quality tools"
+    parameters:
+      # Source URL for the configuration file containing source code tool definitions
+      downloadUrl: "https://raw.githubusercontent.com/Evilazaro/DevExp-DevBox/refs/heads/main/.configuration/devcenter/workloads/customizations/sourceCode/sourcecode.dsc.yaml"
+      # Local path where the configuration file will be saved
+      configurationFile: "c:\\winget\\sourcecode.dsc.yaml"
+
+  #######################################################################################
+  # SECTION: Virtualization Tools
+  # Purpose: Install virtualization capabilities for containerized development
+  #######################################################################################
+
+  # Import Windows virtualization tools and configurations
+  # This includes WSL2, Hyper-V and Windows container support
+  - name: ~/winget
+    description: "Install Windows virtualization features and WSL2"
+    parameters:
+      # Source URL for the configuration file containing virtualization tools
+      downloadUrl: "https://raw.githubusercontent.com/Evilazaro/DevExp-DevBox/refs/heads/main/.configuration/devcenter/workloads/customizations/windows/virtualization.dsc.yaml"
+      # Local path where the configuration file will be saved
+      configurationFile: "c:\\winget\\virtualization.dsc.yaml"
+
+  # Import container development tools and runtimes
+  # This includes Docker Desktop, Kubernetes tools, and container utilities
+  - name: ~/winget
+    description: "Install Docker and container orchestration tools"
+    parameters:
+      # Source URL for the configuration file containing container tools
+      downloadUrl: "https://raw.githubusercontent.com/Evilazaro/DevExp-DevBox/refs/heads/main/.configuration/devcenter/workloads/customizations/containers/containers.dsc.yaml"
+      # Local path where the configuration file will be saved
+      configurationFile: "c:\\winget\\containers.dsc.yaml"
+
+  #######################################################################################
+  # SECTION: API Development Tools
+  # Purpose: Install tools for API development, testing and documentation
+  #######################################################################################
+
+  # Import API development tools and utilities
+  # This includes Postman, Swagger tools, and API testing utilities
+  - name: ~/winget
+    description: "Install API development and testing tools"
+    parameters:
+      # Source URL for the configuration file containing API development tools
+      downloadUrl: "https://raw.githubusercontent.com/Evilazaro/DevExp-DevBox/refs/heads/main/.configuration/devcenter/workloads/customizations/apis/apis.dsc.yaml"
+      # Local path where the configuration file will be saved
+      configurationFile: "c:\\winget\\apis.dsc.yaml"
+
+  # Updates the Winget Packages Installed
+  - name: ~/powershell
+    description: "Update all installed packages to the latest versions"
+    parameters:
+      command: |
+        # Update all installed packages to their latest versions
+        winget upgrade --all --accept-source-agreements --accept-package-agreements

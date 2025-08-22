@@ -1,0 +1,214 @@
+#######################################################################################
+# Identity Provider - Frontend Engineer Image Definition
+# Purpose: Configures a development environment for frontend engineering tasks
+# Last Updated: April 25, 2025
+# Azure DevBox Reference: https://learn.microsoft.com/en-us/azure/dev-box/tutorial-dev-box-service
+#######################################################################################
+
+# Schema version for the image definition format
+$schema: "1.0"
+
+# Unique identifier for this image definition
+name: identityProvider-frontend-engineer
+
+# Human-readable description of the environment purpose
+description: "This image definition sets up a development environment for frontend engineers."
+
+# Base image to use from Microsoft's catalog
+# Note: This image includes Windows 11 with basic development tools
+# Azure DevBox best practice: Use Microsoft-provided base images for better performance and compatibility
+image: microsoftvisualstudio_windowsplustools_base-win11-gen2
+
+# Installation tasks to configure the development environment
+tasks:
+  #######################################################################################
+  # SECTION: Core Environment Setup
+  # Purpose: Install foundational tools and configure the PowerShell environment
+  #######################################################################################
+  
+  # Install PSDSCResources module for PowerShell environment configuration
+  # This enables PowerShell DSC functionality for subsequent configuration tasks
+  # Azure best practice: Use DSC for consistent and idempotent environment configuration
+  - name: ~/powershell
+    description: "Configure PowerShell environment and install DSC resources"
+    parameters:
+      command: |
+        # Set execution policy to allow running scripts for this session
+        # Azure security best practice: Use scoped execution policy instead of global changes
+        Set-ExecutionPolicy -ExecutionPolicy Bypass -Force -Scope Process
+
+        # Install NuGet package provider required for PowerShell modules
+        # Azure best practice: Install for AllUsers to ensure consistent environment
+        Install-PackageProvider -Name NuGet -Force -Scope AllUsers
+
+        # Configure PowerShell Gallery as a trusted source
+        # Azure best practice: Use trusted Microsoft repositories for modules
+        Set-PSRepository -Name "PSGallery" -InstallationPolicy Trusted
+
+        # Install DSC resources for system configuration
+        # Azure best practice: Use standard Microsoft DSC resources for compatibility
+        Install-Module -Name PSDSCResources -Force -AllowClobber -Scope AllUsers
+
+  #######################################################################################
+  # SECTION: Common Development Tools
+  # Purpose: Install shared tools used across engineering teams
+  #######################################################################################
+  
+  # Import common engineering tools configuration
+  # This imports a predefined set of tools commonly used across engineering teams
+  # Azure best practice: Use centralized configuration files for consistency across environments
+  - name: ~/winget
+    description: "Import common engineering tools and configurations"
+    parameters:
+      # Source URL for the configuration file containing common tools
+      downloadUrl: "https://raw.githubusercontent.com/Evilazaro/DevExp-DevBox/refs/heads/main/.configuration/devcenter/workloads/common-config.dsc.yaml"
+      # Local path where the configuration file will be saved
+      configurationFile: "c:\\winget\\common-config.dsc.yaml"
+
+  # Install GitHub Desktop - GUI tool for Git repository management
+  # Provides visual interface for commits, branches, and pull requests
+  # Azure best practice: Include source control tools in development environments
+  - name: ~/winget
+    description: "Install GitHub Desktop for visual Git management"
+    parameters:
+      package: "GitHub.GitHubDesktop"
+
+  # Install Visual Studio Code - primary IDE for frontend development
+  # Provides comprehensive JavaScript/TypeScript editing and debugging experience
+  # Azure best practice: Include modern development tools tailored to specific roles
+  - name: ~/winget
+    description: "Install Visual Studio Code for web development"
+    parameters:
+      package: "Microsoft.VisualStudioCode"
+
+  # Clone the Identity Provider repository into the workspace
+  # This provides immediate access to project code and resources
+  # Azure best practice: Pre-populate workspaces with relevant repositories
+  - name: ~/git-clone
+    description: "Clone the Identity Provider repository to the local workspace"
+    parameters:
+      # Source repository URL for the project code
+      repositoryUrl: https://github.com/Evilazaro/IdentityProvider.git
+      # Local directory where the repository will be cloned
+      # Azure DevBox best practice: Use Z: drive for workspaces to follow Microsoft conventions
+      directory: Z:\Workspaces
+
+# User-specific tasks that can be customized by individual developers
+# Azure DevBox best practice: Separate mandatory tasks from optional user tasks
+userTasks:
+  #######################################################################################
+  # SECTION: Optional Frontend Tools
+  # Purpose: Additional tools that engineers can install based on project needs
+  #######################################################################################
+  
+  # Import optional frontend development tools
+  # This includes specialized tools for specific frontend scenarios
+  # Not installed by default to keep base image lean
+  # Azure best practice: Optimize image size by making specialized tools optional
+  - name: ~/winget
+    description: "Install additional frontend-specific tools"
+    parameters:
+      # Contains optional tools that frontend engineers might need based on specific projects
+      downloadUrl: "https://raw.githubusercontent.com/Evilazaro/DevExp-DevBox/refs/heads/main/.configuration/devcenter/workloads/common-frontend-usertasks-config.dsc.yaml"
+      # Local path where the configuration file will be saved
+      configurationFile: "c:\\winget\\common-frontend-usertasks-config.dsc.yaml"
+
+  #######################################################################################
+  # SECTION: Environment Maintenance
+  # Purpose: Keep development environment updated and optimized
+  #######################################################################################
+
+  # Update all installed packages to latest versions
+  # This ensures the development environment has the latest security patches and features
+  # Azure best practice: Keep development environments updated with latest security patches
+  - name: ~/powershell
+    description: "Update Winget Packages"
+    parameters:
+      command: |
+        try {
+          # This ensures scripts can run without manual confirmation prompts
+          # Azure security best practice: Use scoped execution policies for automated processes
+          Set-ExecutionPolicy Bypass -Scope Process -Force -ErrorAction SilentlyContinue            
+
+          # Ensure path is properly set
+          # This combines both machine and user paths to ensure we can find winget
+          # Azure DevBox best practice: Ensure consistent PATH environment across sessions
+          $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
+
+          # Check if winget command exists before attempting updates
+          if (Get-Command winget -ErrorAction SilentlyContinue) {
+              Write-Verbose "Updating packages with WinGet - this may take several minutes..." -Verbose
+
+              # Update all packages except Windows Terminal
+              # Using --ignore-unavailable to prevent failures if sources are unreachable
+              # Using --silent to prevent interactive prompts during automated installation
+              # Azure best practice: Use non-interactive package management for automation
+              winget upgrade --all --silent --accept-source-agreements --accept-package-agreements --disable-interactivity --force 
+
+              Write-Verbose "WinGet package updates completed successfully" -Verbose
+          } else {
+              Write-Warning "WinGet command not found. Windows Package Manager may not be installed."
+          }
+          
+          # Set execution policy to allow running scripts for this session
+          # Azure security best practice: Reset execution policy after completing operations
+          Set-ExecutionPolicy -ExecutionPolicy Bypass -Force -Scope Process
+
+          # Update Node.js and npm packages for frontend development
+          # Azure best practice: Keep frontend toolchain updated for security and compatibility
+          npm update -g
+          
+          # Update frontend CLI tools commonly used in web development
+          # Azure best practice: Keep development tools updated with latest features
+          npm update -g @angular/cli @vue/cli create-react-app typescript
+
+          # Restore NuGet dependencies for the solution
+          # Azure DevBox best practice: Pre-restore packages to improve developer startup time
+          dotnet restore Z:\Workspaces\IdentityProvider\IdentityProvider.sln
+        } catch {
+              Write-Error "Failed to update packages with WinGet: $_"
+        }
+
+  #######################################################################################
+  # SECTION: Project Setup
+  # Purpose: Build and validate the Identity Provider solution
+  #######################################################################################
+
+  # Build and test the Identity Provider frontend components
+  # This ensures the development environment is properly configured for frontend development
+  # Azure best practice: Verify project builds in new environments to validate setup
+  - name: ~/powershell
+    description: "Build Identity Provider Frontend Components"
+    parameters:
+      command: |
+        try {
+          # This ensures scripts can run without manual confirmation prompts
+          # Azure security best practice: Use scoped execution policy changes
+          Set-ExecutionPolicy Bypass -Scope Process -Force -ErrorAction SilentlyContinue            
+
+          # Ensure path is properly set
+          # This combines both machine and user paths to ensure consistent environment
+          # Azure DevBox best practice: Follow Microsoft's PATH management recommendations
+          $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
+          
+          # Navigate to the frontend project directory
+          # Azure best practice: Use proper directory structures for organized development
+          cd Z:\Workspaces\IdentityProvider\src\IdentityProvider.Web
+
+          # Install frontend dependencies
+          # Azure best practice: Use package.json for dependency management
+          Write-Verbose "Installing frontend dependencies..." -Verbose
+          npm install
+
+          # Build the frontend assets in production mode
+          # Azure best practice: Validate production builds work in development environment
+          Write-Verbose "Building frontend assets..." -Verbose
+          npm run build
+
+          # Run frontend unit tests to validate development environment
+          # Azure DevOps best practice: Run tests as part of environment validation
+          Write-Verbose "Running frontend tests..." -Verbose
+          npm test -- --watchAll=false
+        } catch {
+              Write-Error "Failed to build Identity Provider frontend components: $_"
+        }

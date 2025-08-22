@@ -1,0 +1,111 @@
+# =============================================================================
+# Identity Provider - Backend Engineer Image Definition
+# =============================================================================
+# Purpose: Configures a specialized development environment for backend engineers
+# Last Updated: August 15, 2025
+# Documentation: https://learn.microsoft.com/en-us/azure/dev-box/tutorial-dev-box-service
+# =============================================================================
+
+# Schema version for Azure DevBox image definition format
+$schema: "1.0"
+
+# Unique identifier for this image definition
+name: identityProvider-backend-engineer
+
+# Environment description visible in Azure DevBox portal
+description: "This image definition sets up a development environment for backend engineers."
+
+# Base image from Microsoft's verified catalog
+# Includes: Visual Studio 2022 Enterprise, Windows 11, Microsoft 365 apps
+# Best practice: Always use Microsoft-provided base images for security and compatibility
+image: microsoftvisualstudio_visualstudioplustools_vs-2022-ent-general-win11-m365-gen2
+
+# Installation tasks to configure the development environment
+tasks:
+  # -------------------------------------------------------------------------
+  # Core Environment Setup
+  # -------------------------------------------------------------------------
+  # Installs foundational tools and configures PowerShell environment
+  
+  # Install latest Microsoft PowerShell for enhanced scripting capabilities
+  - name: ~/winget
+    description: "Install Microsoft PowerShell"
+    parameters:
+      package: "Microsoft.PowerShell"
+
+  # Configure PowerShell environment with DSC resources
+  # DSC enables consistent, idempotent environment configuration
+  - name: ~/powershell
+    description: "Configure PowerShell environment and install DSC resources"
+    parameters:
+      command: |
+        # Set execution policy for current session only (security best practice)
+        Set-ExecutionPolicy -ExecutionPolicy Bypass -Force -Scope Process
+
+        # Install NuGet provider required for PowerShell module management
+        Install-PackageProvider -Name NuGet -Force -Scope AllUsers
+
+        # Trust PowerShell Gallery for module installation
+        Set-PSRepository -Name "PSGallery" -InstallationPolicy Trusted
+
+        # Install PowerShell DSC resources for system configuration
+        Install-Module -Name PSDSCResources -Force -AllowClobber -Scope AllUsers
+
+  # -------------------------------------------------------------------------
+  # Common Development Tools
+  # -------------------------------------------------------------------------
+  # Installs shared tools used across all engineering teams
+  
+  # Import standardized engineering tools configuration
+  - name: ~/winget
+    description: "Import common engineering tools and configurations"
+    parameters:
+      downloadUrl: "https://raw.githubusercontent.com/Evilazaro/DevExp-DevBox/refs/heads/main/.configuration/devcenter/workloads/common-config.dsc.yaml"
+      configurationFile: "c:\\winget\\common-config.dsc.yaml"
+
+  # Install GitHub Desktop for visual Git repository management
+  - name: ~/winget
+    description: "Install GitHub Desktop for visual Git management"
+    parameters:
+      package: "GitHub.GitHubDesktop"
+
+  # Clone project repository to local workspace (Z: drive follows Azure DevBox conventions)
+  - name: ~/git-clone
+    description: "Clone the Identity Provider repository to the local workspace"
+    parameters:
+      repositoryUrl: https://github.com/Evilazaro/IdentityProvider.git
+      directory: Z:\Workspaces
+
+  # -------------------------------------------------------------------------
+  # Backend Development Specialization
+  # -------------------------------------------------------------------------
+  # Installs backend-specific tools and frameworks
+  
+  # Import backend development tools (databases, APIs, server frameworks)
+  - name: ~/winget
+    description: "Install specialized backend development tools"
+    parameters:
+      downloadUrl: "https://raw.githubusercontent.com/Evilazaro/DevExp-DevBox/refs/heads/main/.configuration/devcenter/workloads/common-backend-config.dsc.yaml"
+      configurationFile: "c:\\winget\\common-backend-config.dsc.yaml"
+
+# Optional user-customizable tasks
+# These tasks allow individual developers to install additional tools based on project needs
+userTasks:
+  # -------------------------------------------------------------------------
+  # Optional Backend Tools
+  # -------------------------------------------------------------------------
+  # Additional specialized tools that can be installed on-demand
+  
+  # Install optional backend development tools for specific project scenarios
+  - name: ~/winget
+    description: "Install additional backend-specific tools"
+    parameters:
+      downloadUrl: "https://raw.githubusercontent.com/Evilazaro/DevExp-DevBox/refs/heads/main/.configuration/devcenter/workloads/common-backend-usertasks-config.dsc.yaml"
+      configurationFile: "c:\\winget\\common-backend-usertasks-config.dsc.yaml"
+
+  # Update all installed packages to latest versions
+  - name: ~/winget
+    description: "Update Winget Packages"
+    parameters:
+      downloadUrl: "https://raw.githubusercontent.com/Evilazaro/DevExp-DevBox/refs/heads/main/.configuration/devcenter/workloads/winget-upgrade-packages.dsc.yaml"
+      configurationFile: "c:\\winget\\winget-upgrade-packages.dsc.yaml"
