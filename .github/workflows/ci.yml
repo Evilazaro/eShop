@@ -12,11 +12,11 @@ jobs:
     with:
       solution: './eShop.Web.slnf'
       dotnet-version: '9.0.x'
-      configuration: 'Release'
+      configuration: 'Debug'
   Test:
     uses: ./.github/workflows/test.yml
     needs: Build
     with:
       solution: './eShop.Web.slnf'
       dotnet-version: '9.0.x'
-      configuration: 'Release'
+      configuration: 'Debug'
