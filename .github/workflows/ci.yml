@@ -11,6 +11,7 @@ jobs:
     uses: ./.github/workflows/default.yml
     with:
       solution: './eShop.Web.slnf'
+      test: './eShop.Web.slnf'
       dotnet-version: '9.0.x'
       configuration: 'Debug'
-      verbosity: 'normal'
+      verbosity: 'minimal'
