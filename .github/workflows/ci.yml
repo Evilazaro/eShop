@@ -8,7 +8,7 @@ on:
 
 jobs:
   CI:
-    uses: https://raw.githubusercontent.com/Evilazaro/dotnet-best-practices/refs/heads/main/devops/ci-cd/.github/workflows/dotnet-build-and-unit-tests.yml
+    uses: https://raw.githubusercontent.com/Evilazaro/.github/refs/heads/main/workflows/dotnet-build-and-unit-tests.yml
     with:
       solution: './eShop.Web.slnf'
       test: './eShop.Web.slnf'
