@@ -87,25 +87,5 @@ jobs:
       - name: Build Application
         run: dotnet build ${{ inputs.solution }} --configuration ${{ inputs.configuration }} --no-restore --verbosity ${{ inputs.verbosity }}
 
-      - name: Publish Debug Application Binary files
-        run: dotnet publish ${{ inputs.solution }} --configuration ${{ inputs.configuration }} --no-restore --verbosity ${{ inputs.verbosity }} --output ${{ github.workspace }}/bin/Debug/${{ inputs.dotnet-version }}.0/publish
-
-      - name: Upload Debug Application Binary files
-        uses: actions/upload-artifact@v4
-        with:
-          name: debug-binaries
-          path: ${{ github.workspace }}/bin/Debug/${{ inputs.dotnet-version }}.0/publish
-          retention-days: 5
-
       - name: Run Unit Tests
-        run: |
-          mkdir ${{ github.workspace }}/test-results
-          chmod -R 777 ${{ github.workspace }}/test-results
-          dotnet test ${{ inputs.test }} --configuration ${{ inputs.configuration }} --no-restore --verbosity ${{ inputs.verbosity }} --results-directory ${{ github.workspace }}/test-results
-
-      - name: Upload Test Results
-        uses: actions/upload-artifact@v4
-        with:
-          name: test-results
-          path: ${{ github.workspace }}/test-results
-          retention-days: 5
+        run: dotnet test ${{ inputs.test }} --configuration ${{ inputs.configuration }} --no-restore --verbosity ${{ inputs.verbosity }}
