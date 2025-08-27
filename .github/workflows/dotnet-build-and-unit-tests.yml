@@ -13,8 +13,8 @@ on:
         required: true
       dotnet-version:
         description: 'The .NET version to use'
-        type: string
-        default: '9.0.x'
+        type: number
+        default: 9
         required: true
       configuration:
         description: 'The build configuration to use (allowed values: Debug, Release)'
@@ -61,7 +61,7 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: ${{ inputs.dotnet-version }}
+          dotnet-version: '${{ inputs.dotnet-version }}.0.x'
 
       - name: Install workloads
         run: |
@@ -70,22 +70,20 @@ jobs:
             dotnet workload install wasm-tools
             echo "Finished installing .NET workloads."
 
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: ${{ inputs.dotnet-version }}
-
       - name: Restore and Install Dependencies
         run: dotnet restore ${{ inputs.solution }} --verbosity ${{ inputs.verbosity }}
 
       - name: Build Solution
         run: dotnet build ${{ inputs.solution }} --configuration ${{ inputs.configuration }} --no-restore --verbosity ${{ inputs.verbosity }}
 
-      - name: Publish Debug Binaries
+      - name: Publish Debug Binary files
+        run: dotnet publish ${{ inputs.solution }} --configuration Debug --output ${{ github.workspace }}/bin/Debug/${{ inputs.dotnet-version }}.0/publish
+
+      - name: Upload Debug Binary files
         uses: actions/upload-artifact@v4
         with:
           name: debug-binaries
-          path: ${{ github.workspace }}/bin/Debug/${{ inputs.dotnet-version }}/publish
+          path: ${{ github.workspace }}/bin/Debug/${{ inputs.dotnet-version }}.0/publish
           retention-days: 5
 
       - name: Run Unit Tests
