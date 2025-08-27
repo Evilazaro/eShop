@@ -1,0 +1,15 @@
+name: eShop Build
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    uses: https://raw.githubusercontent.com/Evilazaro/dotnet-best-practices/refs/heads/feature/ghActionsWorkflowsTemplates/devops/ci-cd/.github/workflow-templates/dotnet-build.yml
+    with:
+      solution: '**/*.slnf'
+      dotnet-version: '9.0.x'
+      configuration: 'Release'
