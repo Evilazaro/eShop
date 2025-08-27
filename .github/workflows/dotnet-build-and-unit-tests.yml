@@ -63,12 +63,22 @@ jobs:
         with:
           dotnet-version: '${{ inputs.dotnet-version }}.0.x'
 
-      - name: Install workloads
+      - name: Update OS packages
+        run: |
+          echo "Updating OS packages..."
+          sudo apt-get update
+          sudo apt-get upgrade -y
+          echo "Finished updating OS packages."
+
+      - name: Install and Update .NET Workloads
         run: |
             echo "Installing .NET workloads..."
             dotnet workload install aspire
             dotnet workload install wasm-tools
             echo "Finished installing .NET workloads."
+            echo "Updating .NET workloads..."
+            dotnet workload update
+            echo "Finished updating .NET workloads."
 
       - name: Restore and Install Dependencies
         run: dotnet restore ${{ inputs.solution }} --verbosity ${{ inputs.verbosity }}
