@@ -7,8 +7,15 @@ on:
     branches: [ "main" ]
 
 jobs:
-  continuous-integration:
+  Build:
     uses: ./.github/workflows/default.yml
+    with:
+      solution: './eShop.Web.slnf'
+      dotnet-version: '9.0.x'
+      configuration: 'Release'
+  Test:
+    uses: ./.github/workflows/test.yml
+    needs: Build
     with:
       solution: './eShop.Web.slnf'
       dotnet-version: '9.0.x'
