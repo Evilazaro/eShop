@@ -1,0 +1,38 @@
+name: DotNet Build
+
+on:
+  workflow_call:
+    inputs:
+      solution:
+        description: 'The solution file to build'
+        type: string
+        default: '**/*.sln'
+        required: true
+      dotnet-version:
+        description: 'The .NET version to use'
+        type: string
+        default: '9.0.x'
+        required: true
+      configuration:
+        description: 'The build configuration to use'
+        type: string
+        default: 'Debug'
+        required: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: ${{ inputs.dotnet-version }}
+
+      - name: Restore
+        run: dotnet restore ${{ inputs.solution }}
+
+      - name: Build
+        run: dotnet build ${{ inputs.solution }} --configuration ${{ inputs.configuration }} --no-restore --verbosity minimal

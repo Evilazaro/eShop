@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    uses: https://raw.githubusercontent.com/Evilazaro/dotnet-best-practices/refs/heads/feature/ghActionsWorkflowsTemplates/devops/ci-cd/.github/workflow-templates/dotnet-build.yml
+    uses: ./.github/workflows/default.yml
     with:
       solution: '**/*.slnf'
       dotnet-version: '9.0.x'
