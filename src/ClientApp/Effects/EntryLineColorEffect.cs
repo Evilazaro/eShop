@@ -1,4 +1,4 @@
-namespace eShop.ClientApp.Effects;
+﻿namespace eShop.ClientApp.Effects;
 
 public class EntryLineColorEffect : RoutingEffect
 {

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8" ?>
 
 <views:ContentPageBase
     x:Class="eShop.ClientApp.Views.ProfileView"

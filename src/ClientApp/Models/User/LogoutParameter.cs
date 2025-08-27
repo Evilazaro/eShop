@@ -1,4 +1,4 @@
-namespace eShop.ClientApp.Models.User;
+﻿namespace eShop.ClientApp.Models.User;
 
 public class LogoutParameter
 {

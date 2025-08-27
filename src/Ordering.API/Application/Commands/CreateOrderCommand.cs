@@ -1,4 +1,4 @@
-namespace eShop.Ordering.API.Application.Commands;
+﻿namespace eShop.Ordering.API.Application.Commands;
 
 // DDD and CQRS patterns comment: Note that it is recommended to implement immutable Commands
 // In this case, its immutability is achieved by having all the setters as private

@@ -1,4 +1,4 @@
-using eShop.WebAppComponents.Services;
+﻿using eShop.WebAppComponents.Services;
 
 namespace eShop.HybridApp.Services;
 

@@ -1,4 +1,4 @@
-namespace eShop.WebAppComponents.Catalog;
+﻿namespace eShop.WebAppComponents.Catalog;
 
 public record CatalogItem(
     int Id,

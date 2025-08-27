@@ -1,4 +1,4 @@
-namespace eShop.Ordering.Domain.SeedWork;
+﻿namespace eShop.Ordering.Domain.SeedWork;
 
 public abstract class ValueObject
 {

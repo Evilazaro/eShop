@@ -1,4 +1,4 @@
-namespace eShop.ClientApp.Services.OpenUrl;
+﻿namespace eShop.ClientApp.Services.OpenUrl;
 
 public interface IOpenUrlService
 {

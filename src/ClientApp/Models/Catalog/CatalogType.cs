@@ -1,4 +1,4 @@
-namespace eShop.ClientApp.Models.Catalog;
+﻿namespace eShop.ClientApp.Models.Catalog;
 
 public class CatalogType
 {

@@ -1,4 +1,4 @@
-namespace eShop.EventBus.Events;
+﻿namespace eShop.EventBus.Events;
 
 public record IntegrationEvent
 {

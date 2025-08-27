@@ -1,4 +1,4 @@
-namespace eShop.ClientApp.Exceptions;
+﻿namespace eShop.ClientApp.Exceptions;
 
 public class ServiceAuthenticationException : Exception
 {

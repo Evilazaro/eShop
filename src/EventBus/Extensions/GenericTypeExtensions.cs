@@ -1,4 +1,4 @@
-namespace eShop.EventBus.Extensions;
+﻿namespace eShop.EventBus.Extensions;
 
 public static class GenericTypeExtensions
 {

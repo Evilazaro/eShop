@@ -1,4 +1,4 @@
-namespace eShop.ClientApp;
+﻿namespace eShop.ClientApp;
 
 public static class DictionaryExtensions
 {

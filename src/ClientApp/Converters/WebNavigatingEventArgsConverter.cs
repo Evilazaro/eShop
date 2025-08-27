@@ -1,4 +1,4 @@
-using System.Globalization;
+﻿using System.Globalization;
 using CommunityToolkit.Maui.Converters;
 
 namespace eShop.ClientApp.Converters;

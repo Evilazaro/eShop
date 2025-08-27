@@ -1,4 +1,4 @@
-namespace eShop.ClientApp.Validations;
+﻿namespace eShop.ClientApp.Validations;
 
 public class ValidatableObject<T> : ObservableObject, IValidity
 {

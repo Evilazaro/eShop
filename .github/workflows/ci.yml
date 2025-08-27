@@ -11,7 +11,7 @@ jobs:
     uses: ./.github/workflows/dotnet-build-and-unit-tests.yml
     with:
       solution: './eShop.Web.slnf'
-      test: './eShop.Web.slnf'
+      test: './tests/eShop.Unit.Tests.sln'
       dotnet-version: 9
       configuration: 'Debug'
       verbosity: 'minimal'

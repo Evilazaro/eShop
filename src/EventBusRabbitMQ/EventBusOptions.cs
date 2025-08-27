@@ -1,4 +1,4 @@
-namespace eShop.EventBusRabbitMQ;
+﻿namespace eShop.EventBusRabbitMQ;
 
 public class EventBusOptions
 {

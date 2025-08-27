@@ -1,4 +1,4 @@
-using System.Text.Json;
+﻿using System.Text.Json;
 using eShop.Catalog.API.Services;
 using Pgvector;
 

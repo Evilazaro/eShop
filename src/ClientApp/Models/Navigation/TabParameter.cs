@@ -1,4 +1,4 @@
-namespace eShop.ClientApp.Models.Navigation;
+﻿namespace eShop.ClientApp.Models.Navigation;
 
 public class TabParameter
 {

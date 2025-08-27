@@ -1,4 +1,4 @@
-namespace eShop.Identity.API.Services
+﻿namespace eShop.Identity.API.Services
 {
     public interface ILoginService<T>
     {

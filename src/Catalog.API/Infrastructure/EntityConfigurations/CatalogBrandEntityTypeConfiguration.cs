@@ -1,4 +1,4 @@
-namespace eShop.Catalog.API.Infrastructure.EntityConfigurations;
+﻿namespace eShop.Catalog.API.Infrastructure.EntityConfigurations;
 
 class CatalogBrandEntityTypeConfiguration
     : IEntityTypeConfiguration<CatalogBrand>

@@ -1,4 +1,4 @@
-namespace eShop.Ordering.Infrastructure.Idempotency;
+﻿namespace eShop.Ordering.Infrastructure.Idempotency;
 
 public interface IRequestManager
 {

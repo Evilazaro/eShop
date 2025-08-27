@@ -1,4 +1,4 @@
-using eShop.Ordering.Domain.SeedWork;
+﻿using eShop.Ordering.Domain.SeedWork;
 
 namespace eShop.Ordering.Domain.AggregatesModel.OrderAggregate;
 

@@ -1,4 +1,4 @@
-namespace eShop.Ordering.Domain.Events;
+﻿namespace eShop.Ordering.Domain.Events;
 
 public class OrderCancelledDomainEvent : INotification
 {

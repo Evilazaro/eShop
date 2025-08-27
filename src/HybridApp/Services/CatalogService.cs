@@ -1,4 +1,4 @@
-using System.Net.Http.Json;
+﻿using System.Net.Http.Json;
 using System.Web;
 using eShop.WebAppComponents.Catalog;
 using eShop.WebAppComponents.Services;

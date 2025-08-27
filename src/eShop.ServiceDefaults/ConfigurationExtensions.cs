@@ -1,4 +1,4 @@
-namespace Microsoft.Extensions.Configuration;
+﻿namespace Microsoft.Extensions.Configuration;
 
 public static class ConfigurationExtensions
 {

@@ -1,4 +1,4 @@
-namespace eShop.Ordering.API.Infrastructure.Services;
+﻿namespace eShop.Ordering.API.Infrastructure.Services;
 
 public class IdentityService(IHttpContextAccessor context) : IIdentityService
 {

@@ -1,4 +1,4 @@
-using Microsoft.Maui.Controls.Shapes;
+﻿using Microsoft.Maui.Controls.Shapes;
 
 namespace eShop.ClientApp.Views;
 

@@ -1,4 +1,4 @@
-namespace Webhooks.API.Infrastructure;
+﻿namespace Webhooks.API.Infrastructure;
 
 /// <remarks>
 /// Add migrations using the following command inside the 'Webhooks.API' project directory:

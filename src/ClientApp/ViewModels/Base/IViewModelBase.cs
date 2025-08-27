@@ -1,4 +1,4 @@
-using eShop.ClientApp.Services;
+﻿using eShop.ClientApp.Services;
 
 namespace eShop.ClientApp.ViewModels.Base;
 

@@ -1,4 +1,4 @@
-namespace ClientApp.UnitTests.Mocks;
+﻿namespace ClientApp.UnitTests.Mocks;
 
 public class MockDialogService : IDialogService
 {

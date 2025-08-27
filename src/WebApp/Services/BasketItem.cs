@@ -1,4 +1,4 @@
-namespace eShop.WebApp.Services;
+﻿namespace eShop.WebApp.Services;
 
 public class BasketItem
 {

@@ -1,4 +1,4 @@
-namespace eShop.Ordering.API.Application.IntegrationEvents;
+﻿namespace eShop.Ordering.API.Application.IntegrationEvents;
 
 public interface IOrderingIntegrationEventService
 {

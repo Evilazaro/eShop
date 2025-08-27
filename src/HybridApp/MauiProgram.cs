@@ -1,4 +1,4 @@
-using eShop.HybridApp.Services;
+﻿using eShop.HybridApp.Services;
 using Microsoft.Extensions.Logging;
 
 namespace eShop.HybridApp;

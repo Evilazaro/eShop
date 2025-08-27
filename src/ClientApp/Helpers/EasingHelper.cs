@@ -1,4 +1,4 @@
-using eShop.ClientApp.Animations.Base;
+﻿using eShop.ClientApp.Animations.Base;
 
 namespace eShop.ClientApp.Helpers;
 

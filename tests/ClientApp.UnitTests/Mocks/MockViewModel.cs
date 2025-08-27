@@ -1,4 +1,4 @@
-using eShop.ClientApp.Validations;
+﻿using eShop.ClientApp.Validations;
 using eShop.ClientApp.ViewModels.Base;
 
 namespace ClientApp.UnitTests.Mocks;

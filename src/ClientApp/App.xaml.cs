@@ -1,4 +1,4 @@
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Globalization;
 using eShop.ClientApp.Services;
 using eShop.ClientApp.Services.AppEnvironment;

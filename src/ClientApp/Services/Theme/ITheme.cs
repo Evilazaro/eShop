@@ -1,4 +1,4 @@
-namespace eShop.ClientApp.Services.Theme;
+﻿namespace eShop.ClientApp.Services.Theme;
 
 public interface ITheme
 {

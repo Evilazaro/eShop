@@ -1,4 +1,4 @@
-namespace eShop.ClientApp.Views;
+﻿namespace eShop.ClientApp.Views;
 
 public partial class LoginView
 {

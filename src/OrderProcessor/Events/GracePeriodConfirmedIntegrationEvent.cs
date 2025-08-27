@@ -1,4 +1,4 @@
-namespace eShop.OrderProcessor.Events
+﻿namespace eShop.OrderProcessor.Events
 {
     using eShop.EventBus.Events;
 
