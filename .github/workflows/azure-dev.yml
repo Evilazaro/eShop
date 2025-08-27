@@ -10,13 +10,17 @@ permissions:
   contents: read
 
 
+
 jobs:
   build:
     uses: ./.github/workflows/dotnet-build-and-unit-tests.yml
+    strategy:
+      matrix:
+        dotnet-version: [7,8,9]
     with:
       solution: './eShop.Web.slnf'
       test: './eShop.Web.slnf'
-      dotnet-version: 9
+      dotnet-version: ${{ matrix.dotnet-version }}
       configuration: 'Debug'
       verbosity: 'minimal'
 
