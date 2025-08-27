@@ -10,6 +10,6 @@ jobs:
   continuous-integration:
     uses: ./.github/workflows/default.yml
     with:
-      solution: 'eShop.slnf'
+      solution: './eShop.Web.slnf'
       dotnet-version: '9.0.x'
       configuration: 'Release'
