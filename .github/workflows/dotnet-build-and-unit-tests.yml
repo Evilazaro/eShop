@@ -1,4 +1,4 @@
-name: Build DotNet solutions
+name: Build and Run Unit Tests for .NET Solutions
 
 on:
   workflow_call:

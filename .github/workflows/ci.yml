@@ -1,4 +1,4 @@
-name: eShop Build
+name: eShop Continuous Integration
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
 
 jobs:
   CI:
-    uses: https://raw.githubusercontent.com/Evilazaro/.github/refs/heads/main/workflows/dotnet-build-and-unit-tests.yml
+    uses: ./.github/workflows/dotnet-build-and-unit-tests.yml
     with:
       solution: './eShop.Web.slnf'
       test: './eShop.Web.slnf'
