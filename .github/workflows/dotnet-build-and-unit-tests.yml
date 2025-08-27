@@ -67,7 +67,6 @@ jobs:
         run: |
           echo "Updating OS packages..."
           sudo apt-get update
-          sudo apt-get upgrade -y
           echo "Finished updating OS packages."
 
       - name: Install and Update .NET Workloads
