@@ -87,7 +87,10 @@ jobs:
           retention-days: 5
 
       - name: Run Unit Tests
-        run: dotnet test ${{ inputs.test }} --configuration ${{ inputs.configuration }} --no-restore --verbosity ${{ inputs.verbosity }} --results-directory ${{ github.workspace }}/test-results --output ${{ github.workspace }}/test-results
+        run: |
+          mkdir ${{ github.workspace }}/test-results
+          chmod -R 777 ${{ github.workspace }}/test-results
+          dotnet test ${{ inputs.test }} --configuration ${{ inputs.configuration }} --no-restore --verbosity ${{ inputs.verbosity }} --results-directory ${{ github.workspace }}/test-results
 
       - name: Upload Test Results
         uses: actions/upload-artifact@v4
