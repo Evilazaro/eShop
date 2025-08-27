@@ -31,6 +31,12 @@ jobs:
   build-and-test:
     runs-on: ubuntu-latest
     steps:
+      - name: Update OS Packages
+        run: |
+          echo "Updating Linux packages..."
+          sudo apt-get update && sudo apt-get upgrade -y
+          echo "Finished updating Linux packages."
+
       - name: Checkout code
         uses: actions/checkout@v4
 
