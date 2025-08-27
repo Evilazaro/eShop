@@ -12,6 +12,6 @@ jobs:
     with:
       solution: './eShop.Web.slnf'
       test: './eShop.Web.slnf'
-      dotnet-version: '9.0.x'
+      dotnet-version: 9
       configuration: 'Debug'
       verbosity: 'minimal'
