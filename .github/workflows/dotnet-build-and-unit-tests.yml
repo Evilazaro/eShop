@@ -76,20 +76,21 @@ jobs:
             dotnet workload install aspire
             dotnet workload install wasm-tools
             echo "Finished installing .NET workloads."
+            
             echo "Updating .NET workloads..."
             dotnet workload update
             echo "Finished updating .NET workloads."
 
-      - name: Restore and Install Dependencies
+      - name: Restore and Install Application Dependencies
         run: dotnet restore ${{ inputs.solution }} --verbosity ${{ inputs.verbosity }}
 
-      - name: Build Solution
+      - name: Build Application
         run: dotnet build ${{ inputs.solution }} --configuration ${{ inputs.configuration }} --no-restore --verbosity ${{ inputs.verbosity }}
 
-      - name: Publish Debug Binary files
+      - name: Publish Debug Application Binary files
         run: dotnet publish ${{ inputs.solution }} --configuration ${{ inputs.configuration }} --no-restore --verbosity ${{ inputs.verbosity }} --output ${{ github.workspace }}/bin/Debug/${{ inputs.dotnet-version }}.0/publish
 
-      - name: Upload Debug Binary files
+      - name: Upload Debug Application Binary files
         uses: actions/upload-artifact@v4
         with:
           name: debug-binaries
