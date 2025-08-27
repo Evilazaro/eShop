@@ -7,9 +7,9 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build:
+  continuous-integration:
     uses: ./.github/workflows/default.yml
     with:
-      solution: '**/*.slnf'
+      solution: './eShop.slnf'
       dotnet-version: '9.0.x'
       configuration: 'Release'
