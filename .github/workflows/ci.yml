@@ -7,16 +7,10 @@ on:
     branches: [ "main" ]
 
 jobs:
-  Build:
+  CI:
     uses: ./.github/workflows/default.yml
     with:
       solution: './eShop.Web.slnf'
       dotnet-version: '9.0.x'
       configuration: 'Debug'
-  Test:
-    uses: ./.github/workflows/test.yml
-    needs: Build
-    with:
-      solution: './eShop.Web.slnf'
-      dotnet-version: '9.0.x'
-      configuration: 'Debug'
+      verbosity: 'normal'
