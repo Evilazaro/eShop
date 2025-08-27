@@ -1,5 +1,5 @@
+﻿using eShop.Basket.API.IntegrationEvents.EventHandling.Events;
 using eShop.Basket.API.Repositories;
-using eShop.Basket.API.IntegrationEvents.EventHandling.Events;
 
 namespace eShop.Basket.API.IntegrationEvents.EventHandling;
 

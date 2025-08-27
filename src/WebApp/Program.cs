@@ -1,7 +1,4 @@
-using eShop.WebApp.Components;
-using eShop.ServiceDefaults;
-
-var builder = WebApplication.CreateBuilder(args);
+﻿var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
 

@@ -1,4 +1,4 @@
-namespace Webhooks.API.Extensions;
+﻿namespace Webhooks.API.Extensions;
 
 public static class RouteHandlerBuilderExtensions
 {
@@ -36,11 +36,11 @@ public static class RouteHandlerBuilderExtensions
             {
                 if (errors.TryGetValue(propertyName, out var value))
                 {
-                    errors[propertyName] = [..value, validationResult.ErrorMessage];
+                    errors[propertyName] = [.. value, validationResult.ErrorMessage];
                 }
                 else
                 {
-                    errors.Add(propertyName, [validationResult.ErrorMessage]);  
+                    errors.Add(propertyName, [validationResult.ErrorMessage]);
                 }
             }
         }

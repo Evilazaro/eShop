@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -74,7 +74,7 @@ public static partial class Extensions
                 tracing.AddAspNetCoreInstrumentation()
                     .AddGrpcClientInstrumentation()
                     .AddHttpClientInstrumentation()
-                    .AddSource("Experimental.Microsoft.Extensions.AI");                    
+                    .AddSource("Experimental.Microsoft.Extensions.AI");
             });
 
         builder.AddOpenTelemetryExporters();

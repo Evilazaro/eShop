@@ -1,8 +1,8 @@
-namespace eShop.Ordering.API.Infrastructure;
+﻿namespace eShop.Ordering.API.Infrastructure;
 
 using eShop.Ordering.Domain.AggregatesModel.BuyerAggregate;
 
-public class OrderingContextSeed: IDbSeeder<OrderingContext>
+public class OrderingContextSeed : IDbSeeder<OrderingContext>
 {
     public async Task SeedAsync(OrderingContext context)
     {

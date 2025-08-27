@@ -1,7 +1,4 @@
-using Asp.Versioning.Builder;
-using System.Reflection;
-
-var builder = WebApplication.CreateBuilder(args);
+﻿var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
 builder.AddApplicationServices();
