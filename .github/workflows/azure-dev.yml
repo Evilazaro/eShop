@@ -63,6 +63,9 @@ jobs:
             dotnet workload update
             echo "Finished updating .NET workloads."
 
+      - name: Install azd
+        uses: Azure/setup-azd@v2
+
       - name: Log in with Azure (Federated Credentials)
         run: |
           azd auth login `
