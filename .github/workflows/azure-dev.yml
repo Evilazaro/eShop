@@ -2,6 +2,12 @@ name: Release
 # Run when commits are pushed to main
 on:
   workflow_dispatch:
+    inputs:
+      dotnet-version:
+        description: 'The .NET version to use (allowed values: 6, 7, 8, 9)'
+        type: number
+        default: 9
+        required: true
 
 # Set up permissions for deploying with secretless Azure federated credentials
 # https://learn.microsoft.com/en-us/azure/developer/github/connect-from-azure?tabs=azure-portal%2Clinux#set-up-azure-login-with-openid-connect-authentication
@@ -44,7 +50,7 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '${{ matrix.dotnet-version }}.0.x'
+          dotnet-version: '${{ inputs.dotnet-version }}.0.x'
 
       - name: Install and Update .NET Workloads
         run: |
