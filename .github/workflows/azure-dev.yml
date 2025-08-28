@@ -9,8 +9,6 @@ permissions:
   id-token: write
   contents: read
 
-
-
 jobs:
   build:
     uses: ./.github/workflows/dotnet-build-and-unit-tests.yml
@@ -34,23 +32,19 @@ jobs:
       AZURE_ENV_NAME: ${{ vars.AZURE_ENV_NAME }}
       AZURE_LOCATION: ${{ vars.AZURE_LOCATION }}
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Install azd
-        uses: Azure/setup-azd@v2
-
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: 9.x.x
-
       - name: Update OS packages
         run: |
           echo "Updating OS packages..."
           sudo apt-get update
-          sudo apt-get upgrade -y
           echo "Finished updating OS packages."
+
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '${{ matrix.dotnet-version }}.0.x'
 
       - name: Install and Update .NET Workloads
         run: |
@@ -70,7 +64,6 @@ jobs:
             --federated-credential-provider "github" `
             --tenant-id "$Env:AZURE_TENANT_ID"
         shell: pwsh
-
 
       - name: Provision Infrastructure
         run: azd provision --no-prompt
