@@ -100,7 +100,6 @@ jobs:
             --verbosity ${{ inputs.verbosity }} \
             --logger trx \
             --collect "Code Coverage" \
-            --output ./TestResults \
             --results-directory ./TestResults
 
       - name: Publish Code Coverage Results
