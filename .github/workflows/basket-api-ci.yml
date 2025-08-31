@@ -12,7 +12,7 @@ jobs:
   build-and-test:
     uses: ./.github/workflows/dotnet-build-and-unit-tests.yml
     with:
-      dotnet-version: '9'
+      dotnet-version: 9
       solution: './src/Basket.API/Basket.API.csproj'
       test: './tests/Basket.UnitTests/Basket.UnitTests.csproj'
       configuration: 'Debug'
