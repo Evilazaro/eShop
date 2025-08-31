@@ -25,16 +25,7 @@ inputs:
 
 runs:
   using: "composite"
-  steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-
-    - name: Setup .NET
-      uses: ./.github/workflows/composite/setup-dotnet.yml
-      with:
-        dotnet-version: ${{ inputs.dotnet-version }}
-        working-directory: ${{ inputs.working-directory }}
-        
+  steps:        
     - name: Build Application
       run: |
           dotnet build ${{ inputs.working-directory }} \
