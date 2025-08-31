@@ -41,18 +41,6 @@ jobs:
           fi
           echo ".NET version '${{ inputs.dotnet-version }}' is valid."
 
-          # Validate test project
-          if [ ! -f "${{ inputs.test }}" ]; then
-            echo "Test project not found: '${{ inputs.test }}'"
-            exit 1
-          fi
-
-          # Validate solution
-          if [ ! -f "${{ inputs.solution }}" ]; then
-            echo "Solution not found: '${{ inputs.solution }}'"
-            exit 1
-          fi
-
           # Validate verbosity (case-insensitive)
           ALLOWED_VERBOSITY="quiet minimal normal detailed diagnostic"
           VERB=$(echo "${{ inputs.verbosity }}" | tr '[:upper:]' '[:lower:]')
