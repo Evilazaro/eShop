@@ -104,5 +104,4 @@ jobs:
         run: |
           dotnet test ${{ inputs.test }} \
             --configuration ${{ inputs.configuration }} \
-            --no-restore \
-            --verbosity ${{ inputs.verbosity }} 
+            --no-restore
