@@ -1,0 +1,19 @@
+name: Client App CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-and-test:
+    uses: ./.github/workflows/dotnet-build-and-unit-tests.yml
+    with:
+      dotnet-version: 9
+      solution: './src/ClientApp/ClientApp.csproj'
+      test: './tests/ClientApp.UnitTests/ClientApp.UnitTests.csproj'
+      configuration: 'Debug'
+      verbosity: 'minimal'
