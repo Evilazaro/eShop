@@ -1,0 +1,19 @@
+name: Basket API CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-and-test:
+    uses: ./.github/workflows/dotnet-build-and-unit-tests.yml
+    with:
+      dotnet-version: '9'
+      solution: './src/Basket.API/Basket.API.csproj'
+      test: './tests/Basket.UnitTests/Basket.UnitTests.csproj'
+      configuration: 'Debug'
+      verbosity: 'normal'

@@ -33,6 +33,26 @@ jobs:
     steps:
       - name: Validate inputs
         run: |
+          # Validate .NET version
+          ALLOWED_VERSIONS="6 7 8 9"
+          if ! echo "$ALLOWED_VERSIONS" | grep -w -q "${{ inputs.dotnet-version }}"; then
+            echo "Invalid .NET version: '${{ inputs.dotnet-version }}'. Allowed values are: $ALLOWED_VERSIONS"
+            exit 1
+          fi
+          echo ".NET version '${{ inputs.dotnet-version }}' is valid."
+
+          # Validate test project
+          if [ ! -f "${{ inputs.test }}" ]; then
+            echo "Test project not found: '${{ inputs.test }}'"
+            exit 1
+          fi
+
+          # Validate solution
+          if [ ! -f "${{ inputs.solution }}" ]; then
+            echo "Solution not found: '${{ inputs.solution }}'"
+            exit 1
+          fi
+
           # Validate verbosity (case-insensitive)
           ALLOWED_VERBOSITY="quiet minimal normal detailed diagnostic"
           VERB=$(echo "${{ inputs.verbosity }}" | tr '[:upper:]' '[:lower:]')
@@ -100,6 +120,7 @@ jobs:
             --verbosity ${{ inputs.verbosity }} \
             --logger trx \
             --collect "Code Coverage" \
+            --output ./TestResults \
             --results-directory ./TestResults
 
       - name: Publish Code Coverage Results
