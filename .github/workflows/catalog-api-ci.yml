@@ -1,4 +1,4 @@
-name: Basket API CI
+name: Catalog API CI
 
 on:
   push:
@@ -13,7 +13,7 @@ jobs:
     uses: ./.github/workflows/dotnet-build-and-unit-tests.yml
     with:
       dotnet-version: 9
-      solution: './src/Basket.API/Basket.API.csproj'
-      test: './tests/Basket.UnitTests/Basket.UnitTests.csproj'
+      solution: './src/Catalog.API/Catalog.API.csproj'
+      test: './tests/Catalog.UnitTests/Catalog.UnitTests.csproj'
       configuration: 'Debug'
       verbosity: 'minimal'
