@@ -1,4 +1,4 @@
-name: Client App CI
+name: Ordering API CI
 
 on:
   push:
@@ -13,7 +13,7 @@ jobs:
     uses: ./.github/workflows/dotnet-build-and-unit-tests.yml
     with:
       dotnet-version: 9
-      solution: './src/ClientApp/ClientApp.csproj'
-      test: './tests/ClientApp.UnitTests/ClientApp.UnitTests.csproj'
+      solution: './src/Ordering.API/Ordering.API.csproj'
+      test: './tests/Ordering.UnitTests/Ordering.UnitTests.csproj'
       configuration: 'Debug'
       verbosity: 'minimal'
