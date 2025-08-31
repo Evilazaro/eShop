@@ -102,6 +102,4 @@ jobs:
 
       - name: Run Unit Tests
         run: |
-          dotnet test ${{ inputs.test }} \
-            --configuration ${{ inputs.configuration }} \
-            --no-restore
+          dotnet test ${{ inputs.test }} 
