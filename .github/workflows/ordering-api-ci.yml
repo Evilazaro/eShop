@@ -13,7 +13,7 @@ jobs:
     uses: ./.github/workflows/dotnet-build-and-unit-tests.yml
     with:
       dotnet-version: 9
-      solution: './src/Ordering.API/Ordering.API.csproj'
-      test: './tests/Ordering.UnitTests/Ordering.UnitTests.csproj'
+      working-directory: './src/Ordering.API/Ordering.API.csproj'
+      test-working-directory: './tests/Ordering.UnitTests/Ordering.UnitTests.csproj'
       configuration: 'Debug'
       verbosity: 'minimal'

@@ -13,7 +13,7 @@ jobs:
     uses: ./.github/workflows/dotnet-build-and-unit-tests.yml
     with:
       dotnet-version: 9
-      solution: './src/Catalog.API/Catalog.API.csproj'
-      test: './tests/Catalog.FunctionalTests/Catalog.FunctionalTests.csproj'
+      working-directory: './src/Catalog.API/Catalog.API.csproj'
+      test-working-directory: './tests/Catalog.FunctionalTests/Catalog.FunctionalTests.csproj'
       configuration: 'Debug'
       verbosity: 'minimal'
