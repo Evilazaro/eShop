@@ -14,6 +14,6 @@ jobs:
     with:
       dotnet-version: 9
       solution: './src/Catalog.API/Catalog.API.csproj'
-      test: './tests/Catalog.UnitTests/Catalog.UnitTests.csproj'
+      test: './tests/Catalog.FunctionalTests/Catalog.FunctionalTests.csproj'
       configuration: 'Debug'
       verbosity: 'minimal'
