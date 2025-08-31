@@ -37,9 +37,6 @@ jobs:
           sudo apt-get update
           echo "Finished updating OS packages."
 
-      - name: Checkout code
-        uses: actions/checkout@v4
-
       - name: Build Application
         uses: ./.github/workflows/composite/build-dotnet.yml
         with:
