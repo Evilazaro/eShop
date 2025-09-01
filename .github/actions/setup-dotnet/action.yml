@@ -52,5 +52,4 @@ runs:
   - name: Restore
     id: restore
     shell: bash
-    working-directory: ${{ inputs.working-directory }}
-    run: dotnet restore --nologo
+    run: dotnet restore ${{ inputs.working-directory }}
