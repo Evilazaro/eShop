@@ -34,5 +34,5 @@ runs:
       id: upload-artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: dotnet-build
+        name: dotnet-build-${{ inputs.configuration }}
         path: ${{ inputs.working-directory }}/bin/
