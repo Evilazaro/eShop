@@ -59,7 +59,7 @@ properties:
           - name: ConnectionStrings__eventbus
             secretRef: connectionstrings--eventbus
     scale:
-      minReplicas: 1
+      minReplicas: 5
 tags:
   azd-service-name: webapp
   aspire-resource-name: webapp

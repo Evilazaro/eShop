@@ -13,7 +13,7 @@ properties:
       dotnet:
         autoConfigureDataProtection: true
     ingress:
-      external: false
+      external: true
       targetPort: {{ targetPortOrDefault 8080 }}
       transport: http
       allowInsecure: true
@@ -49,7 +49,7 @@ properties:
           - name: ConnectionStrings__webhooksdb
             secretRef: connectionstrings--webhooksdb
     scale:
-      minReplicas: 1
+      minReplicas: 5
 tags:
   azd-service-name: webhooks-api
   aspire-resource-name: webhooks-api

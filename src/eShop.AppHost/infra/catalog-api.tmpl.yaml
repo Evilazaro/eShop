@@ -13,7 +13,7 @@ properties:
       dotnet:
         autoConfigureDataProtection: true
     ingress:
-      external: false
+      external: true
       targetPort: {{ targetPortOrDefault 8080 }}
       transport: http
       allowInsecure: true
@@ -47,7 +47,7 @@ properties:
           - name: ConnectionStrings__eventbus
             secretRef: connectionstrings--eventbus
     scale:
-      minReplicas: 1
+      minReplicas: 5
 tags:
   azd-service-name: catalog-api
   aspire-resource-name: catalog-api
