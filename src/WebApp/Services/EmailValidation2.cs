@@ -7,7 +7,7 @@ namespace eShop.WebApp.Services
     // - Method(s) to return validation status (valid/invalid).
     // - Clear error messaging for invalid e-mails.
     // - Support for both standard and edge-case e-mail formats. 
-    public class EmailValidation
+    public class EmailValidation2
     {
         private const int MaxEmailLength = 254; // RFC 5321 standard
         private const int MaxLocalPartLength = 64; // RFC 5321 standard
