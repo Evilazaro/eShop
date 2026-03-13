@@ -31,7 +31,6 @@
 
   <!-- AI -->
   <ItemGroup>
-    <PackageReference Include="Aspire.Hosting.Azure.CognitiveServices" />
     <PackageReference Include="Aspire.Azure.AI.OpenAI" />
     <PackageReference Include="Pgvector" />
     <PackageReference Include="Pgvector.EntityFrameworkCore" />

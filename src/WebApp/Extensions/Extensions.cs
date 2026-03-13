@@ -93,16 +93,19 @@ public static class Extensions
 
     private static void AddAIServices(this IHostApplicationBuilder builder)
     {
+        ChatClientBuilder? chatClientBuilder = null;
         if (builder.Configuration["OllamaEnabled"] is string ollamaEnabled && bool.Parse(ollamaEnabled))
         {
-            builder.AddOllamaApiClient("chat");
-            builder.AddChatClient();
+            chatClientBuilder = builder.AddOllamaApiClient("chat")
+                .AddChatClient();
         }
         else if (!string.IsNullOrWhiteSpace(builder.Configuration.GetConnectionString("chatModel")))
         {
-            builder.AddOpenAIClientFromConfiguration("chatModel");
-            builder.AddChatClient();
+            chatClientBuilder = builder.AddOpenAIClientFromConfiguration("chatModel")
+                .AddChatClient();
         }
+
+        chatClientBuilder?.UseFunctionInvocation();
     }
 
     public static async Task<string?> GetBuyerIdAsync(this AuthenticationStateProvider authenticationStateProvider)

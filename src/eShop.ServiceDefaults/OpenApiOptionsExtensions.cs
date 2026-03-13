@@ -8,7 +8,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Primitives;
 using Microsoft.OpenApi;
 using System.Text.Json.Nodes;
-using System.Diagnostics.CodeAnalysis;
 
 namespace eShop.ServiceDefaults;
 
@@ -123,10 +122,13 @@ internal static class OpenApiOptionsExtensions
 
             var oAuthScheme = new OpenApiSecuritySchemeReference("oauth2", null);
 
-            operation.Security = [new OpenApiSecurityRequirement
+            operation.Security = new List<OpenApiSecurityRequirement>
             {
-                [oAuthScheme] = scopes.ToList()
-            }];
+                new()
+                {
+                    [oAuthScheme] = scopes.ToList()
+                }
+            };
 
             return Task.CompletedTask;
         });
@@ -138,10 +140,7 @@ internal static class OpenApiOptionsExtensions
         options.AddOperationTransformer((operation, context, cancellationToken) =>
         {
             var apiDescription = context.Description;
-            var deprecated = apiDescription.ActionDescriptor.EndpointMetadata
-                .OfType<ObsoleteAttribute>()
-                .Any();
-            operation.Deprecated |= deprecated;
+            operation.Deprecated |= apiDescription.IsDeprecated();
             return Task.CompletedTask;
         });
         return options;
@@ -156,6 +155,17 @@ internal static class OpenApiOptionsExtensions
             if (apiVersionParameter is not null)
             {
                 apiVersionParameter.Description = "The API version, in the format 'major.minor'.";
+                if (apiVersionParameter.Schema is OpenApiSchema targetSchema)
+                {
+                    switch (context.DocumentName) {
+                        case "v1":
+                            targetSchema.Example = JsonNode.Parse("\"1.0\"");
+                            break;
+                        case "v2":
+                            targetSchema.Example = JsonNode.Parse("\"2.0\"");
+                            break;
+                    }
+                }
             }
             return Task.CompletedTask;
         });
@@ -189,7 +199,7 @@ internal static class OpenApiOptionsExtensions
                 }
             };
             document.Components ??= new();
-            document.Components.SecuritySchemes ??= new Dictionary<string, IOpenApiSecurityScheme>();
+            document.Components.SecuritySchemes ??= new Dictionary<string, IOpenApiSecurityScheme>();  
             document.Components.SecuritySchemes.Add("oauth2", securityScheme);
             return Task.CompletedTask;
         }
