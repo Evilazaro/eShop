@@ -125,17 +125,19 @@ flowchart TB
     paymentproc -->|"subscribes"| rabbitmq
     webhooks -->|"subscribes"| rabbitmq
 
-    style clients fill:#F3F2F1,stroke:#8A8886,stroke-width:2px,color:#323130
-    style gateway fill:#F3F2F1,stroke:#8A8886,stroke-width:2px,color:#323130
-    style services fill:#F3F2F1,stroke:#8A8886,stroke-width:2px,color:#323130
-    style processors fill:#F3F2F1,stroke:#8A8886,stroke-width:2px,color:#323130
-    style infra fill:#F3F2F1,stroke:#8A8886,stroke-width:2px,color:#323130
-
+    %% Centralized semantic classDefs
     classDef core fill:#EFF6FC,stroke:#0078D4,stroke-width:2px,color:#323130
     classDef success fill:#DFF6DD,stroke:#107C10,stroke-width:2px,color:#323130
     classDef warning fill:#FFF4CE,stroke:#FFB900,stroke-width:2px,color:#323130
     classDef data fill:#F0E6FA,stroke:#8764B8,stroke-width:2px,color:#323130
     classDef external fill:#E0F7F7,stroke:#038387,stroke-width:2px,color:#323130
+
+    %% Subgraph styling (5 subgraphs = 5 style directives)
+    style clients fill:#F3F2F1,stroke:#8A8886,stroke-width:2px,color:#323130
+    style gateway fill:#F3F2F1,stroke:#8A8886,stroke-width:2px,color:#323130
+    style services fill:#F3F2F1,stroke:#8A8886,stroke-width:2px,color:#323130
+    style processors fill:#F3F2F1,stroke:#8A8886,stroke-width:2px,color:#323130
+    style infra fill:#F3F2F1,stroke:#8A8886,stroke-width:2px,color:#323130
 ```
 
 **Component Roles:**
