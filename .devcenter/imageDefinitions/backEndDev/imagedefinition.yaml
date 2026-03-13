@@ -1,0 +1,24 @@
+$schema: 1.0 # Dev Box image definition schema version [1](https://learn.microsoft.com/en-us/azure/dev-box/reference-dev-box-customizations)
+schemaVersion: 1.0
+
+name: eshop-backend-dev
+description: "Dev Box image definition for eShop backend development workload - includes common engineering tools/configurations and backend-specific configurations/user tasks"
+
+# Base image commonly used in Dev Box accelerator samples/docs
+image: microsoftvisualstudio_visualstudioplustools_vs-2022-ent-general-win11-m365-gen2
+
+tasks:
+  - name: ~/powershell
+    description: "Prepare PowerShell environment for DSC/WinGet configuration"
+    parameters:
+      command: |
+        Set-ExecutionPolicy -ExecutionPolicy Bypass -Force -Scope Process
+        Install-PackageProvider -Name NuGet -Force -Scope AllUsers
+        Set-PSRepository -Name "PSGallery" -InstallationPolicy Trusted
+        Install-Module -Name PSDSCResources -Force -AllowClobber -Scope AllUsers
+
+  - name: ~/winget
+    description: "Import common engineering configuration (common-config.dsc.yaml) - this is an example of how to import a DSC configuration file that is not commit-pinned (use with caution, as changes to this file in the repo could impact your image builds in the future)"
+    parameters:
+      downloadUrl: "https://raw.githubusercontent.com/Evilazaro/DevExp-DevBox/refs/heads/main/.configuration/devcenter/workloads/common-config.dsc.yaml"
+      configurationFile: "c:\\winget\\common-config.dsc.yaml"
