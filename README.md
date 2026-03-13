@@ -12,7 +12,7 @@ A reference .NET application implementing an **e-commerce platform** using a clo
 
 ## Overview
 
-**Overview**
+### Overview
 
 eShop demonstrates how to architect and build a production-grade e-commerce application composed of multiple interdependent microservices. The platform enables product catalog browsing with AI-powered search, shopping cart management, complex order workflows, OAuth 2.0 authentication, webhook integrations, and cross-platform mobile support — all orchestrated through .NET Aspire for seamless local development and cloud deployment.
 
@@ -34,7 +34,7 @@ The application uses an **event-driven architecture** where services communicate
 
 ## Architecture
 
-**Overview**
+### Overview
 
 The system follows a microservices architecture orchestrated by .NET Aspire, with services communicating through RabbitMQ integration events and exposing APIs via HTTP REST and gRPC. Each service owns its dedicated PostgreSQL database, and a **YARP reverse proxy** provides a **unified API gateway** for mobile clients.
 
@@ -160,7 +160,7 @@ flowchart TB
 
 ## Features
 
-**Overview**
+### Overview
 
 eShop provides a comprehensive set of e-commerce capabilities distributed across specialized microservices. Each service is **independently deployable**, owns its data, and communicates through well-defined contracts — enabling teams to develop, test, and scale services independently.
 
@@ -183,7 +183,7 @@ The platform combines traditional CRUD operations with advanced patterns includi
 
 ## Prerequisites
 
-**Overview**
+### Overview
 
 Running eShop requires the **.NET 10 SDK**, a **container runtime** for infrastructure services, and **.NET Aspire workload** for orchestration. The application uses .NET Aspire to automatically provision and configure PostgreSQL, Redis, and RabbitMQ containers — **no manual infrastructure setup is needed** for local development.
 
@@ -203,7 +203,7 @@ All infrastructure dependencies (databases, cache, message broker) are managed b
 
 ## Quick Start
 
-**1. Install the .NET Aspire workload**
+### 1. Install the .NET Aspire workload
 
 ```bash
 dotnet workload install aspire
@@ -215,14 +215,14 @@ Expected output:
 Successfully installed workload(s) aspire.
 ```
 
-**2. Clone the repository**
+### 2. Clone the repository
 
 ```bash
 git clone https://github.com/Evilazaro/eShop.git
 cd eShop
 ```
 
-**3. Ensure Docker Desktop is running**
+### 3. Ensure Docker Desktop is running
 
 Verify Docker is available:
 
@@ -239,7 +239,7 @@ Server: Docker Engine - Community
  ...
 ```
 
-**4. Run the application**
+### 4. Run the application
 
 ```bash
 dotnet run --project src/eShop.AppHost
@@ -259,7 +259,7 @@ info: Aspire.Hosting.DistributedApplication[0]
       Login to the dashboard at: https://localhost:17225/login?t=<token>
 ```
 
-**5. Access the application**
+### 5. Access the application
 
 | Endpoint            | URL                       | Description                      |
 | ------------------- | ------------------------- | -------------------------------- |
@@ -272,13 +272,13 @@ info: Aspire.Hosting.DistributedApplication[0]
 
 ## Deployment
 
-**Overview**
+### Overview
 
 eShop is designed for **containerized deployment** and can be published to any container-compatible environment. The application supports **Azure Container Apps** through .NET Aspire deployment tooling, **Azure Container Registry** for image hosting, and **Azure Pipelines** for CI/CD automation.
 
 For production deployment, each microservice runs as an **independent container** with its own scaling configuration, **health checks**, and environment-specific settings injected through the Aspire orchestrator or container platform.
 
-**1. Build the solution**
+### 1. Build the solution
 
 ```bash
 dotnet build eShop.Web.slnf
@@ -292,7 +292,7 @@ Build succeeded.
     0 Error(s)
 ```
 
-**2. Run tests**
+### 2. Run tests
 
 ```bash
 dotnet test
@@ -304,19 +304,19 @@ Expected output:
 Passed!  - Failed: 0, Passed: X, Skipped: 0, Total: X
 ```
 
-**3. Build container images for Azure Container Registry**
+### 3. Build container images for Azure Container Registry
 
 ```powershell
 ./build/acr-build/queue-all.ps1
 ```
 
-**4. Create multi-architecture manifests**
+### 4. Create multi-architecture manifests
 
 ```powershell
 ./build/multiarch-manifests/create-manifests.ps1
 ```
 
-**5. CI/CD Pipeline**
+### 5. CI/CD Pipeline
 
 The project includes an Azure Pipelines configuration in `ci.yml` that triggers on the `main` branch:
 
@@ -331,13 +331,13 @@ The pipeline uses the .NET SDK version specified in `global.json`, builds the `e
 
 ## Usage
 
-**Overview**
+### Overview
 
 The eShop platform exposes multiple API endpoints through its microservices, each documented via OpenAPI (Scalar UI). The web storefront provides a complete shopping experience including product browsing, cart management, checkout, and order tracking — all backed by the microservice APIs.
 
 Each API service exposes a **Scalar documentation UI** at its root endpoint for interactive exploration.
 
-**Browse the Product Catalog**
+### Browse the Product Catalog
 
 ```bash
 curl https://localhost:5301/api/v1/catalog/items?pageSize=10&pageIndex=0
@@ -362,11 +362,11 @@ Expected output:
 }
 ```
 
-**Add an item to the basket (gRPC)**
+### Add an item to the basket (gRPC)
 
 The Basket service uses gRPC. Interact through the WebApp UI or programmatically using a gRPC client with the protobuf contract defined in `src/Basket.API/Proto/basket.proto`.
 
-**Create an order**
+### Create an order
 
 ```bash
 curl -X POST https://localhost:5102/api/v1/orders \
@@ -386,7 +386,7 @@ curl -X POST https://localhost:5102/api/v1/orders \
   }'
 ```
 
-**Order State Machine**
+### Order State Machine
 
 Orders follow a **defined lifecycle** managed by the OrderProcessor:
 
@@ -396,7 +396,7 @@ Submitted → AwaitingValidation → StockConfirmed → Paid → Shipped
                 ↘ PaymentFailed → Cancelled
 ```
 
-**Register a webhook**
+### Register a webhook
 
 ```bash
 curl -X POST https://localhost:5103/api/v1/webhooks \
@@ -411,7 +411,7 @@ curl -X POST https://localhost:5103/api/v1/webhooks \
 
 ## Configuration
 
-**Overview**
+### Overview
 
 eShop uses a **layered configuration model** where .NET Aspire automatically injects connection strings, service endpoints, and **environment variables** into each microservice at startup. For local development, all infrastructure is auto-provisioned — **no manual configuration is needed** beyond optional AI integration settings.
 
@@ -430,7 +430,7 @@ In production environments, configuration flows through environment variables se
 | 🤖 `useOpenAI`                     | AppHost      | Enable Azure OpenAI for AI search features      | `false`                        |
 | 🤖 `useOllama`                     | AppHost      | Enable local Ollama LLM for AI search           | `false`                        |
 
-**Enabling AI-Powered Search**
+### Enabling AI-Powered Search
 
 To enable AI-powered semantic search in the product catalog, modify `src/eShop.AppHost/Program.cs`:
 
@@ -445,7 +445,7 @@ bool useOllama = true;
 > [!NOTE]
 > Azure OpenAI requires a valid Azure subscription and API key. Ollama runs locally and does not require cloud credentials. Only enable one AI provider at a time.
 
-**Service Health Checks**
+### Service Health Checks
 
 All services expose a health check endpoint:
 
@@ -525,7 +525,7 @@ npx playwright test
 
 ## Contributing
 
-**Overview**
+### Overview
 
 Contributions to eShop are welcome and encouraged. The project follows established .NET best practices and values architectural integrity, performance, and reliability. Whether you are fixing a typo, improving documentation, or proposing an architectural enhancement, all contributions help make this reference application better.
 
