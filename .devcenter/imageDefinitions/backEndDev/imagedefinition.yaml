@@ -22,3 +22,9 @@ tasks:
     parameters:
       downloadUrl: "https://raw.githubusercontent.com/Evilazaro/DevExp-DevBox/refs/heads/main/.configuration/devcenter/workloads/common-config.dsc.yaml"
       configurationFile: "c:\\winget\\common-config.dsc.yaml"
+
+  - name: ~/winget
+    description: "Import backend development configuration (backend-config.dsc.yaml) - this is an example of how to import a DSC configuration file that is not commit-pinned (use with caution, as changes to this file in the repo could impact your image builds in the future)"
+    parameters:
+      downloadUrl: "https://raw.githubusercontent.com/Evilazaro/DevExp-DevBox/refs/heads/main/.configuration/devcenter/workloads/common-backend-config.dsc.yaml"
+      configurationFile: "c:\\winget\\backend-config.dsc.yaml"
