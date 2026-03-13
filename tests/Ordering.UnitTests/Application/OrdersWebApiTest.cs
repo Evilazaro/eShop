@@ -1,4 +1,4 @@
-namespace eShop.Ordering.UnitTests.Application;
+﻿namespace eShop.Ordering.UnitTests.Application;
 
 using Microsoft.AspNetCore.Http.HttpResults;
 using eShop.Ordering.API.Application.Queries;
@@ -154,4 +154,3 @@ public class OrdersWebApiTest
         Assert.AreSame(fakeDynamicResult, result.Value);
     }
 }
-

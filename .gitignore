@@ -19,7 +19,8 @@
 # Mono auto generated files
 mono_crash.*
 
-# Prompts Folder
+# Prompts folder
+
 [Pp]rompts/
 
 # Build results

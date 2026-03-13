@@ -1,4 +1,4 @@
-using System.Text.Json;
+﻿using System.Text.Json;
 
 namespace eShop.Ordering.UnitTests.Application;
 
@@ -20,7 +20,7 @@ public class SetStockRejectedOrderStatusCommandTest
 
         //Assert for List<int>
         Assert.IsNotNull(deserializedCommand.OrderStockItems);
-        Assert.AreEqual(command.OrderStockItems.Count, deserializedCommand.OrderStockItems.Count);
+        Assert.HasCount(command.OrderStockItems.Count, deserializedCommand.OrderStockItems);
 
         for (int i = 0; i < command.OrderStockItems.Count; i++)
         {
@@ -28,5 +28,4 @@ public class SetStockRejectedOrderStatusCommandTest
         }
     }
 }
-
 

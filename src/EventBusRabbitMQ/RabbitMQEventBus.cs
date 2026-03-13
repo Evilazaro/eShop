@@ -37,14 +37,16 @@ public sealed class RabbitMQEventBus(
             logger.LogTrace("Creating RabbitMQ channel to publish event: {EventId} ({EventName})", @event.Id, routingKey);
         }
 
-        var channel = await (_rabbitMQConnection?.CreateChannelAsync() ?? throw new InvalidOperationException("RabbitMQ connection is not open"));
+        using var channel = (await _rabbitMQConnection?.CreateChannelAsync()) ?? throw new InvalidOperationException("RabbitMQ connection is not open");
 
         if (logger.IsEnabled(LogLevel.Trace))
         {
             logger.LogTrace("Declaring RabbitMQ exchange to publish event: {EventId}", @event.Id);
         }
 
-        await channel.ExchangeDeclareAsync(exchange: ExchangeName, type: "direct");
+        await channel.ExchangeDeclareAsync(
+            exchange: ExchangeName, 
+            type: "direct");
 
         var body = SerializeMessage(@event);
 
@@ -52,7 +54,7 @@ public sealed class RabbitMQEventBus(
         // https://github.com/open-telemetry/semantic-conventions/blob/main/docs/messaging/messaging-spans.md
         var activityName = $"{routingKey} publish";
 
-        await _pipeline.ExecuteAsync(async (ct) =>
+        await _pipeline.Execute(async () =>
         {
             using var activity = _activitySource.StartActivity(activityName, ActivityKind.Client);
 
@@ -70,17 +72,15 @@ public sealed class RabbitMQEventBus(
                 contextToInject = Activity.Current.Context;
             }
 
-            var properties = new BasicProperties();
-            // persistent
-            properties.DeliveryMode = DeliveryModes.Persistent;
-
-            static void InjectTraceContextIntoBasicProperties(IReadOnlyBasicProperties props, string key, string value)
+            var properties = new BasicProperties()
             {
-                if (props is BasicProperties basicProps)
-                {
-                    basicProps.Headers ??= new Dictionary<string, object>();
-                    basicProps.Headers[key] = value;
-                }
+                DeliveryMode = DeliveryModes.Persistent
+            };
+
+            static void InjectTraceContextIntoBasicProperties(IBasicProperties props, string key, string value)
+            {
+                props.Headers ??= new Dictionary<string, object>();
+                props.Headers[key] = value;
             }
 
             _propagator.Inject(new PropagationContext(contextToInject, Baggage.Current), properties, InjectTraceContextIntoBasicProperties);
@@ -133,10 +133,10 @@ public sealed class RabbitMQEventBus(
     {
         static IEnumerable<string> ExtractTraceContextFromBasicProperties(IReadOnlyBasicProperties props, string key)
         {
-            if (props.Headers != null && props.Headers.TryGetValue(key, out var value))
+            if (props.Headers.TryGetValue(key, out var value))
             {
                 var bytes = value as byte[];
-                return [Encoding.UTF8.GetString(bytes!)];
+                return [Encoding.UTF8.GetString(bytes)];
             }
             return [];
         }
@@ -225,8 +225,7 @@ public sealed class RabbitMQEventBus(
 
     public Task StartAsync(CancellationToken cancellationToken)
     {
-        // Messaging is async so we don't need to wait for it to complete. On top of this
-        // the APIs are blocking, so we need to run this on a background thread.
+        // Messaging is async so we don't need to wait for it to complete.
         _ = Task.Factory.StartNew(async () =>
         {
             try
@@ -246,14 +245,22 @@ public sealed class RabbitMQEventBus(
 
                 _consumerChannel = await _rabbitMQConnection.CreateChannelAsync();
 
-                await _consumerChannel.ExchangeDeclareAsync(exchange: ExchangeName,
-                                        type: "direct");
+                _consumerChannel.CallbackExceptionAsync += (sender, ea) =>
+                {
+                    logger.LogWarning(ea.Exception, "Error with RabbitMQ consumer channel");
+                    return Task.CompletedTask;
+                };
 
-                await _consumerChannel.QueueDeclareAsync(queue: _queueName,
-                                     durable: true,
-                                     exclusive: false,
-                                     autoDelete: false,
-                                     arguments: null);
+                await _consumerChannel.ExchangeDeclareAsync(
+                    exchange: ExchangeName,
+                    type: "direct");
+
+                await _consumerChannel.QueueDeclareAsync(
+                    queue: _queueName,
+                    durable: true,
+                    exclusive: false,
+                    autoDelete: false,
+                    arguments: null);
 
                 if (logger.IsEnabled(LogLevel.Trace))
                 {

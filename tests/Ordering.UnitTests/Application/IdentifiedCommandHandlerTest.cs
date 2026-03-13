@@ -1,4 +1,4 @@
-namespace eShop.Ordering.UnitTests.Application;
+﻿namespace eShop.Ordering.UnitTests.Application;
 
 [TestClass]
 public class IdentifiedCommandHandlerTest
@@ -75,4 +75,3 @@ public class IdentifiedCommandHandlerTest
             cardTypeId: args != null && args.ContainsKey("cardTypeId") ? (int)args["cardTypeId"] : 0);
     }
 }
-

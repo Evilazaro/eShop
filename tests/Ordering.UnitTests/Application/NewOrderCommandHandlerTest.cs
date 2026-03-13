@@ -1,4 +1,4 @@
-using eShop.Ordering.API.Application.IntegrationEvents;
+﻿using eShop.Ordering.API.Application.IntegrationEvents;
 using eShop.Ordering.Domain.AggregatesModel.OrderAggregate;
 
 namespace eShop.Ordering.UnitTests.Application;
@@ -50,7 +50,7 @@ public class NewOrderRequestHandlerTest
     public void Handle_throws_exception_when_no_buyerId()
     {
         //Assert
-        Assert.ThrowsException<ArgumentNullException>(() => new Buyer(string.Empty, string.Empty));
+        Assert.ThrowsExactly<ArgumentNullException>(() => new Buyer(string.Empty, string.Empty));
     }
 
     private Buyer FakeBuyer()
@@ -81,4 +81,3 @@ public class NewOrderRequestHandlerTest
             cardTypeId: args != null && args.ContainsKey("cardTypeId") ? (int)args["cardTypeId"] : 0);
     }
 }
-
