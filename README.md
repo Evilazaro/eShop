@@ -16,7 +16,7 @@ A reference .NET application implementing an **e-commerce platform** using a clo
 
 eShop demonstrates how to architect and build a production-grade e-commerce application composed of multiple interdependent microservices. The platform enables product catalog browsing with AI-powered search, shopping cart management, complex order workflows, OAuth 2.0 authentication, webhook integrations, and cross-platform mobile support — all orchestrated through .NET Aspire for seamless local development and cloud deployment.
 
-The application uses an event-driven architecture where services communicate asynchronously through RabbitMQ integration events, ensuring loose coupling and independent scalability. Each microservice owns its data store (PostgreSQL databases), follows Domain-Driven Design principles where appropriate, and exposes well-defined API contracts through HTTP REST or gRPC protocols.
+The application uses an **event-driven architecture** where services communicate asynchronously through **RabbitMQ integration events**, ensuring loose coupling and independent scalability. Each microservice owns its data store (PostgreSQL databases), follows **Domain-Driven Design** principles where appropriate, and exposes well-defined API contracts through HTTP REST or gRPC protocols.
 
 ## 📑 Table of Contents
 
@@ -36,7 +36,7 @@ The application uses an event-driven architecture where services communicate asy
 
 **Overview**
 
-The system follows a microservices architecture orchestrated by .NET Aspire, with services communicating through RabbitMQ integration events and exposing APIs via HTTP REST and gRPC. Each service owns its dedicated PostgreSQL database, and a YARP reverse proxy provides a unified API gateway for mobile clients.
+The system follows a microservices architecture orchestrated by .NET Aspire, with services communicating through RabbitMQ integration events and exposing APIs via HTTP REST and gRPC. Each service owns its dedicated PostgreSQL database, and a **YARP reverse proxy** provides a **unified API gateway** for mobile clients.
 
 The architecture separates concerns into distinct layers: client applications (Blazor web, .NET MAUI mobile), API services (Catalog, Basket, Ordering, Identity, Webhooks), background processors (OrderProcessor, PaymentProcessor), shared infrastructure (EventBus, ServiceDefaults), and backing services (PostgreSQL, Redis, RabbitMQ).
 
@@ -162,9 +162,9 @@ flowchart TB
 
 **Overview**
 
-eShop provides a comprehensive set of e-commerce capabilities distributed across specialized microservices. Each service is independently deployable, owns its data, and communicates through well-defined contracts — enabling teams to develop, test, and scale services independently.
+eShop provides a comprehensive set of e-commerce capabilities distributed across specialized microservices. Each service is **independently deployable**, owns its data, and communicates through well-defined contracts — enabling teams to develop, test, and scale services independently.
 
-The platform combines traditional CRUD operations with advanced patterns including Domain-Driven Design, CQRS via MediatR, event sourcing through the outbox pattern, and AI-powered product search using vector embeddings — demonstrating how modern .NET applications can leverage cutting-edge technologies while maintaining clean architecture.
+The platform combines traditional CRUD operations with advanced patterns including **Domain-Driven Design**, **CQRS** via MediatR, event sourcing through the **outbox pattern**, and **AI-powered product search** using vector embeddings — demonstrating how modern .NET applications can leverage cutting-edge technologies while maintaining clean architecture.
 
 | Feature                     | Description                                                       | Service          | Status    |
 | --------------------------- | ----------------------------------------------------------------- | ---------------- | --------- |
@@ -185,9 +185,9 @@ The platform combines traditional CRUD operations with advanced patterns includi
 
 **Overview**
 
-Running eShop requires the .NET 10 SDK, a container runtime for infrastructure services, and .NET Aspire workload for orchestration. The application uses .NET Aspire to automatically provision and configure PostgreSQL, Redis, and RabbitMQ containers — no manual infrastructure setup is needed for local development.
+Running eShop requires the **.NET 10 SDK**, a **container runtime** for infrastructure services, and **.NET Aspire workload** for orchestration. The application uses .NET Aspire to automatically provision and configure PostgreSQL, Redis, and RabbitMQ containers — **no manual infrastructure setup is needed** for local development.
 
-All infrastructure dependencies (databases, cache, message broker) are managed by .NET Aspire through container orchestration, so you only need Docker Desktop (or a compatible container runtime) installed and running before launching the application.
+All infrastructure dependencies (databases, cache, message broker) are managed by .NET Aspire through container orchestration, so you only need **Docker Desktop** (or a compatible container runtime) installed and running before launching the application.
 
 | Prerequisite             | Version                         | Purpose                                          |
 | ------------------------ | ------------------------------- | ------------------------------------------------ |
@@ -274,9 +274,9 @@ info: Aspire.Hosting.DistributedApplication[0]
 
 **Overview**
 
-eShop is designed for containerized deployment and can be published to any container-compatible environment. The application supports Azure Container Apps through .NET Aspire deployment tooling, Azure Container Registry for image hosting, and Azure Pipelines for CI/CD automation.
+eShop is designed for **containerized deployment** and can be published to any container-compatible environment. The application supports **Azure Container Apps** through .NET Aspire deployment tooling, **Azure Container Registry** for image hosting, and **Azure Pipelines** for CI/CD automation.
 
-For production deployment, each microservice runs as an independent container with its own scaling configuration, health checks, and environment-specific settings injected through the Aspire orchestrator or container platform.
+For production deployment, each microservice runs as an **independent container** with its own scaling configuration, **health checks**, and environment-specific settings injected through the Aspire orchestrator or container platform.
 
 **1. Build the solution**
 
@@ -335,7 +335,7 @@ The pipeline uses the .NET SDK version specified in `global.json`, builds the `e
 
 The eShop platform exposes multiple API endpoints through its microservices, each documented via OpenAPI (Scalar UI). The web storefront provides a complete shopping experience including product browsing, cart management, checkout, and order tracking — all backed by the microservice APIs.
 
-Each API service exposes a Scalar documentation UI at its root endpoint for interactive exploration.
+Each API service exposes a **Scalar documentation UI** at its root endpoint for interactive exploration.
 
 **Browse the Product Catalog**
 
@@ -388,7 +388,7 @@ curl -X POST https://localhost:5102/api/v1/orders \
 
 **Order State Machine**
 
-Orders follow a defined lifecycle managed by the OrderProcessor:
+Orders follow a **defined lifecycle** managed by the OrderProcessor:
 
 ```text
 Submitted → AwaitingValidation → StockConfirmed → Paid → Shipped
@@ -413,9 +413,9 @@ curl -X POST https://localhost:5103/api/v1/webhooks \
 
 **Overview**
 
-eShop uses a layered configuration model where .NET Aspire automatically injects connection strings, service endpoints, and environment variables into each microservice at startup. For local development, all infrastructure is auto-provisioned — no manual configuration is needed beyond optional AI integration settings.
+eShop uses a **layered configuration model** where .NET Aspire automatically injects connection strings, service endpoints, and **environment variables** into each microservice at startup. For local development, all infrastructure is auto-provisioned — **no manual configuration is needed** beyond optional AI integration settings.
 
-In production environments, configuration flows through environment variables set by the container orchestrator, with sensitive values managed through secrets providers. Each service's `appsettings.json` provides sensible defaults that are overridden by environment-specific settings.
+In production environments, configuration flows through environment variables set by the container orchestrator, with sensitive values managed through **secrets providers**. Each service's `appsettings.json` provides sensible defaults that are overridden by environment-specific settings.
 
 | Setting                            | Scope        | Description                                     | Default                        |
 | ---------------------------------- | ------------ | ----------------------------------------------- | ------------------------------ |
