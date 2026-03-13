@@ -1,4 +1,4 @@
-﻿namespace eShop.Ordering.UnitTests.Domain;
+namespace eShop.Ordering.UnitTests.Domain;
 
 using eShop.Ordering.Domain.AggregatesModel.OrderAggregate;
 using eShop.Ordering.UnitTests.Domain;
@@ -39,7 +39,7 @@ public class OrderAggregateTest
         var units = -1;
 
         //Act - Assert
-        Assert.Throws<OrderingDomainException>(() => new OrderItem(productId, productName, unitPrice, discount, pictureUrl, units));
+        Assert.ThrowsException<OrderingDomainException>(() => new OrderItem(productId, productName, unitPrice, discount, pictureUrl, units));
     }
 
     [TestMethod]
@@ -54,7 +54,7 @@ public class OrderAggregateTest
         var units = 1;
 
         //Act - Assert
-        Assert.Throws<OrderingDomainException>(() => new OrderItem(productId, productName, unitPrice, discount, pictureUrl, units));       
+        Assert.ThrowsException<OrderingDomainException>(() => new OrderItem(productId, productName, unitPrice, discount, pictureUrl, units));       
     }
 
     [TestMethod]
@@ -72,7 +72,7 @@ public class OrderAggregateTest
         var fakeOrderItem = new OrderItem(productId, productName, unitPrice, discount, pictureUrl, units);
 
         //Assert
-        Assert.Throws<OrderingDomainException>(() => fakeOrderItem.SetNewDiscount(-1));
+        Assert.ThrowsException<OrderingDomainException>(() => fakeOrderItem.SetNewDiscount(-1));
     }
 
     [TestMethod]
@@ -90,7 +90,7 @@ public class OrderAggregateTest
         var fakeOrderItem = new OrderItem(productId, productName, unitPrice, discount, pictureUrl, units);
 
         //Assert
-        Assert.Throws<OrderingDomainException>(() => fakeOrderItem.AddUnits(-1));
+        Assert.ThrowsException<OrderingDomainException>(() => fakeOrderItem.AddUnits(-1));
     }
 
     [TestMethod]
@@ -176,3 +176,4 @@ public class OrderAggregateTest
         Assert.AreEqual(fakeOrder.DomainEvents.Count, expectedResult);
     }
 }
+

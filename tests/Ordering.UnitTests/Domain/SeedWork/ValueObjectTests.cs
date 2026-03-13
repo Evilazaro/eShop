@@ -1,4 +1,4 @@
-﻿namespace eShop.Ordering.UnitTests.Domain.SeedWork;
+namespace eShop.Ordering.UnitTests.Domain.SeedWork;
 
 public class ValueObjectTests
 {
@@ -197,3 +197,4 @@ public class ValueObjectTests
         }
     }
 }
+

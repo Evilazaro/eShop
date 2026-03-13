@@ -1,4 +1,4 @@
-﻿namespace eShop.Ordering.UnitTests.Domain;
+namespace eShop.Ordering.UnitTests.Domain;
 
 [TestClass]
 public class BuyerAggregateTest
@@ -28,7 +28,7 @@ public class BuyerAggregateTest
         var name = "fakeUser";
 
         //Act - Assert
-        Assert.Throws<ArgumentNullException>(() => new Buyer(identity, name));
+        Assert.ThrowsException<ArgumentNullException>(() => new Buyer(identity, name));
     }
 
     [TestMethod]
@@ -84,7 +84,7 @@ public class BuyerAggregateTest
         var expiration = DateTime.UtcNow.AddYears(-1);
 
         //Act - Assert
-        Assert.Throws<OrderingDomainException>(() => new PaymentMethod(cardTypeId, alias, cardNumber, securityNumber, cardHolderName, expiration));
+        Assert.ThrowsException<OrderingDomainException>(() => new PaymentMethod(cardTypeId, alias, cardNumber, securityNumber, cardHolderName, expiration));
     }
 
     [TestMethod]
@@ -128,3 +128,4 @@ public class BuyerAggregateTest
         Assert.AreEqual(fakeBuyer.DomainEvents.Count, expectedResult);
     }
 }
+

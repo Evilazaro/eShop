@@ -1,4 +1,4 @@
-﻿using System.Text.Json;
+using System.Text.Json;
 
 namespace eShop.Ordering.UnitTests.Application;
 
@@ -28,4 +28,5 @@ public class SetStockRejectedOrderStatusCommandTest
         }
     }
 }
+
 
