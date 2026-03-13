@@ -95,12 +95,13 @@ public static class Extensions
     {
         if (builder.Configuration["OllamaEnabled"] is string ollamaEnabled && bool.Parse(ollamaEnabled))
         {
-            builder.Services.AddChatClient(builder.AddOllamaApiClient("chat").AddChatClient());
+            builder.AddOllamaApiClient("chat");
+            builder.AddChatClient();
         }
         else if (!string.IsNullOrWhiteSpace(builder.Configuration.GetConnectionString("chatModel")))
         {
-            var openAIBuilder = builder.AddOpenAIClientFromConfiguration("chatModel");
-            builder.Services.AddChatClient(openAIBuilder.AddChatClient().UseFunctionInvocation());
+            builder.AddOpenAIClientFromConfiguration("chatModel");
+            builder.AddChatClient();
         }
     }
 
