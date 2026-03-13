@@ -26,7 +26,7 @@ public sealed class RabbitMQEventBus(
     private readonly EventBusSubscriptionInfo _subscriptionInfo = subscriptionOptions.Value;
     private IConnection _rabbitMQConnection;
 
-    private IModel _consumerChannel;
+    private IChannel _consumerChannel;
 
     public Task PublishAsync(IntegrationEvent @event)
     {
