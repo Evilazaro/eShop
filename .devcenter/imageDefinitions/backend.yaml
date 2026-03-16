@@ -1,10 +1,6 @@
-$schema: 1.0 # Dev Box image definition schema version [1](https://learn.microsoft.com/en-us/azure/dev-box/reference-dev-box-customizations)
-schemaVersion: 1.0
-
+$schema: 1.0
 name: eshop-backend-dev
 description: "Dev Box image definition for eShop backend development workload - includes common engineering tools/configurations and backend-specific configurations/user tasks"
-
-# Base image commonly used in Dev Box accelerator samples/docs
 image: microsoftvisualstudio_visualstudioplustools_vs-2022-ent-general-win11-m365-gen2
 
 tasks:
