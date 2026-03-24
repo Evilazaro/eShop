@@ -33,23 +33,6 @@ The dominant architectural character is **event-driven, capability-aligned comme
 
 Coverage across all eleven TOGAF Business component types is complete. Order-related components account for the highest concentration (orders, items, states, events, rules: approximately 42% of total components), reflecting the centrality of the commerce transaction lifecycle to the platform's business mission. No Business Strategy documents are present as standalone files; strategy is inferred from the platform's observable design patterns, service decomposition, and README metadata at maturity Level 2.
 
-**Component Counts by Type**:
-
-| Component Type               | Count  |
-| ---------------------------- | ------ |
-| 🎯 Business Strategy         | 1      |
-| ⚙️ Business Capabilities     | 6      |
-| 🌊 Value Streams             | 2      |
-| 🔄 Business Processes        | 5      |
-| 🛠️ Business Services         | 6      |
-| 🏛️ Business Functions        | 5      |
-| 👥 Business Roles & Actors   | 3      |
-| 📏 Business Rules            | 11     |
-| ⚡ Business Events           | 14     |
-| 🗃️ Business Objects/Entities | 10     |
-| 📈 KPIs & Metrics            | 4      |
-| **Total**                    | **67** |
-
 ---
 
 ## 2. 🗺️ Architecture Landscape
@@ -447,6 +430,64 @@ flowchart LR
 | 🔐 Customer Identity & Authentication | Level 3 – Defined    | Multi-factor auth policy documentation   |
 | 💳 Payment Processing                 | Level 2 – Repeatable | Real gateway integration, retry policies |
 | 🔔 Event-Driven Notification          | Level 2 – Repeatable | Delivery retry, failure tracking, SLAs   |
+
+### 🌡️ Capability Maturity Heatmap
+
+```mermaid
+---
+title: "Business Capability Maturity Heatmap"
+config:
+  theme: base
+  look: classic
+  layout: dagre
+  themeVariables:
+    fontSize: '16px'
+  flowchart:
+    htmlLabels: true
+---
+flowchart LR
+    accTitle: Business Capability Maturity Heatmap
+    accDescr: Color-coded heatmap positioning all six business capabilities across the five-level capability maturity scale showing current state and improvement targets
+
+    %% ═══════════════════════════════════════════════════════════════════════════
+    %% AZURE / FLUENT ARCHITECTURE PATTERN v2.0
+    %% (Semantic + Structural + Font + Accessibility Governance)
+    %% ═══════════════════════════════════════════════════════════════════════════
+    %% PHASE 1 - FLUENT UI: All styling uses approved Fluent UI palette only
+    %% PHASE 2 - GROUPS: Every subgraph has semantic color via style directive
+    %% PHASE 3 - COMPONENTS: Every node has semantic classDef + icon prefix
+    %% PHASE 4 - ACCESSIBILITY: accTitle/accDescr present, WCAG AA contrast
+    %% PHASE 5 - STANDARD: Governance block present, classDefs centralized
+    %% ═══════════════════════════════════════════════════════════════════════════
+
+    subgraph L4["📊 Level 4 – Measured"]
+        CAP3("📋 Order Lifecycle\nManagement"):::success
+    end
+
+    subgraph L3["📋 Level 3 – Defined"]
+        CAP1("📦 Product Catalog\nManagement"):::warning
+        CAP2("🛒 Shopping Basket\nManagement"):::warning
+        CAP5("🔐 Customer Identity\n& Authentication"):::warning
+    end
+
+    subgraph L2["⚠️ Level 2 – Repeatable"]
+        CAP4("💳 Payment\nProcessing"):::danger
+        CAP6("🔔 Event-Driven\nNotification"):::danger
+    end
+
+    L2 -->|"target: L3"| L3
+    L3 -->|"target: L4"| L4
+
+    style L4 fill:#DFF6DD,stroke:#107C10,stroke-width:2px,color:#323130
+    style L3 fill:#FFF4CE,stroke:#FFB900,stroke-width:2px,color:#323130
+    style L2 fill:#FDE7E9,stroke:#D13438,stroke-width:2px,color:#323130
+
+    classDef neutral fill:#FAFAFA,stroke:#8A8886,stroke-width:2px,color:#323130
+    classDef core fill:#EFF6FC,stroke:#0078D4,stroke-width:2px,color:#323130
+    classDef success fill:#DFF6DD,stroke:#107C10,stroke-width:2px,color:#323130
+    classDef warning fill:#FFF4CE,stroke:#FFB900,stroke-width:2px,color:#323130
+    classDef danger fill:#FDE7E9,stroke:#D13438,stroke-width:2px,color:#323130
+```
 
 ### 📝 Summary
 
@@ -1101,41 +1142,3 @@ flowchart TB
 The eShop's integration topology is coherent and capability-aligned: seven distinct integration patterns are observable, with event-driven choreography as the dominant cross-service coupling mechanism for all business state transitions. This design yields low coupling between capabilities — each service is only aware of the events it consumes, not the internal state of event producers. The CQRS pattern in Ordering separates concerns between state modification and state reporting. The idempotency pattern, transaction behavior, and domain-to-integration event bridge collectively ensure business process integrity under failure and retry scenarios.
 
 Key integration gaps and risks: the event bus (RabbitMQ) represents a potential single point of failure for all asynchronous business processes; no dead-letter queue or event replay mechanism is explicitly documented. The Payment Processor has no retry or circuit breaker pattern observable, creating risk of silent payment outcome loss on transient failure. The webhook delivery mechanism lacks a documented retry policy or exponential backoff, risking missed delivery for OrderShipped and OrderPaid events. Recommended next steps: document and implement event bus resilience (dead-letter queues, consumer group acknowledgements), add payment retry logic with configurable backoff, define formal SLAs for webhook delivery, and introduce integration health dashboards to monitor cross-service event lag.
-
----
-
-> **✅ Mermaid Verification: 5/5 | Score: 100/100 | Diagrams: 5 | P0 Violations: 0 | P1 Violations: 0**
->
-> | Diagram                               | accTitle | accDescr | Governance Block | Style Directives  | Approved ClassDefs | Emoji Icons | Score |
-> | ------------------------------------- | -------- | -------- | ---------------- | ----------------- | ------------------ | ----------- | ----- |
-> | Business Capability Map               | ✅       | ✅       | ✅               | ✅ (2 subgraphs)  | ✅ (3 classes)     | ✅          | 100   |
-> | Order Lifecycle Process Flow          | ✅       | ✅       | ✅               | ✅ (1 subgraph)   | ✅ (5 classes)     | ✅          | 100   |
-> | Purchase Value Stream                 | ✅       | ✅       | ✅               | ✅ (no subgraphs) | ✅ (4 classes)     | ✅          | 100   |
-> | Business Event Flow                   | ✅       | ✅       | ✅               | ✅ (2 subgraphs)  | ✅ (5 classes)     | ✅          | 100   |
-> | Domain Object Model                   | ✅       | ✅       | ✅               | ✅ (4 subgraphs)  | ✅ (3 classes)     | ✅          | 100   |
-> | Business Service Integration Topology | ✅       | ✅       | ✅               | ✅ (3 subgraphs)  | ✅ (3 classes)     | ✅          | 100   |
-
----
-
-> **📋 Document Validation Summary**
->
-> | Gate             | Check                                                                | Status  |
-> | ---------------- | -------------------------------------------------------------------- | ------- |
-> | N-1              | No unsupported strategic recommendations                             | ✅ PASS |
-> | N-2              | All 67 components have source file references                        | ✅ PASS |
-> | N-3              | All paths within folder_paths (`.`)                                  | ✅ PASS |
-> | N-4              | All components ≥ 0.70 confidence (min: 0.73)                         | ✅ PASS |
-> | N-5              | No empty sections; all 11 types documented                           | ✅ PASS |
-> | N-6              | No internal YAML or scratchpad in output                             | ✅ PASS |
-> | N-7              | No prohibited placeholders ("N/A", "Out of scope")                   | ✅ PASS |
-> | N-8              | No Application/Data/Technology components classified as Business     | ✅ PASS |
-> | N-9              | Workspace root (`.`) accessible; all paths valid                     | ✅ PASS |
-> | N-10             | No sub-threshold components without justification                    | ✅ PASS |
-> | E-034            | Code files cited as source evidence only (business intent described) | ✅ PASS |
-> | Sections         | output_sections [1,2,3,4,5,8] generated; [6,7,9] excluded            | ✅ PASS |
-> | Section Overview | All 6 sections open with `### Overview`                              | ✅ PASS |
-> | Section Summary  | Sections 2, 4, 5, 8 have 2-paragraph Summary blocks                  | ✅ PASS |
-> | Component Types  | All 11 subsections present in §2 and §5                              | ✅ PASS |
-> | Mermaid Score    | All 6 diagrams ≥ 95/100 (actual: 100/100)                            | ✅ PASS |
-> | Decision Tree    | All components passed Q1/Q2/Q3/Q4 classification                     | ✅ PASS |
-> | **FINAL SCORE**  | **100 / 100**                                                        | ✅      |
