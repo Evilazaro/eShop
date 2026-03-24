@@ -241,7 +241,7 @@ flowchart TB
     classDef warning fill:#FFF4CE,stroke:#FFB900,stroke-width:2px,color:#323130
 ```
 
-### Summary
+### 📝 Summary
 
 The eShop Business Architecture landscape presents a well-structured, capability-aligned set of 67 components distributed across all eleven TOGAF Business Architecture types. The ordering domain holds the highest component concentration and architectural maturity (Level 4), with a formal state machine, DDD aggregates, domain event vocabulary, and enforced business rules coded directly into the domain model. Five of six capabilities operate at Level 3 (Defined), evidencing consistent process documentation and cross-service event contracts. Average component confidence is 0.82 (HIGH), with no components dropping below the 0.70 threshold.
 
@@ -448,7 +448,7 @@ flowchart LR
 | 💳 Payment Processing                 | Level 2 – Repeatable | Real gateway integration, retry policies |
 | 🔔 Event-Driven Notification          | Level 2 – Repeatable | Delivery retry, failure tracking, SLAs   |
 
-### Summary
+### 📝 Summary
 
 The eShop Business Architecture current state demonstrates a strong foundation in the ordering domain, with Level 4 maturity in Order Lifecycle Management and Level 3 in four of the remaining five capabilities. The six-state order lifecycle, comprehensive event vocabulary, DDD aggregate boundaries, CQRS implementation, and idempotent command handling collectively represent a well-defined, measurable business process topology. The Purchase Journey Value Stream is end-to-end observable through event and state correlations across five services.
 
