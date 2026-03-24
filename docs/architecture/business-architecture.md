@@ -184,7 +184,7 @@ The landscape reflects a modern, microservices e-commerce reference implementati
 | ⏱️ Grace Period Duration             | Configurable timing metric defining how long an order remains in the submitted state before advancing to validation; controlled by BackgroundTaskOptions.CheckUpdateTime. |
 | 💰 Payment Outcome Rate              | Configurable metric expressing the simulated probability of payment success vs. failure; expressed as a binary configurable flag (PaymentOptions.PaymentSucceeded).       |
 
-### Business Capability Map
+### 🗺️ Business Capability Map
 
 ```mermaid
 ---
@@ -794,7 +794,7 @@ All components meet or exceed the 0.70 confidence threshold. Components at HIGH 
 | **Type**        | Business Rule                                                                                                                                                                                                                                                    |
 | **Description** | Duplicate order creation commands bearing the same request identifier (idempotency key in the x-requestid header) must be accepted and return success without creating a duplicate order. The IdentifiedCommandHandler checks and records processed request IDs. |
 
-### Business Event Flow
+### ⚡ Business Event Flow
 
 ```mermaid
 ---
@@ -882,7 +882,7 @@ The eShop defines a rich, two-tier event vocabulary: **Domain Events** (intra-ag
 
 ### 5.10 🗄️ Business Objects/Entities
 
-#### Domain Object Model
+#### 🗄️ Domain Object Model
 
 ```mermaid
 ---
