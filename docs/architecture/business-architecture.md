@@ -10,9 +10,22 @@
 
 ---
 
-## 1. Executive Summary
+## Quick TOC
 
-### Overview
+| #                                 | Section                       |
+| --------------------------------- | ----------------------------- |
+| [1](#1-executive-summary)         | 🏢 Executive Summary          |
+| [2](#2-architecture-landscape)    | 🗺️ Architecture Landscape     |
+| [3](#3-architecture-principles)   | 📐 Architecture Principles    |
+| [4](#4-current-state-baseline)    | 📊 Current State Baseline     |
+| [5](#5-component-catalog)         | 🗂️ Component Catalog          |
+| [8](#8-dependencies--integration) | 🔗 Dependencies & Integration |
+
+---
+
+## 1. 🏢 Executive Summary
+
+### 📋 Overview
 
 The eShop platform is a cloud-native, microservices-based digital commerce reference application built on .NET Aspire and Domain-Driven Design (DDD) principles. This Business Architecture analysis identifies **67 Business layer components** distributed across all eleven TOGAF Business Architecture component types, drawing evidence from domain models, application command/event structures, and service configurations throughout the workspace. The analysis applies the TOGAF 10 layer classification decision tree to distinguish observable business intent from technical implementation, documenting the WHAT of the business capability rather than the HOW of the code.
 
@@ -22,26 +35,26 @@ Coverage across all eleven TOGAF Business component types is complete. Order-rel
 
 **Component Counts by Type**:
 
-| Component Type            | Count  | Average Confidence | Average Maturity      |
-| ------------------------- | ------ | ------------------ | --------------------- |
-| Business Strategy         | 1      | 0.74               | Level 2 – Repeatable  |
-| Business Capabilities     | 6      | 0.85               | Level 3 – Defined     |
-| Value Streams             | 2      | 0.80               | Level 3 – Defined     |
-| Business Processes        | 5      | 0.83               | Level 3 – Defined     |
-| Business Services         | 6      | 0.86               | Level 3 – Defined     |
-| Business Functions        | 5      | 0.82               | Level 2 – Repeatable  |
-| Business Roles & Actors   | 3      | 0.83               | Level 3 – Defined     |
-| Business Rules            | 11     | 0.88               | Level 3 – Defined     |
-| Business Events           | 14     | 0.86               | Level 3 – Defined     |
-| Business Objects/Entities | 10     | 0.84               | Level 3 – Defined     |
-| KPIs & Metrics            | 4      | 0.75               | Level 2 – Repeatable  |
-| **Total / Average**       | **67** | **0.82**           | **Level 3 – Defined** |
+| Component Type               | Count  |
+| ---------------------------- | ------ |
+| 🎯 Business Strategy         | 1      |
+| ⚙️ Business Capabilities     | 6      |
+| 🌊 Value Streams             | 2      |
+| 🔄 Business Processes        | 5      |
+| 🛠️ Business Services         | 6      |
+| 🏛️ Business Functions        | 5      |
+| 👥 Business Roles & Actors   | 3      |
+| 📏 Business Rules            | 11     |
+| ⚡ Business Events           | 14     |
+| 🗃️ Business Objects/Entities | 10     |
+| 📈 KPIs & Metrics            | 4      |
+| **Total**                    | **67** |
 
 ---
 
-## 2. Architecture Landscape
+## 2. 🗺️ Architecture Landscape
 
-### Overview
+### 📋 Overview
 
 This section inventories all Business layer components detected across the eShop workspace, organized by the eleven TOGAF Business Architecture component types. Each entry is sourced to observable evidence in the repository — domain aggregates, command structures, event definitions, validation rules, and service configurations — with confidence scores calculated using the standard weighted formula (30% filename · 25% path · 35% content · 10% cross-reference). The Decision Tree classification gate has been applied to all candidates; code files are cited as source evidence for business intent rather than classified as Business layer components.
 
@@ -49,11 +62,11 @@ The eShop's business landscape centers on a purchase transaction lifecycle that 
 
 The landscape reflects a modern, microservices e-commerce reference implementation with strong domain separation, observable business rules, and comprehensive event vocabularies. Minor gaps exist in explicit business strategy documentation, formal KPI definitions, and documented business roles/RACI assignments — all areas where additional business-facing artifacts would elevate the architecture's maturity.
 
-### 2.1 Business Strategy (1)
+### 2.1 🎯 Business Strategy (1)
 
-| Name                            | Description                                                                                                                                                                                             | Source           | Confidence    | Maturity             |
-| ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------- | ------------- | -------------------- |
-| eShop Digital Commerce Platform | Cloud-native e-commerce strategy: deliver a reference digital commerce platform via microservices, DDD, and event-driven capability alignment to enable extensible, cloud-deployable retail operations. | `README.md:1-30` | 0.74 (MEDIUM) | Level 2 – Repeatable |
+| Name                               | Description                                                                                                                                                                                             |
+| ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 🎯 eShop Digital Commerce Platform | Cloud-native e-commerce strategy: deliver a reference digital commerce platform via microservices, DDD, and event-driven capability alignment to enable extensible, cloud-deployable retail operations. |
 
 ### 2.2 Business Capabilities (6)
 
@@ -66,12 +79,12 @@ The landscape reflects a modern, microservices e-commerce reference implementati
 | Customer Identity & Authentication | Ability to register customers with profile and payment information, authenticate identities, and manage user sessions.                                           | `src/Identity.API/Models/ApplicationUser.cs:1-30`                                                                        | 0.85 (HIGH) | Level 3 – Defined    |
 | Event-Driven Notification          | Ability to deliver business event notifications — order status changes, price changes — to subscribed external endpoints via webhook.                            | `src/Webhooks.API/Model/WebhookSubscription.cs:1-15`                                                                     | 0.80 (HIGH) | Level 3 – Defined    |
 
-### 2.3 Value Streams (2)
+### 2.3 🌊 Value Streams (2)
 
-| Name                                | Description                                                                                                                                                                  | Source                                                                                                                              | Confidence  | Maturity          |
-| ----------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- | ----------- | ----------------- |
-| Purchase Journey Value Stream       | End-to-end customer value delivery from product discovery through basket assembly, order placement, payment confirmation, and shipment notification.                         | `src/WebApp/Services/OrderingService.cs:1-20`, `src/WebApp/Services/BasketService.cs:1-50`                                          | 0.82 (HIGH) | Level 3 – Defined |
-| Catalog Administration Value Stream | End-to-end product lifecycle delivery from product definition and pricing through stock management, price change event publication, and webhook notification to subscribers. | `src/Catalog.API/Model/CatalogItem.cs:1-62`, `src/Catalog.API/IntegrationEvents/Events/ProductPriceChangedIntegrationEvent.cs:1-10` | 0.78 (HIGH) | Level 3 – Defined |
+| Name                                   | Description                                                                                                                                                                  |
+| -------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 🛒 Purchase Journey Value Stream       | End-to-end customer value delivery from product discovery through basket assembly, order placement, payment confirmation, and shipment notification.                         |
+| 🗂️ Catalog Administration Value Stream | End-to-end product lifecycle delivery from product definition and pricing through stock management, price change event publication, and webhook notification to subscribers. |
 
 ### 2.4 Business Processes (5)
 
@@ -94,23 +107,28 @@ The landscape reflects a modern, microservices e-commerce reference implementati
 | Identity Service             | Business service that manages customer identity, authentication, and user profile data including contact and payment card details.                                             | `src/Identity.API/Program.cs:1-20`, `src/Identity.API/Models/ApplicationUser.cs:1-30`                   | 0.84 (HIGH) | Level 3 – Defined    |
 | Webhook Notification Service | Business service that manages webhook subscriptions and delivers event notifications (order status changes, price changes) to registered external URLs.                        | `src/Webhooks.API/Program.cs:1-20`, `src/Webhooks.API/Services/WebhooksSender.cs:1-30`                  | 0.80 (HIGH) | Level 3 – Defined    |
 
-### 2.6 Business Functions (5)
+### 2.6 🏛️ Business Functions (5)
 
-| Name                                    | Description                                                                                                                                    | Source                                    | Confidence  | Maturity             |
-| --------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------- | ----------- | -------------------- |
-| Order Management Function               | Organizational function responsible for accepting, processing, tracking, and completing customer orders across the order lifecycle.            | `src/Ordering.API/Application/Commands/`  | 0.86 (HIGH) | Level 3 – Defined    |
-| Product Catalog Administration Function | Organizational function responsible for defining products, managing stock levels, setting prices, and maintaining catalog taxonomy.            | `src/Catalog.API/Apis/`                   | 0.80 (HIGH) | Level 2 – Repeatable |
-| Customer Account Management Function    | Organizational function responsible for customer registration, identity management, and profile maintenance.                                   | `src/Identity.API/Quickstart/`            | 0.78 (HIGH) | Level 2 – Repeatable |
-| Payment Operations Function             | Organizational function responsible for payment execution, outcome recording, and reconciliation with payment gateway providers.               | `src/PaymentProcessor/IntegrationEvents/` | 0.82 (HIGH) | Level 2 – Repeatable |
-| Event Notification Function             | Organizational function responsible for managing notification subscriptions and delivering business event notifications to external consumers. | `src/Webhooks.API/Services/`              | 0.82 (HIGH) | Level 2 – Repeatable |
+| Name                                       | Description                                                                                                                                    |
+| ------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------- | ----------- | -------------------- |
+| 📋 Order Management Function               | Organizational function responsible for accepting, processing, tracking, and completing customer orders across the order lifecycle.            |
+| 📦 Product Catalog Administration Function | Organizational function responsible for defining products, managing stock levels, setting prices, and maintaining catalog taxonomy.            |
+| 👤 Customer Account Management Function    | Organizational function responsible for customer registration, identity management, and profile maintenance.                                   |
+| 💳 Payment Operations Function             | Organizational function responsible for payment execution, outcome recording, and reconciliation with payment gateway providers.               |
+| 🔔 Event Notification Function             | Organizational function responsible for managing notification subscriptions and delivering business event notifications to external consumers. |
+| Order Management Function                  | Organizational function responsible for accepting, processing, tracking, and completing customer orders across the order lifecycle.            | `src/Ordering.API/Application/Commands/`  | 0.86 (HIGH) | Level 3 – Defined    |
+| Product Catalog Administration Function    | Organizational function responsible for defining products, managing stock levels, setting prices, and maintaining catalog taxonomy.            | `src/Catalog.API/Apis/`                   | 0.80 (HIGH) | Level 2 – Repeatable |
+| Customer Account Management Function       | Organizational function responsible for customer registration, identity management, and profile maintenance.                                   | `src/Identity.API/Quickstart/`            | 0.78 (HIGH) | Level 2 – Repeatable |
+| Payment Operations Function                | Organizational function responsible for payment execution, outcome recording, and reconciliation with payment gateway providers.               | `src/PaymentProcessor/IntegrationEvents/` | 0.82 (HIGH) | Level 2 – Repeatable |
+| Event Notification Function                | Organizational function responsible for managing notification subscriptions and delivering business event notifications to external consumers. | `src/Webhooks.API/Services/`              | 0.82 (HIGH) | Level 2 – Repeatable |
 
-### 2.7 Business Roles & Actors (3)
+### 2.7 👥 Business Roles & Actors (3)
 
-| Name                     | Description                                                                                                                                                 | Source                                                             | Confidence  | Maturity             |
-| ------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------ | ----------- | -------------------- |
-| Customer / Buyer         | Authenticated end-user who browses the product catalog, manages a shopping basket, places orders, and receives order status notifications.                  | `src/Ordering.Domain/AggregatesModel/BuyerAggregate/Buyer.cs:1-55` | 0.87 (HIGH) | Level 3 – Defined    |
-| Catalog Administrator    | Authorized user who creates and maintains catalog items, manages stock levels, and adjusts pricing — triggering price change notifications when applicable. | `src/Catalog.API/Apis/`                                            | 0.78 (HIGH) | Level 2 – Repeatable |
-| External Payment Gateway | External system actor that evaluates payment requests and returns success or failure outcomes; simulated in the current implementation via configuration.   | `src/PaymentProcessor/PaymentOptions.cs:1-10`                      | 0.76 (HIGH) | Level 2 – Repeatable |
+| Name                        | Description                                                                                                                                                 |
+| --------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 👤 Customer / Buyer         | Authenticated end-user who browses the product catalog, manages a shopping basket, places orders, and receives order status notifications.                  |
+| 🛡️ Catalog Administrator    | Authorized user who creates and maintains catalog items, manages stock levels, and adjusts pricing — triggering price change notifications when applicable. |
+| 🏦 External Payment Gateway | External system actor that evaluates payment requests and returns success or failure outcomes; simulated in the current implementation via configuration.   |
 
 ### 2.8 Business Rules (11)
 
