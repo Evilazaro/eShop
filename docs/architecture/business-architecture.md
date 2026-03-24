@@ -1,15 +1,5 @@
 # Business Architecture — eShop
 
-**Generated**: 2026-03-24T00:00:00Z  
-**Session ID**: a3f1c820-7d45-4b9e-9e62-8c0f3d1a5b77  
-**Quality Level**: comprehensive  
-**Components Found**: 67 (1 Strategy · 6 Capabilities · 2 Value Streams · 5 Processes · 6 Services · 5 Functions · 3 Roles · 11 Rules · 14 Events · 10 Objects · 4 KPIs)  
-**Analysis Scope**: `.` (entire workspace)  
-**Target Layer**: Business (TOGAF 10)  
-**Output Sections**: 1, 2, 3, 4, 5, 8
-
----
-
 ## Quick TOC
 
 | #                                 | Section                       |
