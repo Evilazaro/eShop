@@ -980,7 +980,7 @@ The core business entities are detailed in the table below:
 | ⏱️ Grace Period Duration             | Process Timing KPI      | Elapsed time between order submission and grace period confirmation; configurable via BackgroundTaskOptions.CheckUpdateTime    | GracePeriodManagerService poll interval; CheckUpdateTime seconds                                              |
 | 💰 Payment Outcome Rate              | Payment Performance KPI | Rate of payment success vs. failure across processed orders; currently configurable, not metered in real time                  | PaymentOptions.PaymentSucceeded flag; PaymentSucceededIntegrationEvent / PaymentFailedIntegrationEvent counts |
 
-### Summary
+### 📝 Summary
 
 The Component Catalog documents 67 Business layer components across all 11 TOGAF component types, with a platform-wide average confidence of 0.82 (HIGH) and average maturity of Level 3 – Defined. The highest-maturity components (Level 4 – Measured) are those with the strongest structural evidence: Order aggregate, OrderStatus lifecycle, Order State Transition Rule, and Cancellation Eligibility Rule — all supported by explicit code enforcement, formal state machine design, and cross-referenced domain event handlers. Business Rules (11 items) and Business Events (14 items) are the most precisely documented, each with near-complete enforcement evidence.
 
@@ -1096,7 +1096,7 @@ flowchart TB
 | 🔔 Webhook Subscription Model              | Webhook Service                              | Extensible pub-sub for external consumers, validated on subscription creation      |
 | 📡 gRPC Synchronous Service                | Basket Service                               | Low-latency, strongly-typed basket access by WebApp at checkout                    |
 
-### Summary
+### 📝 Summary
 
 The eShop's integration topology is coherent and capability-aligned: seven distinct integration patterns are observable, with event-driven choreography as the dominant cross-service coupling mechanism for all business state transitions. This design yields low coupling between capabilities — each service is only aware of the events it consumes, not the internal state of event producers. The CQRS pattern in Ordering separates concerns between state modification and state reporting. The idempotency pattern, transaction behavior, and domain-to-integration event bridge collectively ensure business process integrity under failure and retry scenarios.
 
