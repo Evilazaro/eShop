@@ -109,18 +109,13 @@ The landscape reflects a modern, microservices e-commerce reference implementati
 
 ### 2.6 🏛️ Business Functions (5)
 
-| Name                                       | Description                                                                                                                                    |
-| ------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------- | ----------- | -------------------- |
+| Name | Description |
+| --- | --- |
 | 📋 Order Management Function               | Organizational function responsible for accepting, processing, tracking, and completing customer orders across the order lifecycle.            |
 | 📦 Product Catalog Administration Function | Organizational function responsible for defining products, managing stock levels, setting prices, and maintaining catalog taxonomy.            |
 | 👤 Customer Account Management Function    | Organizational function responsible for customer registration, identity management, and profile maintenance.                                   |
 | 💳 Payment Operations Function             | Organizational function responsible for payment execution, outcome recording, and reconciliation with payment gateway providers.               |
 | 🔔 Event Notification Function             | Organizational function responsible for managing notification subscriptions and delivering business event notifications to external consumers. |
-| Order Management Function                  | Organizational function responsible for accepting, processing, tracking, and completing customer orders across the order lifecycle.            | `src/Ordering.API/Application/Commands/`  | 0.86 (HIGH) | Level 3 – Defined    |
-| Product Catalog Administration Function    | Organizational function responsible for defining products, managing stock levels, setting prices, and maintaining catalog taxonomy.            | `src/Catalog.API/Apis/`                   | 0.80 (HIGH) | Level 2 – Repeatable |
-| Customer Account Management Function       | Organizational function responsible for customer registration, identity management, and profile maintenance.                                   | `src/Identity.API/Quickstart/`            | 0.78 (HIGH) | Level 2 – Repeatable |
-| Payment Operations Function                | Organizational function responsible for payment execution, outcome recording, and reconciliation with payment gateway providers.               | `src/PaymentProcessor/IntegrationEvents/` | 0.82 (HIGH) | Level 2 – Repeatable |
-| Event Notification Function                | Organizational function responsible for managing notification subscriptions and delivering business event notifications to external consumers. | `src/Webhooks.API/Services/`              | 0.82 (HIGH) | Level 2 – Repeatable |
 
 ### 2.7 👥 Business Roles & Actors (3)
 
