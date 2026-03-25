@@ -84,7 +84,7 @@ public class ToggleButton : ContentView
 
         Animate = true;
 
-        GestureRecognizers.Add(new TapGestureRecognizer {Command = ToggleCommand});
+        GestureRecognizers.Add(new TapGestureRecognizer { Command = ToggleCommand });
 
         _toggleImage.Source = UnCheckedImage;
         Content = _toggleImage;
@@ -114,9 +114,9 @@ public class ToggleButton : ContentView
 
         if (toggleButton.Animate)
         {
-            await toggleButton.ScaleTo(0.9, 50, Easing.Linear);
+            await toggleButton.ScaleToAsync(0.9, 50, Easing.Linear);
             await Task.Delay(100);
-            await toggleButton.ScaleTo(1, 50, Easing.Linear);
+            await toggleButton.ScaleToAsync(1, 50, Easing.Linear);
         }
     }
 }
