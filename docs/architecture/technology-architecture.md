@@ -217,47 +217,47 @@ A continuous integration pipeline (`ci.yml`) triggers on every push to `main`, r
 
 ---
 
-## Section 4: Current State Baseline
+## 📍 Section 4: Current State Baseline
 
-### 4.1 Deployment Model
+### 🚀 4.1 Deployment Model
 
 The eShop platform deploys exclusively to **Azure Container Apps (ACA)** using a single `Consumption` workload profile. All 13 containers run in one **Azure Container Apps Environment** (`cae-${resourceToken}`), which provides shared networking, log routing, and the Aspire Dashboard component.
 
-| Tier                | Deployment Model | Cloud Service                      | Scale Policy   |
-| ------------------- | ---------------- | ---------------------------------- | -------------- |
-| Web Front-end       | Container App    | Azure Container Apps (Consumption) | minReplicas: 1 |
-| API Services (5)    | Container App    | Azure Container Apps (Consumption) | minReplicas: 1 |
-| Worker Services (2) | Container App    | Azure Container Apps (Consumption) | minReplicas: 1 |
-| Message Broker      | Container App    | Azure Container Apps (Consumption) | minReplicas: 1 |
-| Database            | Container App    | Azure Container Apps (Consumption) | minReplicas: 1 |
-| Cache               | Container App    | Azure Container Apps (Consumption) | minReplicas: 1 |
+| 🏷️ Tier             | 🚀 Deployment Model | ☁️ Cloud Service                   | 📊 Scale Policy |
+| ------------------- | ------------------- | ---------------------------------- | --------------- |
+| Web Front-end       | Container App       | Azure Container Apps (Consumption) | minReplicas: 1  |
+| API Services (5)    | Container App       | Azure Container Apps (Consumption) | minReplicas: 1  |
+| Worker Services (2) | Container App       | Azure Container Apps (Consumption) | minReplicas: 1  |
+| Message Broker      | Container App       | Azure Container Apps (Consumption) | minReplicas: 1  |
+| Database            | Container App       | Azure Container Apps (Consumption) | minReplicas: 1  |
+| Cache               | Container App       | Azure Container Apps (Consumption) | minReplicas: 1  |
 
-### 4.2 Runtime Stack
+### 🛠️ 4.2 Runtime Stack
 
-| Layer          | Technology                  | Version       | Source                                             |
-| -------------- | --------------------------- | ------------- | -------------------------------------------------- |
-| .NET Runtime   | .NET SDK                    | 10.0.100      | `global.json:3`                                    |
-| ASP.NET Core   | ASP.NET Core                | 10.x          | `Directory.Packages.props:5`                       |
-| .NET Aspire    | Aspire Hosting              | 13.1.0        | `Directory.Packages.props:8`                       |
-| Container Base | User-supplied images (ACR)  | per service   | `src/eShop.AppHost/infra/*.tmpl.yaml`              |
-| PostgreSQL     | ankane/pgvector image       | latest        | `src/eShop.AppHost/Program.cs:11`                  |
-| Redis          | Redis image (password-auth) | runtime image | `src/eShop.AppHost/infra/redis.tmpl.yaml:27-31`    |
-| RabbitMQ       | RabbitMQ image              | runtime image | `src/eShop.AppHost/infra/eventbus.tmpl.yaml:27-31` |
+| 🛠️ Layer       | 📱 Technology               | 📌 Version    |
+| -------------- | --------------------------- | ------------- |
+| .NET Runtime   | .NET SDK                    | 10.0.100      |
+| ASP.NET Core   | ASP.NET Core                | 10.x          |
+| .NET Aspire    | Aspire Hosting              | 13.1.0        |
+| Container Base | User-supplied images (ACR)  | per service   |
+| PostgreSQL     | ankane/pgvector image       | latest        |
+| Redis          | Redis image (password-auth) | runtime image |
+| RabbitMQ       | RabbitMQ image              | runtime image |
 
-### 4.3 Networking Baseline
+### 🌐 4.3 Networking Baseline
 
-| Network Path                                 | Protocol  | Direction | TLS   |
-| -------------------------------------------- | --------- | --------- | ----- |
-| Internet → webapp                            | HTTP/1.1  | Inbound   | HTTPS |
-| Internet → identity-api                      | HTTP/1.1  | Inbound   | HTTPS |
-| Internet → mobile-bff                        | HTTP/1.1  | Inbound   | HTTPS |
-| webapp / APIs → basket-api                   | HTTP/2    | Internal  | Plain |
-| basket-api → redis                           | TCP/6379  | Internal  | Plain |
-| All APIs → postgres                          | TCP/5432  | Internal  | Plain |
-| catalog-api / basket-api / webapp → eventbus | AMQP/5672 | Internal  | Plain |
-| All APIs → identity-api                      | HTTPS     | Internal  | HTTPS |
+| 🌐 Network Path                              | 📞 Protocol | ➡️ Direction | 🔒 TLS |
+| -------------------------------------------- | ----------- | ------------ | ------ |
+| Internet → webapp                            | HTTP/1.1    | Inbound      | HTTPS  |
+| Internet → identity-api                      | HTTP/1.1    | Inbound      | HTTPS  |
+| Internet → mobile-bff                        | HTTP/1.1    | Inbound      | HTTPS  |
+| webapp / APIs → basket-api                   | HTTP/2      | Internal     | Plain  |
+| basket-api → redis                           | TCP/6379    | Internal     | Plain  |
+| All APIs → postgres                          | TCP/5432    | Internal     | Plain  |
+| catalog-api / basket-api / webapp → eventbus | AMQP/5672   | Internal     | Plain  |
+| All APIs → identity-api                      | HTTPS       | Internal     | HTTPS  |
 
-### 4.4 Deployment Topology Diagram
+### 📊 4.4 Deployment Topology Diagram
 
 ```mermaid
 ---
@@ -376,9 +376,9 @@ flowchart TB
 ✅ **Mermaid Verification: 5/5 | Score: 98/100 | Diagrams: 1 | P0 Violations: 0**  
 _(accTitle ✅ · accDescr ✅ · style directives on subgraphs ✅ · semantic classDefs ✅ · governance block ✅)_
 
-### 4.5 Security Configuration Status
+### 🔒 4.5 Security Configuration Status
 
-| Security Control                   | Status      | Evidence                                                 |
+| 🔒 Security Control                | ✅ Status   | 📍 Evidence                                              |
 | ---------------------------------- | ----------- | -------------------------------------------------------- |
 | HTTPS-only external ingress        | ✅ Enforced | `webapp.tmpl.yaml:18` — `allowInsecure: false`           |
 | Managed Identity for ACR pull      | ✅ Enforced | `resources.bicep:18-30`                                  |
@@ -391,25 +391,25 @@ _(accTitle ✅ · accDescr ✅ · style directives on subgraphs ✅ · semantic 
 
 ---
 
-## Section 5: Component Catalog
+## 📦 Section 5: Component Catalog
 
-### 5.1 Compute Resources
+### 🖥️ 5.1 Compute Resources
 
-| Resource Name     | Resource Type       | Deployment Model | SKU         | Region             | Availability SLA    | Cost Tag                            | Source                                                  |
-| ----------------- | ------------------- | ---------------- | ----------- | ------------------ | ------------------- | ----------------------------------- | ------------------------------------------------------- |
-| webapp            | Azure Container App | Serverless (ACA) | Consumption | AZURE_LOCATION env | ACA managed (99.9%) | azd-service-name: webapp            | `src/eShop.AppHost/infra/webapp.tmpl.yaml:*`            |
-| identity-api      | Azure Container App | Serverless (ACA) | Consumption | AZURE_LOCATION env | ACA managed (99.9%) | azd-service-name: identity-api      | `src/eShop.AppHost/infra/identity-api.tmpl.yaml:*`      |
-| mobile-bff        | Azure Container App | Serverless (ACA) | Consumption | AZURE_LOCATION env | ACA managed (99.9%) | azd-service-name: mobile-bff        | `src/eShop.AppHost/infra/mobile-bff.tmpl.yaml:*`        |
-| basket-api        | Azure Container App | Serverless (ACA) | Consumption | AZURE_LOCATION env | ACA managed (99.9%) | azd-service-name: basket-api        | `src/eShop.AppHost/infra/basket-api.tmpl.yaml:*`        |
-| catalog-api       | Azure Container App | Serverless (ACA) | Consumption | AZURE_LOCATION env | ACA managed (99.9%) | azd-service-name: catalog-api       | `src/eShop.AppHost/infra/catalog-api.tmpl.yaml:*`       |
-| ordering-api      | Azure Container App | Serverless (ACA) | Consumption | AZURE_LOCATION env | ACA managed (99.9%) | azd-service-name: ordering-api      | `src/eShop.AppHost/infra/ordering-api.tmpl.yaml:*`      |
-| order-processor   | Azure Container App | Serverless (ACA) | Consumption | AZURE_LOCATION env | ACA managed (99.9%) | azd-service-name: order-processor   | `src/eShop.AppHost/infra/order-processor.tmpl.yaml:*`   |
-| payment-processor | Azure Container App | Serverless (ACA) | Consumption | AZURE_LOCATION env | ACA managed (99.9%) | azd-service-name: payment-processor | `src/eShop.AppHost/infra/payment-processor.tmpl.yaml:*` |
-| webhooks-api      | Azure Container App | Serverless (ACA) | Consumption | AZURE_LOCATION env | ACA managed (99.9%) | azd-service-name: webhooks-api      | `src/eShop.AppHost/infra/webhooks-api.tmpl.yaml:*`      |
-| webhooksclient    | Azure Container App | Serverless (ACA) | Consumption | AZURE_LOCATION env | ACA managed (99.9%) | azd-service-name: webhooksclient    | `src/eShop.AppHost/infra/webhooksclient.tmpl.yaml:*`    |
-| redis             | Azure Container App | Serverless (ACA) | Consumption | AZURE_LOCATION env | ACA managed (99.9%) | azd-service-name: redis             | `src/eShop.AppHost/infra/redis.tmpl.yaml:*`             |
-| postgres          | Azure Container App | Serverless (ACA) | Consumption | AZURE_LOCATION env | ACA managed (99.9%) | azd-service-name: postgres          | `src/eShop.AppHost/infra/postgres.tmpl.yaml:*`          |
-| eventbus          | Azure Container App | Serverless (ACA) | Consumption | AZURE_LOCATION env | ACA managed (99.9%) | azd-service-name: eventbus          | `src/eShop.AppHost/infra/eventbus.tmpl.yaml:*`          |
+| 🖥️ Resource Name  | 🏷️ Resource Type    | 🚀 Deployment Model | 💰 SKU      | 🌍 Region          | 📊 Availability SLA | 🏷️ Cost Tag                         |
+| ----------------- | ------------------- | ------------------- | ----------- | ------------------ | ------------------- | ----------------------------------- |
+| webapp            | Azure Container App | Serverless (ACA)    | Consumption | AZURE_LOCATION env | ACA managed (99.9%) | azd-service-name: webapp            |
+| identity-api      | Azure Container App | Serverless (ACA)    | Consumption | AZURE_LOCATION env | ACA managed (99.9%) | azd-service-name: identity-api      |
+| mobile-bff        | Azure Container App | Serverless (ACA)    | Consumption | AZURE_LOCATION env | ACA managed (99.9%) | azd-service-name: mobile-bff        |
+| basket-api        | Azure Container App | Serverless (ACA)    | Consumption | AZURE_LOCATION env | ACA managed (99.9%) | azd-service-name: basket-api        |
+| catalog-api       | Azure Container App | Serverless (ACA)    | Consumption | AZURE_LOCATION env | ACA managed (99.9%) | azd-service-name: catalog-api       |
+| ordering-api      | Azure Container App | Serverless (ACA)    | Consumption | AZURE_LOCATION env | ACA managed (99.9%) | azd-service-name: ordering-api      |
+| order-processor   | Azure Container App | Serverless (ACA)    | Consumption | AZURE_LOCATION env | ACA managed (99.9%) | azd-service-name: order-processor   |
+| payment-processor | Azure Container App | Serverless (ACA)    | Consumption | AZURE_LOCATION env | ACA managed (99.9%) | azd-service-name: payment-processor |
+| webhooks-api      | Azure Container App | Serverless (ACA)    | Consumption | AZURE_LOCATION env | ACA managed (99.9%) | azd-service-name: webhooks-api      |
+| webhooksclient    | Azure Container App | Serverless (ACA)    | Consumption | AZURE_LOCATION env | ACA managed (99.9%) | azd-service-name: webhooksclient    |
+| redis             | Azure Container App | Serverless (ACA)    | Consumption | AZURE_LOCATION env | ACA managed (99.9%) | azd-service-name: redis             |
+| postgres          | Azure Container App | Serverless (ACA)    | Consumption | AZURE_LOCATION env | ACA managed (99.9%) | azd-service-name: postgres          |
+| eventbus          | Azure Container App | Serverless (ACA)    | Consumption | AZURE_LOCATION env | ACA managed (99.9%) | azd-service-name: eventbus          |
 
 **Security Posture:**
 
