@@ -107,7 +107,7 @@ A total of **74 data components** were identified and classified across all 11 c
 
 ### 🔍 Key Findings
 
-| Finding                          | Value                        | Assessment                     |
+| 🔍 Finding                       | 📊 Value                     | 🎯 Assessment                  |
 | -------------------------------- | ---------------------------- | ------------------------------ |
 | Total data components identified | 74                           | Comprehensive coverage         |
 | Data domains                     | 5 bounded domains + 1 shared | Well-isolated                  |
@@ -124,16 +124,16 @@ A total of **74 data components** were identified and classified across all 11 c
 
 ### ✅ Data Quality Scorecard
 
-| Quality Dimension        | Score | Status       | Evidence                                                                                            |
-| ------------------------ | ----- | ------------ | --------------------------------------------------------------------------------------------------- |
-| Schema completeness      | 90%   | 🟢 Good      | EF Core configurations with `[Required]`, `HasMaxLength` constraints on all critical fields         |
-| Data validation coverage | 75%   | 🟡 Fair      | `[Required]`, `IValidatableObject` (BasketItem), domain exception throws in Order/Buyer aggregates  |
-| Migration traceability   | 100%  | 🟢 Excellent | 4 migration histories across CatalogContext, OrderingContext, ApplicationDbContext, WebhooksContext |
-| Integration reliability  | 85%   | 🟢 Good      | Outbox pattern (IntegrationEventLogEF) with retry state tracking via `EventStateEnum`               |
-| Schema versioning        | 80%   | 🟢 Good      | EF Core snapshot-based versioning; no external schema registry                                      |
-| Data security controls   | 55%   | 🔴 At Risk   | JWT auth present; card numbers stored unmasked in PaymentMethod (PCI-DSS gap)                       |
-| Access control model     | 70%   | 🟡 Fair      | JWT+RBAC via ASP.NET Core Authorization; no observable row-level security                           |
-| Master data management   | 65%   | 🟡 Fair      | Reference tables present (CatalogBrand, CatalogType, CardType); no observable MDM hub               |
+| 🎯 Quality Dimension     | 📊 Score | 🚦 Status    |
+| ------------------------ | -------- | ------------ |
+| Schema completeness      | 90%      | 🟢 Good      |
+| Data validation coverage | 75%      | 🟡 Fair      |
+| Migration traceability   | 100%     | 🟢 Excellent |
+| Integration reliability  | 85%      | 🟢 Good      |
+| Schema versioning        | 80%      | 🟢 Good      |
+| Data security controls   | 55%      | 🔴 At Risk   |
+| Access control model     | 70%      | 🟡 Fair      |
+| Master data management   | 65%      | 🟡 Fair      |
 
 ### 📋 Coverage Summary
 
@@ -453,16 +453,16 @@ Privacy-by-design is partially implemented: ASP.NET Core Identity provides passw
 
 ### 🏛️ Core Data Principles
 
-| Principle                     | Status         | Implementation Evidence                                                                                       | Recommendation                                     |
-| ----------------------------- | -------------- | ------------------------------------------------------------------------------------------------------------- | -------------------------------------------------- |
-| Database-per-Service          | ✅ Implemented | 4 PostgreSQL databases + 1 Redis, each owned by one service; `src/eShop.AppHost/Program.cs:14-18`             | Monitor for cross-service DB connections in CI     |
-| Domain-Driven Data Modeling   | ✅ Implemented | `Order`, `Buyer` as AggregateRoot; `Address` as ValueObject; `IRepository<T>` pattern; `src/Ordering.Domain/` | Add explicit aggregate boundary documentation      |
-| Event-Driven Data Consistency | ✅ Implemented | 14 integration event types; Outbox pattern (IntegrationEventLogEF); RabbitMQ event bus                        | Add dead-letter queue monitoring for failed events |
-| Schema-as-Code                | ✅ Implemented | EF Core migrations in `/Migrations` folders for all 4 DbContexts                                              | Add schema drift detection in CI/CD pipeline       |
-| Eventual Consistency          | ✅ Implemented | No distributed transactions; sagas via integration events (order lifecycle)                                   | Document saga compensation steps                   |
-| Privacy-by-Design             | ⚠️ Partial     | ASP.NET Identity (password hashing, JWT); unmasked card data in PaymentMethod                                 | Implement tokenization for card data               |
-| Data Minimization             | ⚠️ Partial     | Basket uses ephemeral Redis (no persistence after checkout)                                                   | Review Identity user PII fields for necessity      |
-| Single Source of Truth        | ✅ Implemented | Each entity owned by exactly one service; cross-domain reference by ID only                                   | Document canonical data ownership per domain       |
+| 🏛️ Principle                  | 🚦 Status      | 💡 Recommendation                                  |
+| ----------------------------- | -------------- | -------------------------------------------------- |
+| Database-per-Service          | ✅ Implemented | Monitor for cross-service DB connections in CI     |
+| Domain-Driven Data Modeling   | ✅ Implemented | Add explicit aggregate boundary documentation      |
+| Event-Driven Data Consistency | ✅ Implemented | Add dead-letter queue monitoring for failed events |
+| Schema-as-Code                | ✅ Implemented | Add schema drift detection in CI/CD pipeline       |
+| Eventual Consistency          | ✅ Implemented | Document saga compensation steps                   |
+| Privacy-by-Design             | ⚠️ Partial     | Implement tokenization for card data               |
+| Data Minimization             | ⚠️ Partial     | Review Identity user PII fields for necessity      |
+| Single Source of Truth        | ✅ Implemented | Document canonical data ownership per domain       |
 
 ### 📐 Data Schema Design Standards
 
@@ -476,13 +476,13 @@ Privacy-by-design is partially implemented: ASP.NET Core Identity provides passw
 
 ### 🏷️ Data Classification Taxonomy
 
-| Classification  | Description                         | Entities                                                                                                                                      | Required Controls                                            |
-| --------------- | ----------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------ |
-| PII             | Personally Identifiable Information | ApplicationUser (Name, LastName, Address fields), Buyer (IdentityGuid, Name), Address (Street, City, ZipCode), PaymentMethod (CardHolderName) | Encryption at rest, access logging, retention limits         |
-| PII + Financial | PII combined with financial data    | PaymentMethod (CardNumber, SecurityNumber stored unmasked)                                                                                    | Tokenization or masking, PCI-DSS controls, HSM consideration |
-| Financial       | Financial record data               | Order (total is derived from OrderItems), OrderItem (UnitPrice, Discount)                                                                     | Access control, audit logging, immutable records             |
-| Internal        | Non-sensitive operational data      | All catalog, basket, webhook, event log entities                                                                                              | Standard access controls                                     |
-| Public          | Publicly accessible reference data  | CatalogBrand, CatalogType (displayed in storefront)                                                                                           | Read-only public access acceptable                           |
+| 🏷️ Classification    | 📝 Description                      | 🏢 Entities                                                                                                                                   | 🔐 Required Controls                                         |
+| -------------------- | ----------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------ |
+| 🔒 PII               | Personally Identifiable Information | ApplicationUser (Name, LastName, Address fields), Buyer (IdentityGuid, Name), Address (Street, City, ZipCode), PaymentMethod (CardHolderName) | Encryption at rest, access logging, retention limits         |
+| 🔒💰 PII + Financial | PII combined with financial data    | PaymentMethod (CardNumber, SecurityNumber stored unmasked)                                                                                    | Tokenization or masking, PCI-DSS controls, HSM consideration |
+| 💰 Financial         | Financial record data               | Order (total is derived from OrderItems), OrderItem (UnitPrice, Discount)                                                                     | Access control, audit logging, immutable records             |
+| 🔵 Internal          | Non-sensitive operational data      | All catalog, basket, webhook, event log entities                                                                                              | Standard access controls                                     |
+| 🟢 Public            | Publicly accessible reference data  | CatalogBrand, CatalogType (displayed in storefront)                                                                                           | Read-only public access acceptable                           |
 
 ---
 
@@ -623,16 +623,16 @@ The architecture is firmly at Level 3 for schema management, data access abstrac
 
 ### 🛡️ Compliance Posture
 
-| Control                 | Status                           | Evidence                                                                              | Risk               |
-| ----------------------- | -------------------------------- | ------------------------------------------------------------------------------------- | ------------------ |
-| Authentication          | ✅ Implemented                   | JWT Bearer via ServiceDefaults; ASP.NET Core Identity                                 | Low                |
-| Authorization           | ✅ Implemented                   | `services.AddAuthorization()` + JWT claims validation                                 | Low                |
-| Transport encryption    | ✅ Implemented (HTTPS endpoints) | `launchProfileName` selects https profile by default                                  | Low                |
-| Card data masking       | ❌ Not Implemented               | `_cardNumber` stored as plain text (max 25 chars) in `paymentmethods` table           | Critical (PCI-DSS) |
-| PII encryption at rest  | ❌ Not Implemented               | No observable encryption annotations on PII fields in PostgreSQL                      | High               |
-| Audit logging           | ⚠️ Partial                       | `_mediator.DispatchDomainEventsAsync` triggers domain events; no structured audit log | Medium             |
-| Data retention policies | ❌ Not Declared                  | No explicit retention policy annotations or configuration detected                    | Medium             |
-| GDPR right-to-erasure   | ❌ Not Implemented               | No observable user data deletion mechanism beyond account deletion                    | High               |
+| 🛡️ Control              | 🚦 Status                        | ⚠️ Risk            |
+| ----------------------- | -------------------------------- | ------------------ |
+| Authentication          | ✅ Implemented                   | Low                |
+| Authorization           | ✅ Implemented                   | Low                |
+| Transport encryption    | ✅ Implemented (HTTPS endpoints) | Low                |
+| Card data masking       | ❌ Not Implemented               | Critical (PCI-DSS) |
+| PII encryption at rest  | ❌ Not Implemented               | High               |
+| Audit logging           | ⚠️ Partial                       | Medium             |
+| Data retention policies | ❌ Not Declared                  | Medium             |
+| GDPR right-to-erasure   | ❌ Not Implemented               | High               |
 
 ### 📝 Summary
 
