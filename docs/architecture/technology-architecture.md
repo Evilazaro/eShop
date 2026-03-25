@@ -436,20 +436,20 @@ _(accTitle ✅ · accDescr ✅ · style directives on subgraphs ✅ · semantic 
 
 ---
 
-### 5.2 Storage Systems
+### 🗄️ 5.2 Storage Systems
 
-| Resource Name                     | Resource Type | Deployment Model | SKU                    | Region         | Availability SLA    | Cost Tag                   | Source                                         |
-| --------------------------------- | ------------- | ---------------- | ---------------------- | -------------- | ------------------- | -------------------------- | ---------------------------------------------- |
-| postgres (PostgreSQL 16+pgvector) | Relational DB | Container (ACA)  | ankane/pgvector:latest | AZURE_LOCATION | ACA managed (99.9%) | azd-service-name: postgres | `src/eShop.AppHost/infra/postgres.tmpl.yaml:*` |
+| 🗄️ Resource Name                  | 🏷️ Resource Type | 🚀 Deployment Model | 💻 SKU                 | 🌍 Region      | 📊 Availability SLA | 🏷️ Cost Tag                |
+| --------------------------------- | ---------------- | ------------------- | ---------------------- | -------------- | ------------------- | -------------------------- |
+| postgres (PostgreSQL 16+pgvector) | Relational DB    | Container (ACA)     | ankane/pgvector:latest | AZURE_LOCATION | ACA managed (99.9%) | azd-service-name: postgres |
 
-**Logical Databases:**
+**🗄️ Logical Databases:**
 
-| Database   | Owner Service | Schema Type           | Source                            |
-| ---------- | ------------- | --------------------- | --------------------------------- |
-| catalogdb  | catalog-api   | Product catalog       | `src/eShop.AppHost/Program.cs:16` |
-| identitydb | identity-api  | User identity         | `src/eShop.AppHost/Program.cs:17` |
-| orderingdb | ordering-api  | Order management      | `src/eShop.AppHost/Program.cs:18` |
-| webhooksdb | webhooks-api  | Webhook subscriptions | `src/eShop.AppHost/Program.cs:19` |
+| 🏦 Database | 📦 Owner Service | 📋 Schema Type        |
+| ----------- | ---------------- | --------------------- |
+| catalogdb   | catalog-api      | Product catalog       |
+| identitydb  | identity-api     | User identity         |
+| orderingdb  | ordering-api     | Order management      |
+| webhooksdb  | webhooks-api     | Webhook subscriptions |
 
 **Security Posture:**
 
