@@ -577,14 +577,14 @@ _(accTitle ✅ · accDescr ✅ · style directives on subgraphs ✅ · semantic 
 
 ### 🔒 5.6 Security Infrastructure
 
-| 🔒 Resource Name                  | 🏷️ Resource Type           | 🚀 Deployment Model  | 💻 SKU/Version       | 🌍 Region             | 📊 Availability SLA | 🏷️ Cost Tag                  |
-| ------------------------------ | ----------------------- | ----------------- | ----------------- | ------------------ | ---------------- | ------------------------- |
-| User-Assigned Managed Identity | Azure IAM Principal     | Azure managed     | User-Assigned     | AZURE_LOCATION     | N/A (IAM plane)  | azd-env-name: {env}       |
-| AcrPull Role Assignment        | Azure RBAC Policy       | Azure managed     | Built-in          | Subscription scope | N/A              | N/A                       |
-| ACA Secrets Store              | Secret Management       | ACA native        | ACA managed       | AZURE_LOCATION     | ACA managed      | (per container manifest)  |
-| HTTPS Ingress Enforcement      | TLS Transport Layer     | ACA managed       | TLS 1.x (managed) | AZURE_LOCATION     | ACA managed      | (per container manifest)  |
-| SCRAM-SHA-256 PostgreSQL Auth  | Database Authentication | Container runtime | SCRAM-SHA-256     | AZURE_LOCATION     | N/A              | (inherited from postgres) |
-| ASP.NET Core Anti-Forgery      | CSRF Middleware         | In-process        | ASP.NET Core 10   | N/A (code)         | N/A              | N/A                       |
+| 🔒 Resource Name               | 🏷️ Resource Type        | 🚀 Deployment Model | 💻 SKU/Version    | 🌍 Region          | 📊 Availability SLA | 🏷️ Cost Tag               |
+| ------------------------------ | ----------------------- | ------------------- | ----------------- | ------------------ | ------------------- | ------------------------- |
+| User-Assigned Managed Identity | Azure IAM Principal     | Azure managed       | User-Assigned     | AZURE_LOCATION     | N/A (IAM plane)     | azd-env-name: {env}       |
+| AcrPull Role Assignment        | Azure RBAC Policy       | Azure managed       | Built-in          | Subscription scope | N/A                 | N/A                       |
+| ACA Secrets Store              | Secret Management       | ACA native          | ACA managed       | AZURE_LOCATION     | ACA managed         | (per container manifest)  |
+| HTTPS Ingress Enforcement      | TLS Transport Layer     | ACA managed         | TLS 1.x (managed) | AZURE_LOCATION     | ACA managed         | (per container manifest)  |
+| SCRAM-SHA-256 PostgreSQL Auth  | Database Authentication | Container runtime   | SCRAM-SHA-256     | AZURE_LOCATION     | N/A                 | (inherited from postgres) |
+| ASP.NET Core Anti-Forgery      | CSRF Middleware         | In-process          | ASP.NET Core 10   | N/A (code)         | N/A                 | N/A                       |
 
 **Security Posture:**
 
@@ -609,11 +609,11 @@ _(accTitle ✅ · accDescr ✅ · style directives on subgraphs ✅ · semantic 
 
 ---
 
-### 5.7 Messaging Infrastructure
+### 📨 5.7 Messaging Infrastructure
 
-| Resource Name       | Resource Type       | Deployment Model | SKU             | Region         | Availability SLA    | Cost Tag                   | Source                                         |
-| ------------------- | ------------------- | ---------------- | --------------- | -------------- | ------------------- | -------------------------- | ---------------------------------------------- |
-| RabbitMQ (eventbus) | AMQP Message Broker | Container (ACA)  | Community image | AZURE_LOCATION | ACA managed (99.9%) | azd-service-name: eventbus | `src/eShop.AppHost/infra/eventbus.tmpl.yaml:*` |
+| 📨 Resource Name    | 🏷️ Resource Type    | 🚀 Deployment Model | 💰 SKU          | 🌍 Region      | 📊 Availability SLA | 🏷️ Cost Tag                |
+| ------------------- | ------------------- | ------------------- | --------------- | -------------- | ------------------- | -------------------------- |
+| RabbitMQ (eventbus) | AMQP Message Broker | Container (ACA)     | Community image | AZURE_LOCATION | ACA managed (99.9%) | azd-service-name: eventbus |
 
 **Security Posture:**
 
@@ -644,14 +644,14 @@ _(accTitle ✅ · accDescr ✅ · style directives on subgraphs ✅ · semantic 
 
 ---
 
-### 5.8 Monitoring & Observability
+### 📈 5.8 Monitoring & Observability
 
-| Resource Name                 | Resource Type              | Deployment Model    | SKU/Version     | Region         | Availability SLA      | Cost Tag            | Source                                           |
-| ----------------------------- | -------------------------- | ------------------- | --------------- | -------------- | --------------------- | ------------------- | ------------------------------------------------ |
-| Azure Log Analytics Workspace | Cloud Log Aggregation      | Azure PaaS          | PerGB2018       | AZURE_LOCATION | Azure managed (99.9%) | azd-env-name: {env} | `infra/resources.bicep:33-41`                    |
-| Aspire Dashboard              | Dev Observability UI       | ACA dotNetComponent | AspireDashboard | AZURE_LOCATION | ACA managed           | N/A                 | `infra/resources.bicep:51-57`                    |
-| OpenTelemetry SDK (OTel)      | In-process Instrumentation | SDK / In-process    | 1.14.0          | All services   | N/A (code)            | N/A                 | `src/eShop.ServiceDefaults/Extensions.cs:46-80`  |
-| ASP.NET Core Health Checks    | Readiness / Liveness HTTP  | Runtime middleware  | ASP.NET Core 10 | All services   | N/A (code)            | N/A                 | `src/eShop.ServiceDefaults/Extensions.cs:97-104` |
+| 📈 Resource Name              | 🏷️ Resource Type           | 🚀 Deployment Model | 💻 SKU/Version  | 🌍 Region      | 📊 Availability SLA   | 🏷️ Cost Tag         |
+| ----------------------------- | -------------------------- | ------------------- | --------------- | -------------- | --------------------- | ------------------- |
+| Azure Log Analytics Workspace | Cloud Log Aggregation      | Azure PaaS          | PerGB2018       | AZURE_LOCATION | Azure managed (99.9%) | azd-env-name: {env} |
+| Aspire Dashboard              | Dev Observability UI       | ACA dotNetComponent | AspireDashboard | AZURE_LOCATION | ACA managed           | N/A                 |
+| OpenTelemetry SDK (OTel)      | In-process Instrumentation | SDK / In-process    | 1.14.0          | All services   | N/A (code)            | N/A                 |
+| ASP.NET Core Health Checks    | Readiness / Liveness HTTP  | Runtime middleware  | ASP.NET Core 10 | All services   | N/A (code)            | N/A                 |
 
 **Security Posture:**
 
@@ -677,14 +677,14 @@ _(accTitle ✅ · accDescr ✅ · style directives on subgraphs ✅ · semantic 
 
 ---
 
-### 5.9 Identity & Access
+### 🔑 5.9 Identity & Access
 
-| Resource Name                  | Resource Type               | Deployment Model | SKU/Version        | Region         | Availability SLA    | Cost Tag                       | Source                              |
-| ------------------------------ | --------------------------- | ---------------- | ------------------ | -------------- | ------------------- | ------------------------------ | ----------------------------------- |
-| Duende IdentityServer 7.3.2    | OAuth2 / OIDC Provider      | Container (ACA)  | Community (v7.3.2) | AZURE_LOCATION | ACA managed (99.9%) | azd-service-name: identity-api | `src/Identity.API/Program.cs:12-35` |
-| ASP.NET Core Identity (EF)     | User Store / Auth Engine    | In-process       | ASP.NET Core 10    | All services   | N/A (code)          | N/A                            | `src/Identity.API/Program.cs:13-17` |
-| User-Assigned Managed Identity | Azure Service Principal     | Azure PaaS       | User-Assigned      | AZURE_LOCATION | Azure managed       | azd-env-name: {env}            | `infra/resources.bicep:11-16`       |
-| JWT Bearer Authentication      | Token Validation Middleware | In-process       | ASP.NET Core 10    | API services   | N/A (code)          | N/A                            | `Directory.Packages.props:37`       |
+| 🔑 Resource Name               | 🏷️ Resource Type            | 🚀 Deployment Model | 💻 SKU/Version     | 🌍 Region      | 📊 Availability SLA | 🏷️ Cost Tag                    |
+| ------------------------------ | --------------------------- | ------------------- | ------------------ | -------------- | ------------------- | ------------------------------ |
+| Duende IdentityServer 7.3.2    | OAuth2 / OIDC Provider      | Container (ACA)     | Community (v7.3.2) | AZURE_LOCATION | ACA managed (99.9%) | azd-service-name: identity-api |
+| ASP.NET Core Identity (EF)     | User Store / Auth Engine    | In-process          | ASP.NET Core 10    | All services   | N/A (code)          | N/A                            |
+| User-Assigned Managed Identity | Azure Service Principal     | Azure PaaS          | User-Assigned      | AZURE_LOCATION | Azure managed       | azd-env-name: {env}            |
+| JWT Bearer Authentication      | Token Validation Middleware | In-process          | ASP.NET Core 10    | API services   | N/A (code)          | N/A                            |
 
 **Security Posture:**
 
@@ -709,15 +709,15 @@ _(accTitle ✅ · accDescr ✅ · style directives on subgraphs ✅ · semantic 
 
 ---
 
-### 5.10 API Management
+### 🔀 5.10 API Management
 
-| Resource Name     | Resource Type       | Deployment Model | SKU/Version                       | Region         | Availability SLA    | Cost Tag                     | Source                                           |
-| ----------------- | ------------------- | ---------------- | --------------------------------- | -------------- | ------------------- | ---------------------------- | ------------------------------------------------ |
-| Mobile BFF (YARP) | Reverse Proxy / BFF | Container (ACA)  | YARP (Aspire.Hosting.Yarp 13.2.0) | AZURE_LOCATION | ACA managed (99.9%) | azd-service-name: mobile-bff | `src/eShop.AppHost/infra/mobile-bff.tmpl.yaml:*` |
+| 🔀 Resource Name     | 🏷️ Resource Type       | 🚀 Deployment Model | 💻 SKU/Version                       | 🌍 Region         | 📊 Availability SLA    | 🏷️ Cost Tag                     |
+| ----------------- | ------------------- | ---------------- | --------------------------------- | -------------- | ------------------- | ---------------------------- |
+| Mobile BFF (YARP) | Reverse Proxy / BFF | Container (ACA)  | YARP (Aspire.Hosting.Yarp 13.2.0) | AZURE_LOCATION | ACA managed (99.9%) | azd-service-name: mobile-bff |
 
-**Routes Configured** (from `mobile-bff.tmpl.yaml` environment variables):
+**🔀 Routes Configured** (from `mobile-bff.tmpl.yaml` environment variables):
 
-| Route Pattern                                    | Backend Service | API Version Filter |
+| 📍 Route Pattern                                    | 📦 Backend Service | 🔖 API Version Filter |
 | ------------------------------------------------ | --------------- | ------------------ |
 | `/catalog-api/api/catalog/items?api-version=1.0` | catalog-api     | 1.0 or 1           |
 | `REVERSEPROXY__CLUSTERS__cluster_ordering-api`   | ordering-api    | (all)              |
