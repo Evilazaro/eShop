@@ -165,6 +165,41 @@ flowchart TB
 | ⚡ Redis             | Shopping cart cache and session storage                    | StackExchange.Redis          |
 | 📬 RabbitMQ          | Asynchronous integration event bus for the entire platform | Aspire.RabbitMQ.Client       |
 
+### 📚 Architecture Documentation
+
+Full TOGAF 10-aligned architecture documentation is available in the [`docs/architecture/`](docs/architecture/) folder:
+
+| Document                                                                  | Description                                                                                                   | Components | Maturity               |
+| ------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- | ---------- | ---------------------- |
+| [Business Architecture](docs/architecture/business-architecture.md)       | Six commerce capabilities, value streams, business processes, and domain events                               | 67         | Level 2                |
+| [Application Architecture](docs/architecture/application-architecture.md) | Microservice inventory, service contracts (gRPC/OpenAPI), integration patterns, and AI semantic search        | 48         | **Level 4 — Measured** |
+| [Data Architecture](docs/architecture/data-architecture.md)               | Polyglot persistence (PostgreSQL, Redis, RabbitMQ), DDD aggregate models, outbox pattern, and data governance | 74         | Level 3 — Defined      |
+| [Technology Architecture](docs/architecture/technology-architecture.md)   | Azure Container Apps deployment, .NET Aspire orchestration, Bicep IaC, security posture, and observability    | 42         | Confidence 0.97        |
+
+### 🔑 Key Design Decisions
+
+- **Database-per-Service** — `catalogdb`, `identitydb`, `orderingdb`, and `webhooksdb` are provisioned as separate PostgreSQL instances; cross-domain access is performed exclusively through integration events or synchronous API calls.
+- **Event-Driven Integration** — All cross-service communication uses a RabbitMQ-backed event bus with a transactional outbox (`IntegrationEventLogEF`) for **at-least-once delivery guarantees**.
+- **AI-Powered Search** — The Catalog service stores 384-dimensional `pgvector` embeddings on `CatalogItem`, enabling semantic product search via Azure OpenAI or Ollama.
+- **Infrastructure as Code** — Two-layer IaC: Bicep (`infra/`) for Azure PaaS scaffolding and ACA YAML templates (`src/eShop.AppHost/infra/`) per container, deployed with `azd`.
+- **Zero-Trust Security** — External HTTPS ingress enforces `allowInsecure: false`; a **User-Assigned Managed Identity** handles ACR image pull; secrets are stored in the ACA secret store.
+
+### 🏢 Business Capabilities
+
+The platform implements six distinct business capabilities, each aligned to a dedicated microservice boundary:
+
+| Capability                            | Description                                                                                                                                       |
+| ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 📶 Product Catalog Management         | Define, maintain, and publish product offerings including names, descriptions, pricing, images, stock levels, brands, and types                   |
+| 🛒 Shopping Basket Management         | Maintain a customer's active shopping selection — adding, updating, and clearing items — prior to order placement                                 |
+| 📋 Order Lifecycle Management         | Create, track, and advance customer orders through a defined sequence of states: Submitted → AwaitingValidation → StockConfirmed → Paid → Shipped |
+| 💳 Payment Processing                 | Evaluate payment intent, execute payment against a configured payment method, and record the outcome (success or failure)                         |
+| 🔐 Customer Identity & Authentication | Register customers, authenticate identities, and manage user sessions via OpenID Connect / OAuth2                                                 |
+| 🔔 Event-Driven Notification          | Deliver business event notifications — order status changes, price changes — to subscribed external endpoints via webhook                         |
+
+> [!WARNING]
+> A **PCI-DSS compliance exposure** exists in the data layer: payment card numbers are stored without masking or tokenization in the `paymentmethods` table (`src/Ordering.Infrastructure/EntityConfigurations/PaymentMethodEntityTypeConfiguration.cs`). **This requires remediation before any production or customer-data use.**
+
 ## ✨ Features
 
 **Overview**
