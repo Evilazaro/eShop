@@ -711,17 +711,17 @@ _(accTitle ✅ · accDescr ✅ · style directives on subgraphs ✅ · semantic 
 
 ### 🔀 5.10 API Management
 
-| 🔀 Resource Name     | 🏷️ Resource Type       | 🚀 Deployment Model | 💻 SKU/Version                       | 🌍 Region         | 📊 Availability SLA    | 🏷️ Cost Tag                     |
-| ----------------- | ------------------- | ---------------- | --------------------------------- | -------------- | ------------------- | ---------------------------- |
-| Mobile BFF (YARP) | Reverse Proxy / BFF | Container (ACA)  | YARP (Aspire.Hosting.Yarp 13.2.0) | AZURE_LOCATION | ACA managed (99.9%) | azd-service-name: mobile-bff |
+| 🔀 Resource Name  | 🏷️ Resource Type    | 🚀 Deployment Model | 💻 SKU/Version                    | 🌍 Region      | 📊 Availability SLA | 🏷️ Cost Tag                  |
+| ----------------- | ------------------- | ------------------- | --------------------------------- | -------------- | ------------------- | ---------------------------- |
+| Mobile BFF (YARP) | Reverse Proxy / BFF | Container (ACA)     | YARP (Aspire.Hosting.Yarp 13.2.0) | AZURE_LOCATION | ACA managed (99.9%) | azd-service-name: mobile-bff |
 
 **🔀 Routes Configured** (from `mobile-bff.tmpl.yaml` environment variables):
 
-| 📍 Route Pattern                                    | 📦 Backend Service | 🔖 API Version Filter |
-| ------------------------------------------------ | --------------- | ------------------ |
-| `/catalog-api/api/catalog/items?api-version=1.0` | catalog-api     | 1.0 or 1           |
-| `REVERSEPROXY__CLUSTERS__cluster_ordering-api`   | ordering-api    | (all)              |
-| `REVERSEPROXY__CLUSTERS__cluster_identity-api`   | identity-api    | (all)              |
+| 📍 Route Pattern                                 | 📦 Backend Service | 🔖 API Version Filter |
+| ------------------------------------------------ | ------------------ | --------------------- |
+| `/catalog-api/api/catalog/items?api-version=1.0` | catalog-api        | 1.0 or 1              |
+| `REVERSEPROXY__CLUSTERS__cluster_ordering-api`   | ordering-api       | (all)                 |
+| `REVERSEPROXY__CLUSTERS__cluster_identity-api`   | identity-api       | (all)                 |
 
 **Security Posture:**
 
@@ -746,11 +746,11 @@ _(accTitle ✅ · accDescr ✅ · style directives on subgraphs ✅ · semantic 
 
 ---
 
-### 5.11 Caching Infrastructure
+### ⚡ 5.11 Caching Infrastructure
 
-| Resource Name | Resource Type   | Deployment Model | SKU/Version     | Region         | Availability SLA    | Cost Tag                | Source                                      |
-| ------------- | --------------- | ---------------- | --------------- | -------------- | ------------------- | ----------------------- | ------------------------------------------- |
-| Redis         | In-Memory Cache | Container (ACA)  | Community image | AZURE_LOCATION | ACA managed (99.9%) | azd-service-name: redis | `src/eShop.AppHost/infra/redis.tmpl.yaml:*` |
+| ⚡ Resource Name | 🏷️ Resource Type | 🚀 Deployment Model | 💻 SKU/Version  | 🌍 Region      | 📊 Availability SLA | 🏷️ Cost Tag             |
+| ---------------- | ---------------- | ------------------- | --------------- | -------------- | ------------------- | ----------------------- |
+| Redis            | In-Memory Cache  | Container (ACA)     | Community image | AZURE_LOCATION | ACA managed (99.9%) | azd-service-name: redis |
 
 **Security Posture:**
 
@@ -780,9 +780,9 @@ _(accTitle ✅ · accDescr ✅ · style directives on subgraphs ✅ · semantic 
 
 ---
 
-## Section 8: Dependencies & Integration
+## 🔗 Section 8: Dependencies & Integration
 
-### 8.1 Resource Dependency Graph
+### 🗒️ 8.1 Resource Dependency Graph
 
 The following diagram maps service-to-infrastructure bindings and infrastructure dependencies within the eShop deployment:
 
