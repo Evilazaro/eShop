@@ -1,24 +1,15 @@
 # 🏗️ Application Architecture - eShop
 
-**Generated**: 2026-03-25T00:00:00Z  
-**Session ID**: a9f3e800-b12d-41d4-c827-557766551001  
-**Target Layer**: Application  
-**Quality Level**: Comprehensive  
-**Repository**: Evilazaro/eShop  
-**Components Found**: 48
-
----
-
 ## 📑 Quick Table of Contents
 
-| # | Section | Description |
-|---|---------|-------------|
-| [1](#section-1-executive-summary) | 🧭 Executive Summary | Application portfolio overview, maturity assessment |
-| [2](#section-2-architecture-landscape) | 🗺️ Architecture Landscape | 11-subsection component inventory with diagrams |
-| [3](#section-3-architecture-principles) | 📐 Architecture Principles | Design principles observed in source with compliance levels |
-| [4](#section-4-current-state-baseline) | 📊 Current State Baseline | Service topology, protocols, versioning, health posture |
-| [5](#section-5-component-catalog) | 🔬 Component Catalog | Detailed specs for all 48 components (11 subsections) |
-| [8](#section-8-dependencies--integration) | 🔗 Dependencies & Integration | Call graphs, data flows, event maps, integration patterns |
+| #                                         | Section                       | Description                                                 |
+| ----------------------------------------- | ----------------------------- | ----------------------------------------------------------- |
+| [1](#section-1-executive-summary)         | 🧭 Executive Summary          | Application portfolio overview, maturity assessment         |
+| [2](#section-2-architecture-landscape)    | 🗺️ Architecture Landscape     | 11-subsection component inventory with diagrams             |
+| [3](#section-3-architecture-principles)   | 📐 Architecture Principles    | Design principles observed in source with compliance levels |
+| [4](#section-4-current-state-baseline)    | 📊 Current State Baseline     | Service topology, protocols, versioning, health posture     |
+| [5](#section-5-component-catalog)         | 🔬 Component Catalog          | Detailed specs for all 48 components (11 subsections)       |
+| [8](#section-8-dependencies--integration) | 🔗 Dependencies & Integration | Call graphs, data flows, event maps, integration patterns   |
 
 ---
 
@@ -52,21 +43,21 @@ suite. Addressing these gaps is the primary architectural recommendation.
 
 ### 📊 Portfolio Summary
 
-| 🏷️ Metric | 📈 Value |
-|-----------|---------|
-| 🔧 Total Components | 48 |
-| 🌐 Application Services | 18 |
-| 📦 Application Components | 12 |
-| 🔌 Application Interfaces | 16 |
-| 🤝 Application Collaborations | 6 |
-| ⚡ Application Functions | 12 |
-| 🔄 Application Interactions | 6 |
-| 📣 Application Events | 13 |
-| 🗃️ Application Data Objects | 12 |
-| 🔗 Integration Patterns | 6 |
-| 📜 Service Contracts | 5 |
-| 📚 Application Dependencies | 12 |
-| 🎯 Maturity Level | Level 4 — Measured |
+| 🏷️ Metric                     | 📈 Value           |
+| ----------------------------- | ------------------ |
+| 🔧 Total Components           | 48                 |
+| 🌐 Application Services       | 18                 |
+| 📦 Application Components     | 12                 |
+| 🔌 Application Interfaces     | 16                 |
+| 🤝 Application Collaborations | 6                  |
+| ⚡ Application Functions      | 12                 |
+| 🔄 Application Interactions   | 6                  |
+| 📣 Application Events         | 13                 |
+| 🗃️ Application Data Objects   | 12                 |
+| 🔗 Integration Patterns       | 6                  |
+| 📜 Service Contracts          | 5                  |
+| 📚 Application Dependencies   | 12                 |
+| 🎯 Maturity Level             | Level 4 — Measured |
 
 ---
 
@@ -80,176 +71,176 @@ covering every service, interface, integration, and event present in source code
 
 ### 2.1 🌐 Application Services
 
-| 🏷️ Name | 📝 Description | 🔧 Service Type |
-| --------------------------------- | ----------------------------------------------------------------------------------------------------------------- | ------------------- |
-| BasketService (API) | gRPC server exposing basket CRUD over protobuf contract | gRPC Service |
-| CatalogApi | Versioned (v1/v2) REST minimal API exposing catalog items, types, brands, and AI semantic search | REST API |
-| OrdersApi | REST minimal API for order lifecycle: create, cancel, ship, query, draft | REST API |
-| WebHooksApi | REST minimal API managing webhook subscription CRUD with grant-URL handshake validation | REST API |
-| AccountController | MVC controller handling OIDC login, logout, and access-denied flows for Identity.API | MVC Controller |
-| ExternalController | MVC controller managing external OAuth challenge and callback roundtrip | MVC Controller |
-| ConsentController | MVC controller rendering and processing OAuth consent UI | MVC Controller |
-| GrantsController | MVC controller listing and revoking OAuth grants | MVC Controller |
-| DeviceController | MVC controller implementing device authorization flow | MVC Controller |
-| ProfileService | Implements `IProfileService`; populates user claims for IdentityServer token generation | Application Service |
-| EFLoginService | Wraps ASP.NET Identity `SignInManager` for credential validation | Application Service |
-| OrderingIntegrationEventService | Publishes pending integration events transactionally within Ordering.API''s EF transaction scope | Application Service |
-| CatalogIntegrationEventService | Saves and publishes catalog integration events atomically using `ResilientTransaction` | Application Service |
-| GrantUrlTesterService | Validates webhook grant URLs via HTTP OPTIONS handshake | Application Service |
-| WebhooksSender | Fans out webhook HTTP POST notifications to subscriber `DestUrl`s via `IHttpClientFactory` | Background Worker |
-| BasketState (WebApp) | Orchestrates checkout by coordinating gRPC BasketService, HTTP CatalogService, HTTP OrderingService | Application Service |
-| OrderStatusNotificationService | In-process pub/sub service pushing real-time order status changes to Blazor Server UI | Application Service |
-| GracePeriodManagerService | Background service polling order DB for grace-period expiry and publishing `GracePeriodConfirmedIntegrationEvent` | Background Worker |
+| 🏷️ Name                         | 📝 Description                                                                                                    | 🔧 Service Type     |
+| ------------------------------- | ----------------------------------------------------------------------------------------------------------------- | ------------------- |
+| BasketService (API)             | gRPC server exposing basket CRUD over protobuf contract                                                           | gRPC Service        |
+| CatalogApi                      | Versioned (v1/v2) REST minimal API exposing catalog items, types, brands, and AI semantic search                  | REST API            |
+| OrdersApi                       | REST minimal API for order lifecycle: create, cancel, ship, query, draft                                          | REST API            |
+| WebHooksApi                     | REST minimal API managing webhook subscription CRUD with grant-URL handshake validation                           | REST API            |
+| AccountController               | MVC controller handling OIDC login, logout, and access-denied flows for Identity.API                              | MVC Controller      |
+| ExternalController              | MVC controller managing external OAuth challenge and callback roundtrip                                           | MVC Controller      |
+| ConsentController               | MVC controller rendering and processing OAuth consent UI                                                          | MVC Controller      |
+| GrantsController                | MVC controller listing and revoking OAuth grants                                                                  | MVC Controller      |
+| DeviceController                | MVC controller implementing device authorization flow                                                             | MVC Controller      |
+| ProfileService                  | Implements `IProfileService`; populates user claims for IdentityServer token generation                           | Application Service |
+| EFLoginService                  | Wraps ASP.NET Identity `SignInManager` for credential validation                                                  | Application Service |
+| OrderingIntegrationEventService | Publishes pending integration events transactionally within Ordering.API''s EF transaction scope                  | Application Service |
+| CatalogIntegrationEventService  | Saves and publishes catalog integration events atomically using `ResilientTransaction`                            | Application Service |
+| GrantUrlTesterService           | Validates webhook grant URLs via HTTP OPTIONS handshake                                                           | Application Service |
+| WebhooksSender                  | Fans out webhook HTTP POST notifications to subscriber `DestUrl`s via `IHttpClientFactory`                        | Background Worker   |
+| BasketState (WebApp)            | Orchestrates checkout by coordinating gRPC BasketService, HTTP CatalogService, HTTP OrderingService               | Application Service |
+| OrderStatusNotificationService  | In-process pub/sub service pushing real-time order status changes to Blazor Server UI                             | Application Service |
+| GracePeriodManagerService       | Background service polling order DB for grace-period expiry and publishing `GracePeriodConfirmedIntegrationEvent` | Background Worker   |
 
 ### 2.2 📦 Application Components
 
-| 🏷️ Name | 📝 Description | 🔧 Service Type |
-| ----------------------------------- | -------------------------------------------------------------------------------------------------------------------- | ------------------------------ |
-| eShop.AppHost | .NET Aspire AppHost orchestrating the full distributed application topology at dev-time | AppHost / Orchestrator |
-| eShop.ServiceDefaults | Shared cross-cutting component providing service discovery, OpenTelemetry, health checks, JWT auth, HTTP resilience | Service Defaults Library |
-| Catalog.API Extensions | `AddApplicationServices()` registration: PostgreSQL+pgvector, event bus, catalog options, optional AI embedding | Service Registration Component |
-| Basket.API Extensions | `AddApplicationServices()` registration: Redis, gRPC server, RabbitMQ event bus, JWT auth | Service Registration Component |
-| Ordering.API Extensions | `AddApplicationServices()` registration: PostgreSQL, MediatR, FluentValidation, RabbitMQ, CQRS pipeline behaviors | Service Registration Component |
-| Webhooks.API Extensions | `AddApplicationServices()` registration: PostgreSQL, RabbitMQ, JWT auth, webhook service registrations | Service Registration Component |
-| OrderProcessor Extensions | `AddApplicationServices()` registration: RabbitMQ, raw Npgsql, grace-period background service | Service Registration Component |
-| WebApp Extensions | `AddApplicationServices()`: OIDC auth, gRPC client, HTTP clients, event-bus subscriptions, AI services | Service Registration Component |
-| EventBusRabbitMQ | Singleton `IEventBus` implementation with publisher confirms, OpenTelemetry traces, and hosted-service consumer loop | Infrastructure Component |
-| IntegrationEventLogEF | EF-backed transactional outbox for atomic event persistence before publication | Infrastructure Component |
-| Shared MigrateDbContextExtensions | Hosted-service database migration utility with OpenTelemetry tracing for all services | Infrastructure Utility |
-| PaymentProcessor Program | Minimal hosted service: RabbitMQ subscription to `OrderStatusChangedToStockConfirmedIntegrationEvent` | Worker Component |
+| 🏷️ Name                           | 📝 Description                                                                                                       | 🔧 Service Type                |
+| --------------------------------- | -------------------------------------------------------------------------------------------------------------------- | ------------------------------ |
+| eShop.AppHost                     | .NET Aspire AppHost orchestrating the full distributed application topology at dev-time                              | AppHost / Orchestrator         |
+| eShop.ServiceDefaults             | Shared cross-cutting component providing service discovery, OpenTelemetry, health checks, JWT auth, HTTP resilience  | Service Defaults Library       |
+| Catalog.API Extensions            | `AddApplicationServices()` registration: PostgreSQL+pgvector, event bus, catalog options, optional AI embedding      | Service Registration Component |
+| Basket.API Extensions             | `AddApplicationServices()` registration: Redis, gRPC server, RabbitMQ event bus, JWT auth                            | Service Registration Component |
+| Ordering.API Extensions           | `AddApplicationServices()` registration: PostgreSQL, MediatR, FluentValidation, RabbitMQ, CQRS pipeline behaviors    | Service Registration Component |
+| Webhooks.API Extensions           | `AddApplicationServices()` registration: PostgreSQL, RabbitMQ, JWT auth, webhook service registrations               | Service Registration Component |
+| OrderProcessor Extensions         | `AddApplicationServices()` registration: RabbitMQ, raw Npgsql, grace-period background service                       | Service Registration Component |
+| WebApp Extensions                 | `AddApplicationServices()`: OIDC auth, gRPC client, HTTP clients, event-bus subscriptions, AI services               | Service Registration Component |
+| EventBusRabbitMQ                  | Singleton `IEventBus` implementation with publisher confirms, OpenTelemetry traces, and hosted-service consumer loop | Infrastructure Component       |
+| IntegrationEventLogEF             | EF-backed transactional outbox for atomic event persistence before publication                                       | Infrastructure Component       |
+| Shared MigrateDbContextExtensions | Hosted-service database migration utility with OpenTelemetry tracing for all services                                | Infrastructure Utility         |
+| PaymentProcessor Program          | Minimal hosted service: RabbitMQ subscription to `OrderStatusChangedToStockConfirmedIntegrationEvent`                | Worker Component               |
 
 ### 2.3 🔌 Application Interfaces
 
-| 🏷️ Name | 📝 Description | 🔧 Service Type |
+| 🏷️ Name                          | 📝 Description                                                                 | 🔧 Service Type           |
 | -------------------------------- | ------------------------------------------------------------------------------ | ------------------------- |
-| IEventBus | Single-method publish interface for all integration events | Event Bus Abstraction |
-| IIntegrationEventHandler\<T\> | Generic and non-generic handler interfaces for event subscription via keyed DI | Event Handler Abstraction |
-| IEventBusBuilder | DI builder interface for registering event bus subscriptions | Builder Abstraction |
-| IBasketRepository | Repository interface for get/update/delete basket operations | Repository Interface |
-| IBasketState | WebApp interface defining basket item retrieval and add-to-cart contract | Service Interface |
-| ICatalogIntegrationEventService | Interface for transactional event save and publication in Catalog.API | Service Interface |
-| ICatalogService | WebApp consumer interface for catalog item, brand, and type queries | Service Interface |
-| IOrderingIntegrationEventService | Interface for transactional event publication pipeline in Ordering.API | Service Interface |
-| IOrderQueries | Read-model query interface for order retrieval (CQRS read side) | Query Interface |
-| IIdentityService | Interface exposing user identity and name from HTTP context claims | Service Interface |
-| IRequestManager | Idempotency tracking interface for command request deduplication | Infrastructure Interface |
-| ILoginService\<T\> | Generic login interface for credential validation, user lookup, and sign-in | Service Interface |
-| IRedirectService | Interface for extracting redirect URIs from OIDC return URL strings | Service Interface |
-| IGrantUrlTesterService | Contract for webhook grant URL HTTP handshake validation | Service Interface |
-| IWebhooksRetriever | Contract for retrieving webhook subscriptions by type | Repository Interface |
-| IWebhooksSender | Contract for fanning out webhook notifications to subscribers | Service Interface |
+| IEventBus                        | Single-method publish interface for all integration events                     | Event Bus Abstraction     |
+| IIntegrationEventHandler\<T\>    | Generic and non-generic handler interfaces for event subscription via keyed DI | Event Handler Abstraction |
+| IEventBusBuilder                 | DI builder interface for registering event bus subscriptions                   | Builder Abstraction       |
+| IBasketRepository                | Repository interface for get/update/delete basket operations                   | Repository Interface      |
+| IBasketState                     | WebApp interface defining basket item retrieval and add-to-cart contract       | Service Interface         |
+| ICatalogIntegrationEventService  | Interface for transactional event save and publication in Catalog.API          | Service Interface         |
+| ICatalogService                  | WebApp consumer interface for catalog item, brand, and type queries            | Service Interface         |
+| IOrderingIntegrationEventService | Interface for transactional event publication pipeline in Ordering.API         | Service Interface         |
+| IOrderQueries                    | Read-model query interface for order retrieval (CQRS read side)                | Query Interface           |
+| IIdentityService                 | Interface exposing user identity and name from HTTP context claims             | Service Interface         |
+| IRequestManager                  | Idempotency tracking interface for command request deduplication               | Infrastructure Interface  |
+| ILoginService\<T\>               | Generic login interface for credential validation, user lookup, and sign-in    | Service Interface         |
+| IRedirectService                 | Interface for extracting redirect URIs from OIDC return URL strings            | Service Interface         |
+| IGrantUrlTesterService           | Contract for webhook grant URL HTTP handshake validation                       | Service Interface         |
+| IWebhooksRetriever               | Contract for retrieving webhook subscriptions by type                          | Repository Interface      |
+| IWebhooksSender                  | Contract for fanning out webhook notifications to subscribers                  | Service Interface         |
 
 ### 2.4 🤝 Application Collaborations
 
-| 🏷️ Name | 📝 Description | 🔧 Service Type |
+| 🏷️ Name                             | 📝 Description                                                                                  | 🔧 Service Type           |
 | ----------------------------------- | ----------------------------------------------------------------------------------------------- | ------------------------- |
-| WebApp → Basket.API (gRPC) | Typed gRPC client (`Basket.BasketClient`) with bearer token forwarding via `AddAuthToken()` | Service Collaboration |
-| ClientApp → Basket.API (gRPC) | MAUI native `GrpcChannel` with manual `Bearer` metadata injection | Service Collaboration |
-| WebApp → Catalog.API (HTTP) | Typed `CatalogService` HTTP client with API version 2.0 and service discovery | Service Collaboration |
-| WebApp → Ordering.API (HTTP) | Typed `OrderingService` HTTP client with API version 1.0 and service discovery | Service Collaboration |
-| Webhooks.API → External URLs (HTTP) | Fan-out HTTP POST delivery to subscriber-registered `DestUrl`s via `IHttpClientFactory` | Integration Collaboration |
-| AppHost YARP → Mobile BFF | YARP reverse proxy routing catalog, ordering, and identity APIs under a unified mobile endpoint | Gateway Collaboration |
+| WebApp → Basket.API (gRPC)          | Typed gRPC client (`Basket.BasketClient`) with bearer token forwarding via `AddAuthToken()`     | Service Collaboration     |
+| ClientApp → Basket.API (gRPC)       | MAUI native `GrpcChannel` with manual `Bearer` metadata injection                               | Service Collaboration     |
+| WebApp → Catalog.API (HTTP)         | Typed `CatalogService` HTTP client with API version 2.0 and service discovery                   | Service Collaboration     |
+| WebApp → Ordering.API (HTTP)        | Typed `OrderingService` HTTP client with API version 1.0 and service discovery                  | Service Collaboration     |
+| Webhooks.API → External URLs (HTTP) | Fan-out HTTP POST delivery to subscriber-registered `DestUrl`s via `IHttpClientFactory`         | Integration Collaboration |
+| AppHost YARP → Mobile BFF           | YARP reverse proxy routing catalog, ordering, and identity APIs under a unified mobile endpoint | Gateway Collaboration     |
 
 ### 2.5 ⚡ Application Functions
 
-| 🏷️ Name | 📝 Description | 🔧 Service Type |
+| 🏷️ Name                          | 📝 Description                                                                             | 🔧 Service Type   |
 | -------------------------------- | ------------------------------------------------------------------------------------------ | ----------------- |
-| Browse Catalog | Retrieves catalog items with pagination, type/brand filtering, and semantic AI search | Business Function |
-| Manage Basket | Create, update, and delete customer shopping basket via gRPC contract | Business Function |
-| Checkout | Orchestrates basket-to-order conversion including payment card data capture | Business Function |
-| Order Lifecycle Management | Create, cancel, ship, and query orders with full CQRS command/query separation | Business Function |
-| Grace Period Processing | Automated background scan promoting submitted orders past their grace period | Business Function |
-| Stock Validation | Event-driven catalog stock check triggered by order submission events | Business Function |
-| Payment Processing | Event-driven payment authorization triggered by stock confirmation events | Business Function |
-| Order Status Notifications | Real-time Blazor push for order status transitions consumed by WebApp UI | Business Function |
-| Webhook Delivery | Reliable HTTP fanout of order and catalog events to external subscriber URLs | Business Function |
-| Authentication and Authorization | Full OIDC/OAuth2 flows: login, logout, consent, device, external providers | Business Function |
-| AI Semantic Search | Vector embedding search over catalog items using pgvector + Azure OpenAI or Ollama | Business Function |
-| Idempotent Command Processing | Deduplication of incoming commands using `IRequestManager` and `ClientRequest` persistence | Business Function |
+| Browse Catalog                   | Retrieves catalog items with pagination, type/brand filtering, and semantic AI search      | Business Function |
+| Manage Basket                    | Create, update, and delete customer shopping basket via gRPC contract                      | Business Function |
+| Checkout                         | Orchestrates basket-to-order conversion including payment card data capture                | Business Function |
+| Order Lifecycle Management       | Create, cancel, ship, and query orders with full CQRS command/query separation             | Business Function |
+| Grace Period Processing          | Automated background scan promoting submitted orders past their grace period               | Business Function |
+| Stock Validation                 | Event-driven catalog stock check triggered by order submission events                      | Business Function |
+| Payment Processing               | Event-driven payment authorization triggered by stock confirmation events                  | Business Function |
+| Order Status Notifications       | Real-time Blazor push for order status transitions consumed by WebApp UI                   | Business Function |
+| Webhook Delivery                 | Reliable HTTP fanout of order and catalog events to external subscriber URLs               | Business Function |
+| Authentication and Authorization | Full OIDC/OAuth2 flows: login, logout, consent, device, external providers                 | Business Function |
+| AI Semantic Search               | Vector embedding search over catalog items using pgvector + Azure OpenAI or Ollama         | Business Function |
+| Idempotent Command Processing    | Deduplication of incoming commands using `IRequestManager` and `ClientRequest` persistence | Business Function |
 
 ### 2.6 🔄 Application Interactions
 
-| 🏷️ Name | 📝 Description | 🔧 Service Type |
+| 🏷️ Name                     | 📝 Description                                                                                  | 🔧 Service Type    |
 | --------------------------- | ----------------------------------------------------------------------------------------------- | ------------------ |
-| REST Request/Response | Synchronous HTTP/JSON interactions on Catalog.API (v1/v2), Ordering.API (v1), Webhooks.API (v1) | Request/Response |
-| gRPC Request/Response | Protobuf-contract synchronous RPC for basket operations between WebApp/ClientApp and Basket.API | Request/Response |
-| Event Bus Publish/Subscribe | Asynchronous RabbitMQ message exchange using `eshop_event_bus` direct exchange | Pub/Sub |
-| In-Process Pub/Sub | Blazor Server in-memory dictionary-based observer for order status push to UI components | Observer |
-| Product Image Forwarding | YARP transparent HTTP forwarder routing `/product-images/{id}` from WebApp to Catalog.API | HTTP Forwarding |
-| Health and Liveness Probes | HTTP GET `/health` (full) and `/alive` (liveness) endpoints on all services | Health Interaction |
+| REST Request/Response       | Synchronous HTTP/JSON interactions on Catalog.API (v1/v2), Ordering.API (v1), Webhooks.API (v1) | Request/Response   |
+| gRPC Request/Response       | Protobuf-contract synchronous RPC for basket operations between WebApp/ClientApp and Basket.API | Request/Response   |
+| Event Bus Publish/Subscribe | Asynchronous RabbitMQ message exchange using `eshop_event_bus` direct exchange                  | Pub/Sub            |
+| In-Process Pub/Sub          | Blazor Server in-memory dictionary-based observer for order status push to UI components        | Observer           |
+| Product Image Forwarding    | YARP transparent HTTP forwarder routing `/product-images/{id}` from WebApp to Catalog.API       | HTTP Forwarding    |
+| Health and Liveness Probes  | HTTP GET `/health` (full) and `/alive` (liveness) endpoints on all services                     | Health Interaction |
 
 ### 2.7 📣 Application Events
 
-| 🏷️ Name | 📝 Description | 🔧 Service Type |
-| ------------------------------------------------------ | ---------------------------------------------------------------------------------------------- | ------------ |
-| GracePeriodConfirmedIntegrationEvent | Published by OrderProcessor when an order''s grace period expires | Domain Event |
-| OrderStartedIntegrationEvent | Published by Ordering.API when a new order is created; triggers basket deletion | Domain Event |
-| OrderStatusChangedToSubmittedIntegrationEvent | Published when order reaches Submitted status | Domain Event |
-| OrderStatusChangedToAwaitingValidationIntegrationEvent | Published when order awaits stock validation; consumed by Catalog.API and WebApp | Domain Event |
-| OrderStockConfirmedIntegrationEvent | Published by Catalog.API when all order items are in stock | Domain Event |
-| OrderStockRejectedIntegrationEvent | Published by Catalog.API when one or more items are out of stock | Domain Event |
-| OrderStatusChangedToStockConfirmedIntegrationEvent | Published by Ordering.API when stock confirmation is received; triggers PaymentProcessor | Domain Event |
-| OrderPaymentSucceededIntegrationEvent | Published by PaymentProcessor on successful payment authorization | Domain Event |
-| OrderPaymentFailedIntegrationEvent | Published by PaymentProcessor on failed payment authorization | Domain Event |
-| OrderStatusChangedToPaidIntegrationEvent | Published by Ordering.API when payment succeeds; consumed by Catalog.API, WebApp, Webhooks.API | Domain Event |
-| OrderStatusChangedToShippedIntegrationEvent | Published when order ships; consumed by WebApp and Webhooks.API | Domain Event |
-| OrderStatusChangedToCancelledIntegrationEvent | Published when order is cancelled | Domain Event |
-| ProductPriceChangedIntegrationEvent | Published by Catalog.API when a product price changes; consumed by Webhooks.API | Domain Event |
+| 🏷️ Name                                                | 📝 Description                                                                                 | 🔧 Service Type |
+| ------------------------------------------------------ | ---------------------------------------------------------------------------------------------- | --------------- |
+| GracePeriodConfirmedIntegrationEvent                   | Published by OrderProcessor when an order''s grace period expires                              | Domain Event    |
+| OrderStartedIntegrationEvent                           | Published by Ordering.API when a new order is created; triggers basket deletion                | Domain Event    |
+| OrderStatusChangedToSubmittedIntegrationEvent          | Published when order reaches Submitted status                                                  | Domain Event    |
+| OrderStatusChangedToAwaitingValidationIntegrationEvent | Published when order awaits stock validation; consumed by Catalog.API and WebApp               | Domain Event    |
+| OrderStockConfirmedIntegrationEvent                    | Published by Catalog.API when all order items are in stock                                     | Domain Event    |
+| OrderStockRejectedIntegrationEvent                     | Published by Catalog.API when one or more items are out of stock                               | Domain Event    |
+| OrderStatusChangedToStockConfirmedIntegrationEvent     | Published by Ordering.API when stock confirmation is received; triggers PaymentProcessor       | Domain Event    |
+| OrderPaymentSucceededIntegrationEvent                  | Published by PaymentProcessor on successful payment authorization                              | Domain Event    |
+| OrderPaymentFailedIntegrationEvent                     | Published by PaymentProcessor on failed payment authorization                                  | Domain Event    |
+| OrderStatusChangedToPaidIntegrationEvent               | Published by Ordering.API when payment succeeds; consumed by Catalog.API, WebApp, Webhooks.API | Domain Event    |
+| OrderStatusChangedToShippedIntegrationEvent            | Published when order ships; consumed by WebApp and Webhooks.API                                | Domain Event    |
+| OrderStatusChangedToCancelledIntegrationEvent          | Published when order is cancelled                                                              | Domain Event    |
+| ProductPriceChangedIntegrationEvent                    | Published by Catalog.API when a product price changes; consumed by Webhooks.API                | Domain Event    |
 
 ### 2.8 🗃️ Application Data Objects
 
-| 🏷️ Name | 📝 Description | 🔧 Service Type |
+| 🏷️ Name                    | 📝 Description                                                                                         | 🔧 Service Type       |
 | -------------------------- | ------------------------------------------------------------------------------------------------------ | --------------------- |
-| BasketItem (API model) | Validated basket line item with `ProductId`, `Quantity`, `UnitPrice` implementing `IValidatableObject` | Domain DTO |
-| CustomerBasket | Aggregate root for a buyer''s basket: `BuyerId` + list of `BasketItem` | Domain DTO |
-| BasketCheckoutInfo | Form model with `[Required]` annotations capturing address and payment card fields for checkout | Request DTO |
-| CatalogItem (API entity) | EF entity with AI `Embedding: Vector?` field for pgvector semantic search | Domain Entity |
-| CatalogItem (WebApp DTO) | Immutable record DTO used in Blazor components | View DTO |
-| PaginationRequest | `record PaginationRequest(int PageSize = 10, int PageIndex = 0)` for paged catalog queries | Query DTO |
-| OrderDraftDTO | Transient draft response from `CreateOrderDraftAsync` with order items and subtotal | Response DTO |
-| CreateOrderRequest | Full request body for `POST /api/orders` capturing shipping address and payment card | Request DTO |
-| Order (query view) | Read-side record from `IOrderQueries.GetOrderAsync` | Query DTO |
-| OrderSummary | Compact order record: `OrderNumber`, `Date`, `Status`, `Total` for list views | Query DTO |
-| WebhookSubscriptionRequest | Validated subscription model: `Url`, `Token`, `Event`, `GrantUrl` implementing `IValidatableObject` | Request DTO |
-| ClientRequest | EF entity tracking idempotent command execution with `RequestId` and `CommandType` | Infrastructure Entity |
+| BasketItem (API model)     | Validated basket line item with `ProductId`, `Quantity`, `UnitPrice` implementing `IValidatableObject` | Domain DTO            |
+| CustomerBasket             | Aggregate root for a buyer''s basket: `BuyerId` + list of `BasketItem`                                 | Domain DTO            |
+| BasketCheckoutInfo         | Form model with `[Required]` annotations capturing address and payment card fields for checkout        | Request DTO           |
+| CatalogItem (API entity)   | EF entity with AI `Embedding: Vector?` field for pgvector semantic search                              | Domain Entity         |
+| CatalogItem (WebApp DTO)   | Immutable record DTO used in Blazor components                                                         | View DTO              |
+| PaginationRequest          | `record PaginationRequest(int PageSize = 10, int PageIndex = 0)` for paged catalog queries             | Query DTO             |
+| OrderDraftDTO              | Transient draft response from `CreateOrderDraftAsync` with order items and subtotal                    | Response DTO          |
+| CreateOrderRequest         | Full request body for `POST /api/orders` capturing shipping address and payment card                   | Request DTO           |
+| Order (query view)         | Read-side record from `IOrderQueries.GetOrderAsync`                                                    | Query DTO             |
+| OrderSummary               | Compact order record: `OrderNumber`, `Date`, `Status`, `Total` for list views                          | Query DTO             |
+| WebhookSubscriptionRequest | Validated subscription model: `Url`, `Token`, `Event`, `GrantUrl` implementing `IValidatableObject`    | Request DTO           |
+| ClientRequest              | EF entity tracking idempotent command execution with `RequestId` and `CommandType`                     | Infrastructure Entity |
 
 ### 2.9 🔗 Integration Patterns
 
-| 🏷️ Name | 📝 Description | 🔧 Service Type |
+| 🏷️ Name                 | 📝 Description                                                                                                        | 🔧 Service Type    |
 | ----------------------- | --------------------------------------------------------------------------------------------------------------------- | ------------------ |
-| RabbitMQ Event Bus | AMQP direct exchange (`eshop_event_bus`) with durable queues, publisher confirms, and OpenTelemetry trace propagation | Message Broker |
-| Transactional Outbox | EF-backed `IntegrationEventLogEF` persisting events within service DB transactions before publish | Outbox Pattern |
-| gRPC Contract-First | Proto-file-driven code generation for Basket service with server and client stubs | Contract-First RPC |
-| HTTP Client Factory | `IHttpClientFactory`-managed typed HTTP clients with standard resilience and bearer token propagation | HTTP Integration |
-| YARP Reverse Proxy | Transparent layer-7 routing aggregating catalog, ordering, and identity for mobile clients | Gateway / Proxy |
-| Redis Distributed Cache | StackExchange.Redis-backed basket persistence with JSON serialization keyed by buyer ID | Cache-Aside |
+| RabbitMQ Event Bus      | AMQP direct exchange (`eshop_event_bus`) with durable queues, publisher confirms, and OpenTelemetry trace propagation | Message Broker     |
+| Transactional Outbox    | EF-backed `IntegrationEventLogEF` persisting events within service DB transactions before publish                     | Outbox Pattern     |
+| gRPC Contract-First     | Proto-file-driven code generation for Basket service with server and client stubs                                     | Contract-First RPC |
+| HTTP Client Factory     | `IHttpClientFactory`-managed typed HTTP clients with standard resilience and bearer token propagation                 | HTTP Integration   |
+| YARP Reverse Proxy      | Transparent layer-7 routing aggregating catalog, ordering, and identity for mobile clients                            | Gateway / Proxy    |
+| Redis Distributed Cache | StackExchange.Redis-backed basket persistence with JSON serialization keyed by buyer ID                               | Cache-Aside        |
 
 ### 2.10 📜 Service Contracts
 
-| 🏷️ Name | 📝 Description | 🔧 Service Type |
-| ---------------------------------- | --------------------------------------------------------------------------------------------------------------------- | -------------- |
-| basket.proto | gRPC protobuf contract defining `BasketApi.Basket` service with `GetBasket`, `UpdateBasket`, `DeleteBasket` | Proto Contract |
-| OpenAPI v1 (Ordering.API) | Versioned OpenAPI document generated at startup with Scalar UI at `/scalar/v1` | OpenAPI Spec |
-| OpenAPI v1/v2 (Catalog.API) | Dual-version OpenAPI documents; v2 introduces breaking changes to `UpdateItem` and semantic search | OpenAPI Spec |
-| OpenAPI v1 (Webhooks.API) | Versioned OpenAPI document for webhook subscription management | OpenAPI Spec |
-| JWT Bearer Authentication Contract | Standard JWT bearer tokens issued by Identity.API (Duende IdentityServer); validated via `AddDefaultAuthentication()` | Auth Contract |
+| 🏷️ Name                            | 📝 Description                                                                                                        | 🔧 Service Type |
+| ---------------------------------- | --------------------------------------------------------------------------------------------------------------------- | --------------- |
+| basket.proto                       | gRPC protobuf contract defining `BasketApi.Basket` service with `GetBasket`, `UpdateBasket`, `DeleteBasket`           | Proto Contract  |
+| OpenAPI v1 (Ordering.API)          | Versioned OpenAPI document generated at startup with Scalar UI at `/scalar/v1`                                        | OpenAPI Spec    |
+| OpenAPI v1/v2 (Catalog.API)        | Dual-version OpenAPI documents; v2 introduces breaking changes to `UpdateItem` and semantic search                    | OpenAPI Spec    |
+| OpenAPI v1 (Webhooks.API)          | Versioned OpenAPI document for webhook subscription management                                                        | OpenAPI Spec    |
+| JWT Bearer Authentication Contract | Standard JWT bearer tokens issued by Identity.API (Duende IdentityServer); validated via `AddDefaultAuthentication()` | Auth Contract   |
 
 ### 2.11 📚 Application Dependencies
 
-| 🏷️ Name | 📝 Description | 🔧 Service Type |
+| 🏷️ Name                                      | 📝 Description                                                                                    | 🔧 Service Type       |
 | -------------------------------------------- | ------------------------------------------------------------------------------------------------- | --------------------- |
-| Aspire.Hosting.\* (13.1.0) | Aspire orchestration packages: RabbitMQ, Redis, PostgreSQL, Azure CognitiveServices, Yarp, Ollama | Platform SDK |
-| Grpc.AspNetCore / Grpc.Net.ClientFactory | ASP.NET Core gRPC server and typed client factory with Protobuf code generation | RPC Framework |
-| MediatR | CQRS mediator pattern library powering Ordering.API command/query pipeline with behaviors | CQRS Library |
-| FluentValidation | Declarative validation framework used by Ordering.API command validators | Validation Library |
-| Duende.IdentityServer | OAuth 2.0 / OpenID Connect server with ASP.NET Identity and EF persistence | Identity Framework |
-| Aspire.Npgsql.EntityFrameworkCore.PostgreSQL | Aspire-instrumented EF Core provider for PostgreSQL with telemetry | ORM / Database Driver |
-| Aspire.StackExchange.Redis | Aspire-instrumented Redis client for basket distributed cache | Cache Client |
-| Aspire.RabbitMQ.Client | Aspire-instrumented RabbitMQ client for event bus | Messaging Client |
-| Pgvector.EntityFrameworkCore | pgvector EF Core extension enabling AI embedding storage and similarity queries | AI / Vector Extension |
-| Asp.Versioning.Http | HTTP API versioning library providing version header/route/query-string negotiation | API Versioning |
-| Microsoft.Extensions.Http.Resilience | Standard HTTP resilience pipelines: retry, circuit breaker, timeout, rate limiter | Resilience Library |
-| OpenTelemetry.\* | Distributed telemetry: traces (ASP.NET Core, gRPC, HTTP), metrics (runtime, HTTP), logs | Observability |
+| Aspire.Hosting.\* (13.1.0)                   | Aspire orchestration packages: RabbitMQ, Redis, PostgreSQL, Azure CognitiveServices, Yarp, Ollama | Platform SDK          |
+| Grpc.AspNetCore / Grpc.Net.ClientFactory     | ASP.NET Core gRPC server and typed client factory with Protobuf code generation                   | RPC Framework         |
+| MediatR                                      | CQRS mediator pattern library powering Ordering.API command/query pipeline with behaviors         | CQRS Library          |
+| FluentValidation                             | Declarative validation framework used by Ordering.API command validators                          | Validation Library    |
+| Duende.IdentityServer                        | OAuth 2.0 / OpenID Connect server with ASP.NET Identity and EF persistence                        | Identity Framework    |
+| Aspire.Npgsql.EntityFrameworkCore.PostgreSQL | Aspire-instrumented EF Core provider for PostgreSQL with telemetry                                | ORM / Database Driver |
+| Aspire.StackExchange.Redis                   | Aspire-instrumented Redis client for basket distributed cache                                     | Cache Client          |
+| Aspire.RabbitMQ.Client                       | Aspire-instrumented RabbitMQ client for event bus                                                 | Messaging Client      |
+| Pgvector.EntityFrameworkCore                 | pgvector EF Core extension enabling AI embedding storage and similarity queries                   | AI / Vector Extension |
+| Asp.Versioning.Http                          | HTTP API versioning library providing version header/route/query-string negotiation               | API Versioning        |
+| Microsoft.Extensions.Http.Resilience         | Standard HTTP resilience pipelines: retry, circuit breaker, timeout, rate limiter                 | Resilience Library    |
+| OpenTelemetry.\*                             | Distributed telemetry: traces (ASP.NET Core, gRPC, HTTP), metrics (runtime, HTTP), logs           | Observability         |
 
 ### 📋 Summary
 
@@ -510,13 +501,13 @@ API versions are explicit in routes and negotiated via Asp.Versioning.Http.
 
 **🔍 Evidence**:
 
-| 📝 Observation |
-| -------------------------------------------------------------------- |
-| asket.proto — complete protobuf contract defining all Basket operations |
+| 📝 Observation                                                                             |
+| ------------------------------------------------------------------------------------------ |
+| asket.proto — complete protobuf contract defining all Basket operations                    |
 | OpenApi.Extensions.cs — centralized OpenAPI + Scalar UI registration for all REST services |
-| CatalogApi.cs — MapCatalogApi() with explicit 1, 2 version group annotations |
-| OrdersApi.cs — version group 1 declared on all order endpoints |
-| WebHooksApi.cs — version group 1 on all webhook endpoints |
+| CatalogApi.cs — MapCatalogApi() with explicit 1, 2 version group annotations               |
+| OrdersApi.cs — version group 1 declared on all order endpoints                             |
+| WebHooksApi.cs — version group 1 on all webhook endpoints                                  |
 
 **✅ Compliance**: Full — all service-to-service contracts are formally specified.
 
@@ -529,13 +520,13 @@ supports independent deployment.
 
 **🔍 Evidence**:
 
-| 📝 Observation |
-| -------------------------------------------------------------------------------- |
-| IEventBus.cs — single PublishAsync abstraction — zero coupling to transport |
-| EventBusBuilderExtensions.cs — keyed-DI subscription registration decoupling handler from bus |
-| RabbitMQEventBus.cs — transport implementation hidden behind IEventBus |
+| 📝 Observation                                                                                     |
+| -------------------------------------------------------------------------------------------------- |
+| IEventBus.cs — single PublishAsync abstraction — zero coupling to transport                        |
+| EventBusBuilderExtensions.cs — keyed-DI subscription registration decoupling handler from bus      |
+| RabbitMQEventBus.cs — transport implementation hidden behind IEventBus                             |
 | Basket.API/Extensions.cs — subscribes to OrderStartedIntegrationEvent — no direct call to Ordering |
-| Catalog.API/Extensions.cs — subscribes to order events without direct coupling to Ordering |
+| Catalog.API/Extensions.cs — subscribes to order events without direct coupling to Ordering         |
 
 **✅ Compliance**: Full — all cross-service reactions use the event bus; no service-to-service direct call for side effects.
 
@@ -548,12 +539,12 @@ libraries.
 
 **🔍 Evidence**:
 
-| 📝 Observation |
-| --------------------------------------------------------------------------------------- |
-| Shop.ServiceDefaults/Extensions.cs — AddStandardResilienceHandler() applied to all HTTP clients |
+| 📝 Observation                                                                                                       |
+| -------------------------------------------------------------------------------------------------------------------- |
+| Shop.ServiceDefaults/Extensions.cs — AddStandardResilienceHandler() applied to all HTTP clients                      |
 | Shop.ServiceDefaults/HttpClientExtensions.cs — AddAuthToken() delegating handler added alongside resilience pipeline |
-| WebApp/Extensions/Extensions.cs — WebApp HTTP clients explicitly use service-default resilience |
-| Shared/MigrateDbContextExtensions.cs — ResilientTransaction used in CatalogIntegrationEventService |
+| WebApp/Extensions/Extensions.cs — WebApp HTTP clients explicitly use service-default resilience                      |
+| Shared/MigrateDbContextExtensions.cs — ResilientTransaction used in CatalogIntegrationEventService                   |
 
 **⚠️ Compliance**: Partial — standard resilience is applied uniformly to HTTP clients; per-service circuit breaker thresholds and custom timeout policies are not configured explicitly at the service level.
 
@@ -565,11 +556,11 @@ Distributed trace context is propagated through RabbitMQ message headers via Tex
 
 **🔍 Evidence**:
 
-| 📝 Observation |
-| -------------------------------------------------------------------------------------- |
+| 📝 Observation                                                                                              |
+| ----------------------------------------------------------------------------------------------------------- |
 | Shop.ServiceDefaults/Extensions.cs — ConfigureOpenTelemetry(): logs + metrics + traces registered centrally |
-| RabbitMqDependencyInjectionExtensions.cs — RabbitMQTelemetry ActivitySource registered for event bus |
-| Shared/MigrateDbContextExtensions.cs — DB migration activities traced with OpenTelemetry |
+| RabbitMqDependencyInjectionExtensions.cs — RabbitMQTelemetry ActivitySource registered for event bus        |
+| Shared/MigrateDbContextExtensions.cs — DB migration activities traced with OpenTelemetry                    |
 
 **✅ Compliance**: Full — all service layers and cross-service communication paths are instrumented.
 
@@ -582,12 +573,12 @@ automatic via AddAuthToken().
 
 **🔍 Evidence**:
 
-| 📝 Observation |
-| -------------------------------------------------------------------------------------------- |
-| Shop.ServiceDefaults/AuthenticationExtensions.cs — AddDefaultAuthentication() centralized JWT Bearer |
-| Shop.ServiceDefaults/HttpClientExtensions.cs — AddAuthToken() delegates token extraction |
+| 📝 Observation                                                                                          |
+| ------------------------------------------------------------------------------------------------------- |
+| Shop.ServiceDefaults/AuthenticationExtensions.cs — AddDefaultAuthentication() centralized JWT Bearer    |
+| Shop.ServiceDefaults/HttpClientExtensions.cs — AddAuthToken() delegates token extraction                |
 | WebApp/Extensions/Extensions.cs — OIDC + cookie auth for Blazor Server; gRPC client uses AddAuthToken() |
-| Identity.API/Services/ProfileService.cs — IProfileService customizes token claims |
+| Identity.API/Services/ProfileService.cs — IProfileService customizes token claims                       |
 
 **✅ Compliance**: Full — authentication is uniformly enforced; no anonymous resource endpoints are exposed outside of health probes and the Scalar/Swagger UI in development.
 
@@ -656,54 +647,54 @@ overall health posture of the eShop Application layer as observable from the sou
 
 ### 🖥️ Service Topology
 
-| 🏷️ Service | 🚀 Deployment Target | 🔌 Primary Protocol | 🛠️ Runtime | 🟢 Status |
-| --------------------- | --------------------------------- | ------------------------------------------ | --------------------- | ------- |
-| Basket.API | Container (Aspire) | gRPC / AMQP | net10.0 (AOT) | Active |
-| Catalog.API | Container (Aspire) | REST HTTP/JSON / AMQP | net10.0 | Active |
-| Identity.API | Container (Aspire) | OIDC / REST MVC | net10.0 | Active |
-| Ordering.API | Container (Aspire) | REST HTTP/JSON / AMQP | net10.0 | Active |
-| OrderProcessor | Container (Aspire, Worker) | AMQP / TCP (Npgsql) | net10.0 (AOT) | Active |
-| PaymentProcessor | Container (Aspire, Worker) | AMQP | net10.0 | Active |
-| Webhooks.API | Container (Aspire) | REST HTTP/JSON / AMQP / HTTP POST outbound | net10.0 | Active |
-| WebApp | Container (Aspire, Blazor Server) | OIDC / REST / gRPC | net10.0 | Active |
-| WebhookClient | Container (Aspire) | OIDC / REST | net10.0 | Active |
-| eShop.AppHost | Dev orchestration only | — | net10.0 | Tooling |
-| EventBusRabbitMQ | Shared library | AMQP (RabbitMQ) | net10.0 (AOT) | Shared |
-| eShop.ServiceDefaults | Shared library | — | net10.0 | Shared |
+| 🏷️ Service            | 🚀 Deployment Target              | 🔌 Primary Protocol                        | 🛠️ Runtime    | 🟢 Status |
+| --------------------- | --------------------------------- | ------------------------------------------ | ------------- | --------- |
+| Basket.API            | Container (Aspire)                | gRPC / AMQP                                | net10.0 (AOT) | Active    |
+| Catalog.API           | Container (Aspire)                | REST HTTP/JSON / AMQP                      | net10.0       | Active    |
+| Identity.API          | Container (Aspire)                | OIDC / REST MVC                            | net10.0       | Active    |
+| Ordering.API          | Container (Aspire)                | REST HTTP/JSON / AMQP                      | net10.0       | Active    |
+| OrderProcessor        | Container (Aspire, Worker)        | AMQP / TCP (Npgsql)                        | net10.0 (AOT) | Active    |
+| PaymentProcessor      | Container (Aspire, Worker)        | AMQP                                       | net10.0       | Active    |
+| Webhooks.API          | Container (Aspire)                | REST HTTP/JSON / AMQP / HTTP POST outbound | net10.0       | Active    |
+| WebApp                | Container (Aspire, Blazor Server) | OIDC / REST / gRPC                         | net10.0       | Active    |
+| WebhookClient         | Container (Aspire)                | OIDC / REST                                | net10.0       | Active    |
+| eShop.AppHost         | Dev orchestration only            | —                                          | net10.0       | Tooling   |
+| EventBusRabbitMQ      | Shared library                    | AMQP (RabbitMQ)                            | net10.0 (AOT) | Shared    |
+| eShop.ServiceDefaults | Shared library                    | —                                          | net10.0       | Shared    |
 
 ### 🔌 Protocol Inventory
 
-| 🔌 Protocol | 💡 Usage | 🌐 Services Involved |
+| 🔌 Protocol              | 💡 Usage                          | 🌐 Services Involved                                                  |
 | ------------------------ | --------------------------------- | --------------------------------------------------------------------- |
-| REST HTTP/JSON | Catalog, Ordering, Webhooks APIs | Catalog.API, Ordering.API, Webhooks.API, WebApp, ClientApp |
-| gRPC (Protobuf) | Basket operations | Basket.API (server), WebApp (client), ClientApp (client) |
-| AMQP 0-9-1 (RabbitMQ) | Integration events | All services via EventBusRabbitMQ |
-| OIDC / OAuth 2.0 | Authentication and token issuance | Identity.API, WebApp, WebhookClient, ClientApp |
-| JWT Bearer | Resource server authorization | Basket.API, Catalog.API, Ordering.API, Webhooks.API |
-| Redis (RESP) | Distributed basket cache | Basket.API |
-| PostgreSQL wire protocol | Persistent storage | Catalog.API, Identity.API, Ordering.API, Webhooks.API, OrderProcessor |
-| HTTPS forwarding | YARP Mobile BFF | AppHost → catalog-api, ordering-api, identity-api |
+| REST HTTP/JSON           | Catalog, Ordering, Webhooks APIs  | Catalog.API, Ordering.API, Webhooks.API, WebApp, ClientApp            |
+| gRPC (Protobuf)          | Basket operations                 | Basket.API (server), WebApp (client), ClientApp (client)              |
+| AMQP 0-9-1 (RabbitMQ)    | Integration events                | All services via EventBusRabbitMQ                                     |
+| OIDC / OAuth 2.0         | Authentication and token issuance | Identity.API, WebApp, WebhookClient, ClientApp                        |
+| JWT Bearer               | Resource server authorization     | Basket.API, Catalog.API, Ordering.API, Webhooks.API                   |
+| Redis (RESP)             | Distributed basket cache          | Basket.API                                                            |
+| PostgreSQL wire protocol | Persistent storage                | Catalog.API, Identity.API, Ordering.API, Webhooks.API, OrderProcessor |
+| HTTPS forwarding         | YARP Mobile BFF                   | AppHost → catalog-api, ordering-api, identity-api                     |
 
 ### 📋 API Versioning Matrix
 
-| 🏷️ Service | 🔢 Versions | ⚠️ Breaking Changes | 📐 Version Strategy |
-| ------------ | ---------------- | ---------------------------------------------------------- | ------------------------------------------- |
-| Catalog.API | v1, v2 | v2 changes UpdateItem signature and adds semantic search | URL-segment group via Asp.Versioning.Http |
-| Ordering.API | v1 | None | URL-segment group |
-| Webhooks.API | v1 | None | URL-segment group |
-| Basket.API | N/A (gRPC proto) | Proto field additions are backward-compatible | Proto field numbering convention |
-| Identity.API | N/A (MVC) | N/A | Standard ASP.NET MVC routing |
+| 🏷️ Service   | 🔢 Versions      | ⚠️ Breaking Changes                                      | 📐 Version Strategy                       |
+| ------------ | ---------------- | -------------------------------------------------------- | ----------------------------------------- |
+| Catalog.API  | v1, v2           | v2 changes UpdateItem signature and adds semantic search | URL-segment group via Asp.Versioning.Http |
+| Ordering.API | v1               | None                                                     | URL-segment group                         |
+| Webhooks.API | v1               | None                                                     | URL-segment group                         |
+| Basket.API   | N/A (gRPC proto) | Proto field additions are backward-compatible            | Proto field numbering convention          |
+| Identity.API | N/A (MVC)        | N/A                                                      | Standard ASP.NET MVC routing              |
 
 ### 🏥 Health Posture
 
-| 🏷️ Service | 🔍 Health Endpoint | 🫀 Liveness | 📡 Observability |
-| -------------------- | -------------- | ----------- | ------------------------------------ |
-| All (ServiceDefaults) | GET /health | GET /alive | OpenTelemetry traces + metrics |
-| Basket.API | /health | /alive | gRPC + HTTP instrumentation |
-| Catalog.API | /health | /alive | HTTP + EF + pgvector instrumentation |
-| Ordering.API | /health | /alive | HTTP + EF + MediatR behaviors |
-| OrderProcessor | /health | /alive | AMQP consumer telemetry |
-| Identity.API | /health | /alive | ASP.NET Core MVC instrumentation |
+| 🏷️ Service            | 🔍 Health Endpoint | 🫀 Liveness | 📡 Observability                     |
+| --------------------- | ------------------ | ----------- | ------------------------------------ |
+| All (ServiceDefaults) | GET /health        | GET /alive  | OpenTelemetry traces + metrics       |
+| Basket.API            | /health            | /alive      | gRPC + HTTP instrumentation          |
+| Catalog.API           | /health            | /alive      | HTTP + EF + pgvector instrumentation |
+| Ordering.API          | /health            | /alive      | HTTP + EF + MediatR behaviors        |
+| OrderProcessor        | /health            | /alive      | AMQP consumer telemetry              |
+| Identity.API          | /health            | /alive      | ASP.NET Core MVC instrumentation     |
 
 ### 🏗️ Baseline Architecture Diagram
 
@@ -803,24 +794,24 @@ scaling strategy, and health configuration. Source attribute rows have been remo
 
 #### 5.1.1 BasketService (gRPC)
 
-| 🏷️ Attribute | 📝 Value |
-| ------------------ | ------------------------------------------ |
+| 🏷️ Attribute       | 📝 Value      |
+| ------------------ | ------------- |
 | **Component Name** | BasketService |
-| **Service Type** | gRPC Service |
+| **Service Type**   | gRPC Service  |
 
 **🔌 API Surface:**
 
-| 🔌 Type | 🔢 Count | 🔧 Protocol | 📝 Description |
-| -------------- | ----- | --------------- | ------------------------------------- |
-| gRPC Unary RPC | 3 | gRPC / Protobuf | GetBasket, UpdateBasket, DeleteBasket |
+| 🔌 Type        | 🔢 Count | 🔧 Protocol     | 📝 Description                        |
+| -------------- | -------- | --------------- | ------------------------------------- |
+| gRPC Unary RPC | 3        | gRPC / Protobuf | GetBasket, UpdateBasket, DeleteBasket |
 
 **🔗 Dependencies:**
 
-| 📦 Dependency | ↔️ Dir | 🔌 Protocol | 💡 Purpose |
-| ------------------------ | ------ | ---------- | ------------------------------------------- |
-| IBasketRepository | Up | In-process | Basket persistence (Redis) |
-| ILogger | Up | In-process | Structured logging |
-| ServerCallContext | Up | gRPC | User identity extraction from call metadata |
+| 📦 Dependency     | ↔️ Dir | 🔌 Protocol | 💡 Purpose                                  |
+| ----------------- | ------ | ----------- | ------------------------------------------- |
+| IBasketRepository | Up     | In-process  | Basket persistence (Redis)                  |
+| ILogger           | Up     | In-process  | Structured logging                          |
+| ServerCallContext | Up     | gRPC        | User identity extraction from call metadata |
 
 **🛡️ Resilience:** Platform gRPC defaults; stateless (Redis-backed persistence).
 
@@ -832,27 +823,27 @@ scaling strategy, and health configuration. Source attribute rows have been remo
 
 #### 5.1.2 CatalogApi
 
-| 🏷️ Attribute | 📝 Value |
-| ------------------ | ---------------------------------------- |
-| **Component Name** | CatalogApi |
-| **Service Type** | REST API (Minimal API) |
+| 🏷️ Attribute       | 📝 Value               |
+| ------------------ | ---------------------- |
+| **Component Name** | CatalogApi             |
+| **Service Type**   | REST API (Minimal API) |
 
 **🔌 API Surface:**
 
-| 🔌 Type | 🔢 Count | 🔧 Protocol | 📝 Description |
-| ------- | ----- | --------- | -------------------------------------- |
-| GET | 8 | HTTP/JSON | Items paginated, by ID, semantic search, types, brands |
-| PUT | 2 | HTTP/JSON | Update item v1, update item v2 (breaking) |
-| POST | 1 | HTTP/JSON | Create catalog item |
-| DELETE | 1 | HTTP/JSON | Delete catalog item by ID |
+| 🔌 Type | 🔢 Count | 🔧 Protocol | 📝 Description                                         |
+| ------- | -------- | ----------- | ------------------------------------------------------ |
+| GET     | 8        | HTTP/JSON   | Items paginated, by ID, semantic search, types, brands |
+| PUT     | 2        | HTTP/JSON   | Update item v1, update item v2 (breaking)              |
+| POST    | 1        | HTTP/JSON   | Create catalog item                                    |
+| DELETE  | 1        | HTTP/JSON   | Delete catalog item by ID                              |
 
 **🔗 Dependencies:**
 
-| 📦 Dependency | ↔️ Dir | 🔌 Protocol | 💡 Purpose |
+| 📦 Dependency                   | ↔️ Dir | 🔌 Protocol          | 💡 Purpose                               |
 | ------------------------------- | ------ | -------------------- | ---------------------------------------- |
-| CatalogContext | Up | EF Core / PostgreSQL | Catalog item persistence |
-| ICatalogIntegrationEventService | Up | In-process | Event publish on price change |
-| Azure OpenAI / Ollama | Up | HTTP | Embedding generation for semantic search |
+| CatalogContext                  | Up     | EF Core / PostgreSQL | Catalog item persistence                 |
+| ICatalogIntegrationEventService | Up     | In-process           | Event publish on price change            |
+| Azure OpenAI / Ollama           | Up     | HTTP                 | Embedding generation for semantic search |
 
 **🛡️ Resilience:** AddStandardResilienceHandler() on outbound HTTP; EF Npgsql retry.
 
@@ -864,26 +855,26 @@ scaling strategy, and health configuration. Source attribute rows have been remo
 
 #### 5.1.3 OrdersApi
 
-| 🏷️ Attribute | 📝 Value |
-| ------------------ | ---------------------------------------- |
-| **Component Name** | OrdersApi |
-| **Service Type** | REST API (Minimal API) |
+| 🏷️ Attribute       | 📝 Value               |
+| ------------------ | ---------------------- |
+| **Component Name** | OrdersApi              |
+| **Service Type**   | REST API (Minimal API) |
 
 **🔌 API Surface:**
 
-| 🔌 Type | 🔢 Count | 🔧 Protocol | 📝 Description |
-| ------- | ----- | --------- | --------------------------------------------- |
-| GET | 3 | HTTP/JSON | Get order by ID, list by user, get card types |
-| POST | 2 | HTTP/JSON | Create order draft, create order (idempotent) |
-| PUT | 2 | HTTP/JSON | Cancel order, ship order |
+| 🔌 Type | 🔢 Count | 🔧 Protocol | 📝 Description                                |
+| ------- | -------- | ----------- | --------------------------------------------- |
+| GET     | 3        | HTTP/JSON   | Get order by ID, list by user, get card types |
+| POST    | 2        | HTTP/JSON   | Create order draft, create order (idempotent) |
+| PUT     | 2        | HTTP/JSON   | Cancel order, ship order                      |
 
 **🔗 Dependencies:**
 
-| 📦 Dependency | ↔️ Dir | 🔌 Protocol | 💡 Purpose |
-| ---------------- | ------ | -------------------- | --------------------------------------- |
-| IMediator | Up | In-process (MediatR) | Command dispatch |
-| IOrderQueries | Up | In-process (EF) | Read-side query (CQRS) |
-| IIdentityService | Up | In-process | Current user identity from JWT claims |
+| 📦 Dependency    | ↔️ Dir | 🔌 Protocol          | 💡 Purpose                            |
+| ---------------- | ------ | -------------------- | ------------------------------------- |
+| IMediator        | Up     | In-process (MediatR) | Command dispatch                      |
+| IOrderQueries    | Up     | In-process (EF)      | Read-side query (CQRS)                |
+| IIdentityService | Up     | In-process           | Current user identity from JWT claims |
 
 **🛡️ Resilience:** Transactional outbox; TransactionBehavior wraps commands; idempotency via IdentifiedCommandHandler.
 
@@ -895,25 +886,25 @@ scaling strategy, and health configuration. Source attribute rows have been remo
 
 #### 5.1.4 WebHooksApi
 
-| 🏷️ Attribute | 📝 Value |
-| ------------------ | ----------------------------------------- |
-| **Component Name** | WebHooksApi |
-| **Service Type** | REST API (Minimal API) |
+| 🏷️ Attribute       | 📝 Value               |
+| ------------------ | ---------------------- |
+| **Component Name** | WebHooksApi            |
+| **Service Type**   | REST API (Minimal API) |
 
 **🔌 API Surface:**
 
-| 🔌 Type | 🔢 Count | 🔧 Protocol | 📝 Description |
-| ------- | ----- | --------- | ----------------------------------------------- |
-| GET | 2 | HTTP/JSON | List subscriptions, get by ID |
-| POST | 1 | HTTP/JSON | Create subscription (with grant URL validation) |
-| DELETE | 1 | HTTP/JSON | Delete subscription |
+| 🔌 Type | 🔢 Count | 🔧 Protocol | 📝 Description                                  |
+| ------- | -------- | ----------- | ----------------------------------------------- |
+| GET     | 2        | HTTP/JSON   | List subscriptions, get by ID                   |
+| POST    | 1        | HTTP/JSON   | Create subscription (with grant URL validation) |
+| DELETE  | 1        | HTTP/JSON   | Delete subscription                             |
 
 **🔗 Dependencies:**
 
-| 📦 Dependency | ↔️ Dir | 🔌 Protocol | 💡 Purpose |
-| ---------------------- | ------ | -------------------- | ----------------------------------------------------------- |
-| WebhooksContext | Up | EF Core / PostgreSQL | Subscription persistence |
-| IGrantUrlTesterService | Up | HTTP | Grant URL handshake validation |
+| 📦 Dependency          | ↔️ Dir | 🔌 Protocol          | 💡 Purpose                     |
+| ---------------------- | ------ | -------------------- | ------------------------------ |
+| WebhooksContext        | Up     | EF Core / PostgreSQL | Subscription persistence       |
+| IGrantUrlTesterService | Up     | HTTP                 | Grant URL handshake validation |
 
 **🛡️ Resilience:** IHttpClientFactory with standard resilience; EF Npgsql retry.
 
@@ -925,24 +916,24 @@ scaling strategy, and health configuration. Source attribute rows have been remo
 
 #### 5.1.5 OrderingIntegrationEventService
 
-| 🏷️ Attribute | 📝 Value |
-| ------------------ | ----------------------------------------- |
+| 🏷️ Attribute       | 📝 Value                        |
+| ------------------ | ------------------------------- |
 | **Component Name** | OrderingIntegrationEventService |
-| **Service Type** | Application Service |
+| **Service Type**   | Application Service             |
 
 **🔌 API Surface:**
 
-| 🔌 Type | 🔢 Count | 🔧 Protocol | 📝 Description |
-| --------------- | ----- | ---------- | ------------------------------------------------ |
-| Internal method | 2 | In-process | PublishEventsThroughEventBusAsync, AddAndSaveEventAsync |
+| 🔌 Type         | 🔢 Count | 🔧 Protocol | 📝 Description                                          |
+| --------------- | -------- | ----------- | ------------------------------------------------------- |
+| Internal method | 2        | In-process  | PublishEventsThroughEventBusAsync, AddAndSaveEventAsync |
 
 **🔗 Dependencies:**
 
-| 📦 Dependency | ↔️ Dir | 🔌 Protocol | 💡 Purpose |
+| 📦 Dependency               | ↔️ Dir | 🔌 Protocol     | 💡 Purpose                       |
 | --------------------------- | ------ | --------------- | -------------------------------- |
-| IEventBus | Up | AMQP | Event publication to RabbitMQ |
-| IIntegrationEventLogService | Up | EF / PostgreSQL | Transactional outbox persistence |
-| OrderingContext | Up | EF / PostgreSQL | Shared EF transaction scope |
+| IEventBus                   | Up     | AMQP            | Event publication to RabbitMQ    |
+| IIntegrationEventLogService | Up     | EF / PostgreSQL | Transactional outbox persistence |
+| OrderingContext             | Up     | EF / PostgreSQL | Shared EF transaction scope      |
 
 **🛡️ Resilience:** Transactional outbox guarantees at-least-once delivery.
 
@@ -954,24 +945,24 @@ scaling strategy, and health configuration. Source attribute rows have been remo
 
 #### 5.1.6 BasketState (WebApp)
 
-| 🏷️ Attribute | 📝 Value |
-| ------------------ | ---------------------------------------- |
-| **Component Name** | BasketState |
-| **Service Type** | Application Service |
+| 🏷️ Attribute       | 📝 Value            |
+| ------------------ | ------------------- |
+| **Component Name** | BasketState         |
+| **Service Type**   | Application Service |
 
 **🔌 API Surface:**
 
-| 🔌 Type | 🔢 Count | 🔧 Protocol | 📝 Description |
-| --------------- | ----- | ---------- | -------------------------------------------------------------------- |
-| Internal method | 4 | In-process | GetBasketItemsAsync, AddAsync, SetQuantityAsync, CheckoutAsync |
+| 🔌 Type         | 🔢 Count | 🔧 Protocol | 📝 Description                                                 |
+| --------------- | -------- | ----------- | -------------------------------------------------------------- |
+| Internal method | 4        | In-process  | GetBasketItemsAsync, AddAsync, SetQuantityAsync, CheckoutAsync |
 
 **🔗 Dependencies:**
 
-| 📦 Dependency | ↔️ Dir | 🔌 Protocol | 💡 Purpose |
-| --------------------------- | ------ | --------- | ------------------------------------------ |
-| BasketService (gRPC client) | Up | gRPC | Basket read/write/delete |
-| CatalogService (HTTP) | Up | HTTP/JSON | Catalog item detail retrieval for checkout |
-| OrderingService (HTTP) | Up | HTTP/JSON | Order creation during checkout |
+| 📦 Dependency               | ↔️ Dir | 🔌 Protocol | 💡 Purpose                                 |
+| --------------------------- | ------ | ----------- | ------------------------------------------ |
+| BasketService (gRPC client) | Up     | gRPC        | Basket read/write/delete                   |
+| CatalogService (HTTP)       | Up     | HTTP/JSON   | Catalog item detail retrieval for checkout |
+| OrderingService (HTTP)      | Up     | HTTP/JSON   | Order creation during checkout             |
 
 **🛡️ Resilience:** Delegates to underlying gRPC/HTTP client resilience pipelines.
 
@@ -983,24 +974,24 @@ scaling strategy, and health configuration. Source attribute rows have been remo
 
 #### 5.1.7 GracePeriodManagerService
 
-| 🏷️ Attribute | 📝 Value |
-| ------------------ | ------------------------------------------------------------- |
+| 🏷️ Attribute       | 📝 Value                  |
+| ------------------ | ------------------------- |
 | **Component Name** | GracePeriodManagerService |
-| **Service Type** | Background Worker |
+| **Service Type**   | Background Worker         |
 
 **🔌 API Surface:**
 
-| 🔌 Type | 🔢 Count | 🔧 Protocol | 📝 Description |
-| ----------------- | ----- | ---------- | ------------------------------------ |
-| Background method | 1 | In-process | ExecuteAsync periodic polling loop |
+| 🔌 Type           | 🔢 Count | 🔧 Protocol | 📝 Description                     |
+| ----------------- | -------- | ----------- | ---------------------------------- |
+| Background method | 1        | In-process  | ExecuteAsync periodic polling loop |
 
 **🔗 Dependencies:**
 
-| 📦 Dependency | ↔️ Dir | 🔌 Protocol | 💡 Purpose |
-| --------------------- | ------ | ------------- | -------------------------------------------------- |
-| IServiceProvider | Up | In-process | Scoped DB access |
-| IEventBus | Up | AMQP | GracePeriodConfirmedIntegrationEvent publication |
-| BackgroundTaskOptions | Up | Configuration | Grace period check interval |
+| 📦 Dependency         | ↔️ Dir | 🔌 Protocol   | 💡 Purpose                                       |
+| --------------------- | ------ | ------------- | ------------------------------------------------ |
+| IServiceProvider      | Up     | In-process    | Scoped DB access                                 |
+| IEventBus             | Up     | AMQP          | GracePeriodConfirmedIntegrationEvent publication |
+| BackgroundTaskOptions | Up     | Configuration | Grace period check interval                      |
 
 **🛡️ Resilience:** Relies on Aspire worker restart policy.
 
@@ -1012,22 +1003,22 @@ scaling strategy, and health configuration. Source attribute rows have been remo
 
 #### 5.1.8 OrderStatusNotificationService
 
-| 🏷️ Attribute | 📝 Value |
-| ------------------ | ---------------------------------------- |
+| 🏷️ Attribute       | 📝 Value                       |
+| ------------------ | ------------------------------ |
 | **Component Name** | OrderStatusNotificationService |
-| **Service Type** | Application Service |
+| **Service Type**   | Application Service            |
 
 **🔌 API Surface:**
 
-| 🔌 Type | 🔢 Count | 🔧 Protocol | 📝 Description |
-| --------------- | ----- | ---------- | --------------------------------------------------------------------------- |
-| Internal method | 3 | In-process | SubscribeToOrderStatusNotifications, UnsubscribeFromOrderStatusNotifications, NotifyOrderStatusChangedAsync |
+| 🔌 Type         | 🔢 Count | 🔧 Protocol | 📝 Description                                                                                              |
+| --------------- | -------- | ----------- | ----------------------------------------------------------------------------------------------------------- |
+| Internal method | 3        | In-process  | SubscribeToOrderStatusNotifications, UnsubscribeFromOrderStatusNotifications, NotifyOrderStatusChangedAsync |
 
 **🔗 Dependencies:**
 
-| 📦 Dependency | ↔️ Dir | 🔌 Protocol | 💡 Purpose |
-| ------------------------------ | --- | ---------- | --------------------------------------- |
-| (none — pure in-process) | — | In-process | Dictionary-based subscriber management |
+| 📦 Dependency            | ↔️ Dir | 🔌 Protocol | 💡 Purpose                             |
+| ------------------------ | ------ | ----------- | -------------------------------------- |
+| (none — pure in-process) | —      | In-process  | Dictionary-based subscriber management |
 
 **🛡️ Resilience:** In-memory; fire-and-forget notifications.
 
@@ -1117,22 +1108,22 @@ flowchart TB
 
 #### 5.2.1 eShop.AppHost
 
-| 🏷️ Attribute | 📝 Value |
-| ------------------ | --------------------------------- |
-| **Component Name** | eShop.AppHost |
-| **Service Type** | AppHost / Orchestrator |
+| 🏷️ Attribute       | 📝 Value               |
+| ------------------ | ---------------------- |
+| **Component Name** | eShop.AppHost          |
+| **Service Type**   | AppHost / Orchestrator |
 
 **🔌 API Surface:** DistributedApplicationBuilder topology declaration (Aspire builder API, 1 entrypoint).
 
 **🔗 Dependencies:**
 
-| 📦 Dependency | ↔️ Dir | 🔌 Protocol | 💡 Purpose |
-| -------------------------------------- | ------ | -------- | ------------------------------------------------------------ |
-| Aspire.Hosting.RabbitMQ | Up | Aspire | RabbitMQ event bus provisioning |
-| Aspire.Hosting.Redis | Up | Aspire | Redis basket cache provisioning |
-| Aspire.Hosting.PostgreSQL | Up | Aspire | PostgreSQL databases (catalog, identity, ordering, webhooks) |
-| Aspire.Hosting.Yarp | Up | Aspire | YARP Mobile BFF provisioning |
-| CommunityToolkit.Aspire.Hosting.Ollama | Up | Aspire | Optional local LLM for AI features |
+| 📦 Dependency                          | ↔️ Dir | 🔌 Protocol | 💡 Purpose                                                   |
+| -------------------------------------- | ------ | ----------- | ------------------------------------------------------------ |
+| Aspire.Hosting.RabbitMQ                | Up     | Aspire      | RabbitMQ event bus provisioning                              |
+| Aspire.Hosting.Redis                   | Up     | Aspire      | Redis basket cache provisioning                              |
+| Aspire.Hosting.PostgreSQL              | Up     | Aspire      | PostgreSQL databases (catalog, identity, ordering, webhooks) |
+| Aspire.Hosting.Yarp                    | Up     | Aspire      | YARP Mobile BFF provisioning                                 |
+| CommunityToolkit.Aspire.Hosting.Ollama | Up     | Aspire      | Optional local LLM for AI features                           |
 
 **🛡️ Resilience:** Platform-managed Aspire container restart policies.
 
@@ -1144,21 +1135,21 @@ flowchart TB
 
 #### 5.2.2 eShop.ServiceDefaults
 
-| 🏷️ Attribute | 📝 Value |
-| ------------------ | --------------------------------------------- |
-| **Component Name** | eShop.ServiceDefaults |
-| **Service Type** | Shared Library Component |
+| 🏷️ Attribute       | 📝 Value                 |
+| ------------------ | ------------------------ |
+| **Component Name** | eShop.ServiceDefaults    |
+| **Service Type**   | Shared Library Component |
 
 **🔌 API Surface:** Extension methods (6): AddServiceDefaults, AddBasicServiceDefaults, ConfigureOpenTelemetry, MapDefaultEndpoints, AddDefaultAuthentication, AddDefaultOpenApi.
 
 **🔗 Dependencies:**
 
-| 📦 Dependency | ↔️ Dir | 🔌 Protocol | 💡 Purpose |
+| 📦 Dependency                                 | ↔️ Dir | 🔌 Protocol  | 💡 Purpose                         |
 | --------------------------------------------- | ------ | ------------ | ---------------------------------- |
-| Microsoft.Extensions.Http.Resilience | Up | In-process | Standard HTTP resilience pipelines |
-| Microsoft.Extensions.ServiceDiscovery | Up | DNS / Aspire | Service name resolution |
-| OpenTelemetry.\* | Up | OTLP | Distributed telemetry export |
-| Microsoft.AspNetCore.Authentication.JwtBearer | Up | HTTP | JWT bearer middleware |
+| Microsoft.Extensions.Http.Resilience          | Up     | In-process   | Standard HTTP resilience pipelines |
+| Microsoft.Extensions.ServiceDiscovery         | Up     | DNS / Aspire | Service name resolution            |
+| OpenTelemetry.\*                              | Up     | OTLP         | Distributed telemetry export       |
+| Microsoft.AspNetCore.Authentication.JwtBearer | Up     | HTTP         | JWT bearer middleware              |
 
 **🛡️ Resilience:** IS the resilience provider for all services.
 
@@ -1170,20 +1161,20 @@ flowchart TB
 
 #### 5.2.3 EventBusRabbitMQ
 
-| 🏷️ Attribute | 📝 Value |
-| ------------------ | ------------------------------------------------------------------ |
-| **Component Name** | EventBusRabbitMQ |
-| **Service Type** | Infrastructure Component |
+| 🏷️ Attribute       | 📝 Value                 |
+| ------------------ | ------------------------ |
+| **Component Name** | EventBusRabbitMQ         |
+| **Service Type**   | Infrastructure Component |
 
 **🔌 API Surface:** Extension method AddRabbitMqEventBus() — registers singleton IEventBus + IHostedService consumer.
 
 **🔗 Dependencies:**
 
-| 📦 Dependency | ↔️ Dir | 🔌 Protocol | 💡 Purpose |
-| ---------------------- | ------ | ---------- | ------------------------------------------------ |
-| Aspire.RabbitMQ.Client | Up | AMQP | Managed RabbitMQ connection |
-| RabbitMQTelemetry | Up | In-process | ActivitySource for distributed trace propagation |
-| IServiceScopeFactory | Up | In-process | Scoped handler resolution per message |
+| 📦 Dependency          | ↔️ Dir | 🔌 Protocol | 💡 Purpose                                       |
+| ---------------------- | ------ | ----------- | ------------------------------------------------ |
+| Aspire.RabbitMQ.Client | Up     | AMQP        | Managed RabbitMQ connection                      |
+| RabbitMQTelemetry      | Up     | In-process  | ActivitySource for distributed trace propagation |
+| IServiceScopeFactory   | Up     | In-process  | Scoped handler resolution per message            |
 
 **🛡️ Resilience:** Publisher confirms enabled; manual consumer ACK; Aspire reconnection policy.
 
@@ -1197,10 +1188,10 @@ flowchart TB
 
 #### 5.3.1 IEventBus
 
-| 🏷️ Attribute | 📝 Value |
-| ------------------ | ------------------------------------------ |
-| **Component Name** | IEventBus |
-| **Service Type** | Event Bus Abstraction |
+| 🏷️ Attribute       | 📝 Value              |
+| ------------------ | --------------------- |
+| **Component Name** | IEventBus             |
+| **Service Type**   | Event Bus Abstraction |
 
 **📜 Contract:** Task PublishAsync(IntegrationEvent @event)
 
@@ -1210,10 +1201,10 @@ flowchart TB
 
 #### 5.3.2 ICatalogService
 
-| 🏷️ Attribute | 📝 Value |
-| ------------------ | ----------------------------------------------------- |
-| **Component Name** | ICatalogService |
-| **Service Type** | Service Interface |
+| 🏷️ Attribute       | 📝 Value          |
+| ------------------ | ----------------- |
+| **Component Name** | ICatalogService   |
+| **Service Type**   | Service Interface |
 
 **📜 Contract:** GetCatalogItem(id), GetCatalogItems(pageIndex, pageSize, brand, type), GetCatalogItemsWithSemanticRelevance(page, take, text), GetBrands(), GetTypes()
 
@@ -1223,10 +1214,10 @@ flowchart TB
 
 #### 5.3.3 IOrderQueries
 
-| 🏷️ Attribute | 📝 Value |
-| ------------------ | ---------------------------------------------------------- |
-| **Component Name** | IOrderQueries |
-| **Service Type** | Query Interface (CQRS Read Side) |
+| 🏷️ Attribute       | 📝 Value                         |
+| ------------------ | -------------------------------- |
+| **Component Name** | IOrderQueries                    |
+| **Service Type**   | Query Interface (CQRS Read Side) |
 
 **📜 Contract:** GetOrderAsync(id), GetOrdersFromUserAsync(userId), GetCardTypesAsync()
 
@@ -1236,10 +1227,10 @@ flowchart TB
 
 #### 5.4.1 WebApp → Basket.API (gRPC)
 
-| 🏷️ Attribute | 📝 Value |
-| ------------------ | ----------------------------------------- |
+| 🏷️ Attribute       | 📝 Value                            |
+| ------------------ | ----------------------------------- |
 | **Component Name** | WebApp-to-Basket gRPC Collaboration |
-| **Service Type** | Service Collaboration |
+| **Service Type**   | Service Collaboration               |
 
 **⚙️ Orchestration:** AddGrpcClient<Basket.BasketClient>() with AddAuthToken(). Service: https+http://basket-api Aspire service discovery. Used by BasketState for basket CRUD.
 
@@ -1247,10 +1238,10 @@ flowchart TB
 
 #### 5.4.2 Order Status Event-Driven Saga
 
-| 🏷️ Attribute | 📝 Value |
-| ------------------ | ---------------------------------------------- |
+| 🏷️ Attribute       | 📝 Value                   |
+| ------------------ | -------------------------- |
 | **Component Name** | Order Lifecycle Event Saga |
-| **Service Type** | Event-Driven Collaboration |
+| **Service Type**   | Event-Driven Collaboration |
 
 **⚙️ Orchestration:** Choreography-based saga across OrderProcessor, Ordering.API, Catalog.API, PaymentProcessor, WebApp, Webhooks.API spanning 13 integration events.
 
@@ -1260,10 +1251,10 @@ flowchart TB
 
 #### 5.5.1 Checkout Function
 
-| 🏷️ Attribute | 📝 Value |
-| ------------------ | ----------------------------------------- |
-| **Component Name** | Checkout |
-| **Service Type** | Business Function |
+| 🏷️ Attribute       | 📝 Value          |
+| ------------------ | ----------------- |
+| **Component Name** | Checkout          |
+| **Service Type**   | Business Function |
 
 **🧠 Logic:** Retrieves basket items, maps to CreateOrderRequest with user address and payment card, POSTs to Ordering.API, then deletes basket on success.
 
@@ -1273,10 +1264,10 @@ flowchart TB
 
 #### 5.5.2 Idempotent Command Processing
 
-| 🏷️ Attribute | 📝 Value |
-| ------------------ | ---------------------------------------------------------------------- |
+| 🏷️ Attribute       | 📝 Value                      |
+| ------------------ | ----------------------------- |
 | **Component Name** | Idempotent Command Processing |
-| **Service Type** | Business Function |
+| **Service Type**   | Business Function             |
 
 **🧠 Logic:** IdentifiedCommandHandler<T> wraps every command. Calls IRequestManager.ExistAsync(id) before dispatching; returns cached result if duplicate. Guarantees exactly-once semantics.
 
@@ -1286,10 +1277,10 @@ flowchart TB
 
 #### 5.6.1 RabbitMQ AMQP Interactions
 
-| 🏷️ Attribute | 📝 Value |
-| ------------------ | --------------------------------------------- |
+| 🏷️ Attribute       | 📝 Value                        |
+| ------------------ | ------------------------------- |
 | **Component Name** | RabbitMQ Event Bus Interactions |
-| **Service Type** | Async Message Interaction |
+| **Service Type**   | Async Message Interaction       |
 
 **🔌 Protocol:** AMQP 0-9-1 direct exchange shop_event_bus; System.Text.Json serialization; per-event routing key; per-service durable queue.
 
@@ -1301,12 +1292,13 @@ flowchart TB
 
 #### 5.7.1 Integration Event Base
 
-| 🏷️ Attribute | 📝 Value |
-| ------------------ | -------------------------------------------- |
-| **Component Name** | IntegrationEvent |
-| **Service Type** | Base Domain Event |
+| 🏷️ Attribute       | 📝 Value          |
+| ------------------ | ----------------- |
+| **Component Name** | IntegrationEvent  |
+| **Service Type**   | Base Domain Event |
 
-**📜 Schema:** ecord IntegrationEvent { Guid Id; DateTime CreationDate }
+**📜 Schema:**
+ecord IntegrationEvent { Guid Id; DateTime CreationDate }
 
 **📬 Subscription Pattern:** AddSubscription<TEvent, THandler>() using keyed DI.
 
@@ -1399,10 +1391,10 @@ flowchart LR
 
 #### 5.8.1 BasketItem (API Model)
 
-| 🏷️ Attribute | 📝 Value |
-| ------------------ | --------------------------------------- |
+| 🏷️ Attribute       | 📝 Value   |
+| ------------------ | ---------- |
 | **Component Name** | BasketItem |
-| **Service Type** | Domain DTO |
+| **Service Type**   | Domain DTO |
 
 **📋 Structure:** string Id, int ProductId, string ProductName, decimal UnitPrice, decimal OldUnitPrice, int Quantity, string PictureUrl
 
@@ -1412,10 +1404,10 @@ flowchart LR
 
 #### 5.8.2 CreateOrderRequest
 
-| 🏷️ Attribute | 📝 Value |
-| ------------------ | ------------------------------------------ |
+| 🏷️ Attribute       | 📝 Value           |
+| ------------------ | ------------------ |
 | **Component Name** | CreateOrderRequest |
-| **Service Type** | Request DTO |
+| **Service Type**   | Request DTO        |
 
 **📋 Structure:** Shipping address (City, Street, State, Country, ZipCode); payment (CardNumber, CardHolderName, CardExpiration, CardSecurityNumber, CardTypeId); Buyer; Items: List<BasketItem>
 
@@ -1427,10 +1419,10 @@ flowchart LR
 
 #### 5.9.1 Transactional Outbox Pattern
 
-| 🏷️ Attribute | 📝 Value |
-| ------------------ | ------------------------------------------------------------- |
+| 🏷️ Attribute       | 📝 Value                                     |
+| ------------------ | -------------------------------------------- |
 | **Component Name** | Transactional Outbox (IntegrationEventLogEF) |
-| **Service Type** | Outbox Pattern |
+| **Service Type**   | Outbox Pattern                               |
 
 **🔌 Pattern Type:** Transactional Outbox
 
@@ -1446,10 +1438,10 @@ flowchart LR
 
 #### 5.9.2 gRPC Contract-First Pattern
 
-| 🏷️ Attribute | 📝 Value |
-| ------------------ | -------------------------------------- |
+| 🏷️ Attribute       | 📝 Value             |
+| ------------------ | -------------------- |
 | **Component Name** | Basket gRPC Contract |
-| **Service Type** | Contract-First RPC |
+| **Service Type**   | Contract-First RPC   |
 
 **🔌 Pattern Type:** Request/Response
 
@@ -1463,10 +1455,10 @@ flowchart LR
 
 #### 5.9.3 HTTP Client Factory with Resilience
 
-| 🏷️ Attribute | 📝 Value |
-| ------------------ | --------------------------------------------- |
+| 🏷️ Attribute       | 📝 Value                        |
+| ------------------ | ------------------------------- |
 | **Component Name** | Standard HTTP Client Resilience |
-| **Service Type** | HTTP Integration Pattern |
+| **Service Type**   | HTTP Integration Pattern        |
 
 **🔌 Pattern Type:** Request/Response with resilience pipeline
 
@@ -1480,10 +1472,10 @@ flowchart LR
 
 #### 5.10.1 basket.proto — gRPC Contract
 
-| 🏷️ Attribute | 📝 Value |
-| ------------------ | -------------------------------------- |
-| **Component Name** | basket.proto |
-| **Service Type** | Proto Contract |
+| 🏷️ Attribute       | 📝 Value       |
+| ------------------ | -------------- |
+| **Component Name** | basket.proto   |
+| **Service Type**   | Proto Contract |
 
 **📋 Documentation:** Proto3; csharp_namespace = "eShop.Basket.API.Grpc". Service BasketApi.Basket with 3 unary RPCs.
 
@@ -1493,10 +1485,10 @@ flowchart LR
 
 #### 5.10.2 OpenAPI v1/v2 Contracts (REST Services)
 
-| 🏷️ Attribute | 📝 Value |
-| ------------------ | ---------------------------------------------------- |
+| 🏷️ Attribute       | 📝 Value               |
+| ------------------ | ---------------------- |
 | **Component Name** | REST OpenAPI Contracts |
-| **Service Type** | OpenAPI Spec |
+| **Service Type**   | OpenAPI Spec           |
 
 **📋 Documentation:** Generated at startup; served at /scalar/v1 (dev). Versions 1, 2 per service.
 
@@ -1508,27 +1500,26 @@ flowchart LR
 
 #### 5.11.1 Key Framework and Platform Dependencies
 
-| 🏷️ Attribute | 📝 Value |
-| ------------------ | ----------------------------------------- |
+| 🏷️ Attribute       | 📝 Value                    |
+| ------------------ | --------------------------- |
 | **Component Name** | Core Framework Dependencies |
-| **Service Type** | Platform Dependencies |
+| **Service Type**   | Platform Dependencies       |
 
 **📦 Dependency Specifications:**
 
-| 📦 Package | 🔢 Version | 🏗️ Used By | 💡 Purpose |
-| ------------------------------------ | ------- | --------------------------- | ------------------ |
-| Aspire.AppHost.Sdk | 13.1.0 | AppHost | Orchestration |
-| Grpc.AspNetCore | Latest | Basket.API | gRPC server |
-| Grpc.Net.ClientFactory | Latest | WebApp | gRPC typed client |
-| MediatR | Latest | Ordering.API | CQRS pipeline |
-| FluentValidation | Latest | Ordering.API | Command validation |
-| Duende.IdentityServer | Latest | Identity.API | OIDC server |
-| Pgvector.EntityFrameworkCore | Latest | Catalog.API | AI vector search |
-| Asp.Versioning.Http | Latest | Catalog, Ordering, Webhooks | API versioning |
-| Microsoft.Extensions.Http.Resilience | Latest | All (ServiceDefaults) | HTTP resilience |
+| 📦 Package                           | 🔢 Version | 🏗️ Used By                  | 💡 Purpose         |
+| ------------------------------------ | ---------- | --------------------------- | ------------------ |
+| Aspire.AppHost.Sdk                   | 13.1.0     | AppHost                     | Orchestration      |
+| Grpc.AspNetCore                      | Latest     | Basket.API                  | gRPC server        |
+| Grpc.Net.ClientFactory               | Latest     | WebApp                      | gRPC typed client  |
+| MediatR                              | Latest     | Ordering.API                | CQRS pipeline      |
+| FluentValidation                     | Latest     | Ordering.API                | Command validation |
+| Duende.IdentityServer                | Latest     | Identity.API                | OIDC server        |
+| Pgvector.EntityFrameworkCore         | Latest     | Catalog.API                 | AI vector search   |
+| Asp.Versioning.Http                  | Latest     | Catalog, Ordering, Webhooks | API versioning     |
+| Microsoft.Extensions.Http.Resilience | Latest     | All (ServiceDefaults)       | HTTP resilience    |
 
 **🔢 Versioning:** Managed via Directory.Packages.props central package management.
-
 
 ---
 
@@ -1540,86 +1531,86 @@ This section documents all service-to-service communication channels, infrastruc
 
 ### 8.1 🌐 Service-to-Service Call Graph
 
-| 🔀 Caller | 🎯 Callee | 📡 Protocol | 🔒 Auth | 📝 Purpose |
-| -------------- | --------------- | ------------ | ---------- | -------------------------------- |
-| WebApp | Basket.API | gRPC/HTTP2 | OIDC token | Read/write shopping basket |
-| WebApp | Catalog.API | REST/HTTP | None | Browse catalog items |
-| WebApp | Ordering.API | REST/HTTP | OIDC token | Submit and track orders |
-| WebApp | Identity.API | OIDC | N/A | Authentication |
-| WebhookClient | Webhooks.API | REST/HTTP | OIDC token | Register webhook subscriptions |
-| WebApp | WebhookClient | Browser | Cookie | Demo webhook client UI |
-| Ordering.API | Basket.API | gRPC | OIDC token | Clear basket on checkout |
-| OrderProcessor | Ordering.API | REST/HTTP | Client cred | Drive order state machine |
-| PaymentProcessor | EventBus | AMQP | Broker auth | Simulate payment events |
+| 🔀 Caller        | 🎯 Callee     | 📡 Protocol | 🔒 Auth     | 📝 Purpose                     |
+| ---------------- | ------------- | ----------- | ----------- | ------------------------------ |
+| WebApp           | Basket.API    | gRPC/HTTP2  | OIDC token  | Read/write shopping basket     |
+| WebApp           | Catalog.API   | REST/HTTP   | None        | Browse catalog items           |
+| WebApp           | Ordering.API  | REST/HTTP   | OIDC token  | Submit and track orders        |
+| WebApp           | Identity.API  | OIDC        | N/A         | Authentication                 |
+| WebhookClient    | Webhooks.API  | REST/HTTP   | OIDC token  | Register webhook subscriptions |
+| WebApp           | WebhookClient | Browser     | Cookie      | Demo webhook client UI         |
+| Ordering.API     | Basket.API    | gRPC        | OIDC token  | Clear basket on checkout       |
+| OrderProcessor   | Ordering.API  | REST/HTTP   | Client cred | Drive order state machine      |
+| PaymentProcessor | EventBus      | AMQP        | Broker auth | Simulate payment events        |
 
 ---
 
 ### 8.2 🗄️ Database Dependency Map
 
-| 🏗️ Service | 🗃️ Store | 🔧 Access | 🔐 Auth |
-| --------------- | --------------------- | ----------- | -------------------- |
-| Basket.API | Redis (Cache) | StackExchange.Redis | App connection string |
-| Catalog.API | PostgreSQL | EF Core 9 | Aspire connection |
-| Ordering.API | PostgreSQL | EF Core 9 | Aspire connection |
-| Ordering.Infrastructure | PostgreSQL | EF Core 9 (shared) | Aspire connection |
-| Identity.API | PostgreSQL | EF Core 9 | Aspire connection |
-| Webhooks.API | PostgreSQL | EF Core 9 | Aspire connection |
-| IntegrationEventLogEF | PostgreSQL (shared) | EF Core 9 | Shared context |
+| 🏗️ Service              | 🗃️ Store            | 🔧 Access           | 🔐 Auth               |
+| ----------------------- | ------------------- | ------------------- | --------------------- |
+| Basket.API              | Redis (Cache)       | StackExchange.Redis | App connection string |
+| Catalog.API             | PostgreSQL          | EF Core 9           | Aspire connection     |
+| Ordering.API            | PostgreSQL          | EF Core 9           | Aspire connection     |
+| Ordering.Infrastructure | PostgreSQL          | EF Core 9 (shared)  | Aspire connection     |
+| Identity.API            | PostgreSQL          | EF Core 9           | Aspire connection     |
+| Webhooks.API            | PostgreSQL          | EF Core 9           | Aspire connection     |
+| IntegrationEventLogEF   | PostgreSQL (shared) | EF Core 9           | Shared context        |
 
 ---
 
 ### 8.3 🌍 External API Integrations
 
-| 🔌 Integration | 📡 Type | 🏗️ Consumer | 🎯 Purpose |
-| ------------------------------ | ------- | ------------ | -------------------------------------- |
-| Azure OpenAI (Embedding Model) | REST/SDK | Catalog.API | Generate catalog text embeddings |
-| Azure OpenAI (Chat Model) | REST/SDK | Catalog.API | AI-powered semantic catalog search |
-| RabbitMQ | AMQP | All services | Event bus message broker |
+| 🔌 Integration                 | 📡 Type  | 🏗️ Consumer  | 🎯 Purpose                         |
+| ------------------------------ | -------- | ------------ | ---------------------------------- |
+| Azure OpenAI (Embedding Model) | REST/SDK | Catalog.API  | Generate catalog text embeddings   |
+| Azure OpenAI (Chat Model)      | REST/SDK | Catalog.API  | AI-powered semantic catalog search |
+| RabbitMQ                       | AMQP     | All services | Event bus message broker           |
 
 ---
 
 ### 8.4 📨 Event Subscription Map
 
-| 📤 Publisher | 📬 Event | 📥 Subscriber(s) | 💡 Effect |
-| --------------- | ------------------------------------------- | ----------------------- | ------------------------------------------- |
-| Ordering.API | GracePeriodConfirmedIntegrationEvent | OrderProcessor | Advances order to awaiting stock validation |
-| Ordering.API | OrderStartedIntegrationEvent | Basket.API | Clears basket for buyer |
-| Ordering.API | OrderStatusChangedToAwaitingValidation | Catalog.API, WebApp | Reserves stock; notifies UI |
-| Catalog.API | OrderStockConfirmedIntegrationEvent | Ordering.API | Confirms stock; auto-advances state |
-| Catalog.API | OrderStockRejectedIntegrationEvent | Ordering.API | Cancels order; releases stock |
-| Ordering.API | OrderStatusChangedToStockConfirmed | PaymentProcessor, WebApp | Triggers payment simulation; updates UI |
-| PaymentProcessor | OrderPaymentSucceededIntegrationEvent | Ordering.API | Advances to Paid |
-| PaymentProcessor | OrderPaymentFailedIntegrationEvent | Ordering.API | Cancels order |
-| Ordering.API | OrderStatusChangedToSubmitted | WebApp | UI order-submitted notification |
-| Ordering.API | OrderStatusChangedToCancelled | WebApp | UI cancellation notification |
-| Ordering.API | OrderStatusChangedToShipped | WebApp, Webhooks.API | UI shipped notification; webhook delivery |
-| Ordering.API | OrderStatusChangedToPaid | Catalog.API, WebApp, Webhooks.API | Decrease catalog stock; UI paid; webhook |
-| Catalog.API | ProductPriceChangedIntegrationEvent | Basket.API | Updates basket prices |
+| 📤 Publisher     | 📬 Event                               | 📥 Subscriber(s)                  | 💡 Effect                                   |
+| ---------------- | -------------------------------------- | --------------------------------- | ------------------------------------------- |
+| Ordering.API     | GracePeriodConfirmedIntegrationEvent   | OrderProcessor                    | Advances order to awaiting stock validation |
+| Ordering.API     | OrderStartedIntegrationEvent           | Basket.API                        | Clears basket for buyer                     |
+| Ordering.API     | OrderStatusChangedToAwaitingValidation | Catalog.API, WebApp               | Reserves stock; notifies UI                 |
+| Catalog.API      | OrderStockConfirmedIntegrationEvent    | Ordering.API                      | Confirms stock; auto-advances state         |
+| Catalog.API      | OrderStockRejectedIntegrationEvent     | Ordering.API                      | Cancels order; releases stock               |
+| Ordering.API     | OrderStatusChangedToStockConfirmed     | PaymentProcessor, WebApp          | Triggers payment simulation; updates UI     |
+| PaymentProcessor | OrderPaymentSucceededIntegrationEvent  | Ordering.API                      | Advances to Paid                            |
+| PaymentProcessor | OrderPaymentFailedIntegrationEvent     | Ordering.API                      | Cancels order                               |
+| Ordering.API     | OrderStatusChangedToSubmitted          | WebApp                            | UI order-submitted notification             |
+| Ordering.API     | OrderStatusChangedToCancelled          | WebApp                            | UI cancellation notification                |
+| Ordering.API     | OrderStatusChangedToShipped            | WebApp, Webhooks.API              | UI shipped notification; webhook delivery   |
+| Ordering.API     | OrderStatusChangedToPaid               | Catalog.API, WebApp, Webhooks.API | Decrease catalog stock; UI paid; webhook    |
+| Catalog.API      | ProductPriceChangedIntegrationEvent    | Basket.API                        | Updates basket prices                       |
 
 ---
 
 ### 8.5 🔁 Integration Pattern Matrix
 
-| 🧩 Pattern | 🏗️ Services | 📦 Implementation | 💡 Benefit |
-| ------------------------------- | ------------------------------ | ------------------------------------------------ | ----------------------------------------- |
-| Transactional Outbox | All EF-based services | IntegrationEventLogEF, EF ambient transactions | Guaranteed exactly-once event publish |
-| gRPC Contract-First | Basket.API, WebApp, Ordering | asket.proto, Protobuf codegen | Strongly-typed, efficient service contract |
-| HTTP Client Factory + Resilience | All via ServiceDefaults | AddStandardResilienceHandler() | Retry, circuit-breaker, timeout baked in |
-| Redis Cache-Aside | Basket.API | IBasketRepository Redis adapter | Low-latency basket reads |
-| YARP Reverse Proxy | WebApp (BFF path) | YARP middleware | Token forwarding, single ingress |
-| Choreography Saga | Ordering flow | Integration events over RabbitMQ | Distributed transaction without 2PC |
-| Observer (In-Process) | WebApp | Blazor state + NotificationService | Real-time SSE/WebSocket UI updates |
+| 🧩 Pattern                       | 🏗️ Services                  | 📦 Implementation                              | 💡 Benefit                                 |
+| -------------------------------- | ---------------------------- | ---------------------------------------------- | ------------------------------------------ |
+| Transactional Outbox             | All EF-based services        | IntegrationEventLogEF, EF ambient transactions | Guaranteed exactly-once event publish      |
+| gRPC Contract-First              | Basket.API, WebApp, Ordering | asket.proto, Protobuf codegen                  | Strongly-typed, efficient service contract |
+| HTTP Client Factory + Resilience | All via ServiceDefaults      | AddStandardResilienceHandler()                 | Retry, circuit-breaker, timeout baked in   |
+| Redis Cache-Aside                | Basket.API                   | IBasketRepository Redis adapter                | Low-latency basket reads                   |
+| YARP Reverse Proxy               | WebApp (BFF path)            | YARP middleware                                | Token forwarding, single ingress           |
+| Choreography Saga                | Ordering flow                | Integration events over RabbitMQ               | Distributed transaction without 2PC        |
+| Observer (In-Process)            | WebApp                       | Blazor state + NotificationService             | Real-time SSE/WebSocket UI updates         |
 
 ---
 
 ### 8.6 ⚡ Circuit Breaker & Resilience Configuration
 
-| 🏗️ Service | 🔧 Strategy | ⚙️ Configuration | 📝 Notes |
-| -------------- | -------------------- | -------------------------------------- | -------------------------------- |
-| All (default) | Standard Resilience | Retry × 3, exp backoff | Via AddStandardResilienceHandler |
-| All (default) | Circuit Breaker | 5 failures / 30 s break | Via AddStandardResilienceHandler |
-| All (default) | Timeout | 30 s per request | Via AddStandardResilienceHandler |
-| Ordering.API | gRPC timeout | Deadline on client stub | Cascade protection on basket clear |
+| 🏗️ Service    | 🔧 Strategy         | ⚙️ Configuration        | 📝 Notes                           |
+| ------------- | ------------------- | ----------------------- | ---------------------------------- |
+| All (default) | Standard Resilience | Retry × 3, exp backoff  | Via AddStandardResilienceHandler   |
+| All (default) | Circuit Breaker     | 5 failures / 30 s break | Via AddStandardResilienceHandler   |
+| All (default) | Timeout             | 30 s per request        | Via AddStandardResilienceHandler   |
+| Ordering.API  | gRPC timeout        | Deadline on client stub | Cascade protection on basket clear |
 
 ---
 
@@ -1630,61 +1621,61 @@ This section documents all service-to-service communication channels, infrastruc
 `mermaid
 %%{ init: { "theme": "base" } }%%
 graph LR
-  accTitle: Service Integration Map
-  accDescr: Full integration topology of eShop microservices showing all call paths and event channels
+accTitle: Service Integration Map
+accDescr: Full integration topology of eShop microservices showing all call paths and event channels
 
-  %% PHASE 1 - GOVERNANCE
-  %% Standard: AZURE/FLUENT v2.0
-  %% PHASE 2 - NODES
-  WA[WebApp BFF]
-  ID[Identity.API]
-  BK[Basket.API]
-  CT[Catalog.API]
-  OR[Ordering.API]
-  OP[OrderProcessor]
-  PP[PaymentProcessor]
-  WH[Webhooks.API]
-  RD[(Redis)]
-  PG[(PostgreSQL)]
-  RB([RabbitMQ])
-  AO([Azure OpenAI])
+%% PHASE 1 - GOVERNANCE
+%% Standard: AZURE/FLUENT v2.0
+%% PHASE 2 - NODES
+WA[WebApp BFF]
+ID[Identity.API]
+BK[Basket.API]
+CT[Catalog.API]
+OR[Ordering.API]
+OP[OrderProcessor]
+PP[PaymentProcessor]
+WH[Webhooks.API]
+RD[(Redis)]
+PG[(PostgreSQL)]
+RB([RabbitMQ])
+AO([Azure OpenAI])
 
-  %% PHASE 3 - SYNC EDGES
-  WA -->|OIDC| ID
-  WA -->|gRPC| BK
-  WA -->|REST| CT
-  WA -->|REST| OR
-  OR -->|gRPC clear| BK
-  OP -->|REST drive| OR
-  CT -->|vector search| AO
+%% PHASE 3 - SYNC EDGES
+WA -->|OIDC| ID
+WA -->|gRPC| BK
+WA -->|REST| CT
+WA -->|REST| OR
+OR -->|gRPC clear| BK
+OP -->|REST drive| OR
+CT -->|vector search| AO
 
-  %% PHASE 4 - ASYNC EDGES
-  BK -.->|events| RB
-  CT -.->|events| RB
-  OR -.->|events| RB
-  PP -.->|events| RB
-  RB -.->|dispatch| BK
-  RB -.->|dispatch| CT
-  RB -.->|dispatch| OR
-  RB -.->|dispatch| PP
-  RB -.->|dispatch| WA
-  RB -.->|dispatch| WH
+%% PHASE 4 - ASYNC EDGES
+BK -.->|events| RB
+CT -.->|events| RB
+OR -.->|events| RB
+PP -.->|events| RB
+RB -.->|dispatch| BK
+RB -.->|dispatch| CT
+RB -.->|dispatch| OR
+RB -.->|dispatch| PP
+RB -.->|dispatch| WA
+RB -.->|dispatch| WH
 
-  %% PHASE 5 - DATA STORES
-  BK --- RD
-  CT --- PG
-  OR --- PG
-  ID --- PG
-  WH --- PG
+%% PHASE 5 - DATA STORES
+BK --- RD
+CT --- PG
+OR --- PG
+ID --- PG
+WH --- PG
 
-  %% classDef
-  classDef svc fill:#0078D4,stroke:#005A9E,color:#fff
-  classDef infra fill:#107C10,stroke:#004B1C,color:#fff
-  classDef ext fill:#E86F00,stroke:#A84E00,color:#fff
+%% classDef
+classDef svc fill:#0078D4,stroke:#005A9E,color:#fff
+classDef infra fill:#107C10,stroke:#004B1C,color:#fff
+classDef ext fill:#E86F00,stroke:#A84E00,color:#fff
 
-  class WA,ID,BK,CT,OR,OP,PP,WH svc
-  class RD,PG infra
-  class RB,AO ext
+class WA,ID,BK,CT,OR,OP,PP,WH svc
+class RD,PG infra
+class RB,AO ext
 `
 
 ---
@@ -1694,52 +1685,52 @@ graph LR
 `mermaid
 %%{ init: { "theme": "base" } }%%
 flowchart TD
-  accTitle: eShop Data Flow Diagram
-  accDescr: Three primary data flows — checkout, catalog search, and notification — across the eShop platform
+accTitle: eShop Data Flow Diagram
+accDescr: Three primary data flows — checkout, catalog search, and notification — across the eShop platform
 
-  %% PHASE 1 - GOVERNANCE
-  %% Standard: AZURE/FLUENT v2.0
-  %% PHASE 2 - CHECKOUT FLOW
-  subgraph CheckoutFlow["🛒 Checkout Flow"]
-    direction TD
-    U1([User]) -->|Click checkout| BS[BasketState Blazor]
-    BS -->|gRPC GetBasket| BKAPI[Basket.API]
-    BKAPI -->|GET basket| RDI[(Redis)]
-    BS -->|POST /api/v1/orders| ORAPI[Ordering.API]
-    ORAPI -->|SaveOrder TX| DB1[(PostgreSQL)]
-    ORAPI -->|Outbox event| EB1([RabbitMQ])
-    EB1 -->|GracePeriod...| ORP[OrderProcessor]
-    ORP -->|REST advance| ORAPI
-  end
+%% PHASE 1 - GOVERNANCE
+%% Standard: AZURE/FLUENT v2.0
+%% PHASE 2 - CHECKOUT FLOW
+subgraph CheckoutFlow["🛒 Checkout Flow"]
+direction TD
+U1([User]) -->|Click checkout| BS[BasketState Blazor]
+BS -->|gRPC GetBasket| BKAPI[Basket.API]
+BKAPI -->|GET basket| RDI[(Redis)]
+BS -->|POST /api/v1/orders| ORAPI[Ordering.API]
+ORAPI -->|SaveOrder TX| DB1[(PostgreSQL)]
+ORAPI -->|Outbox event| EB1([RabbitMQ])
+EB1 -->|GracePeriod...| ORP[OrderProcessor]
+ORP -->|REST advance| ORAPI
+end
 
-  %% PHASE 3 - SEARCH FLOW
-  subgraph SearchFlow["🔍 Catalog Search Flow"]
-    direction TD
-    U2([User]) -->|Semantic search| CTAPI[Catalog.API]
-    CTAPI -->|Embed query| AOI([Azure OpenAI])
-    AOI -->|Embedding vector| CTAPI
-    CTAPI -->|pgvector ANN search| DB2[(PostgreSQL + pgvector)]
-  end
+%% PHASE 3 - SEARCH FLOW
+subgraph SearchFlow["🔍 Catalog Search Flow"]
+direction TD
+U2([User]) -->|Semantic search| CTAPI[Catalog.API]
+CTAPI -->|Embed query| AOI([Azure OpenAI])
+AOI -->|Embedding vector| CTAPI
+CTAPI -->|pgvector ANN search| DB2[(PostgreSQL + pgvector)]
+end
 
-  %% PHASE 4 - NOTIFICATION FLOW
-  subgraph NotifyFlow["🔔 Notification Flow"]
-    direction TD
-    EB2([RabbitMQ]) -->|OrderStatus events| WEB[WebApp]
-    WEB -->|NotificationService| BUI[Blazor UI SSE]
-    EB2 -->|OrderShipped/Paid| WHAPI[Webhooks.API]
-    WHAPI -->|HTTP POST| EXT([External Subscriber])
-  end
+%% PHASE 4 - NOTIFICATION FLOW
+subgraph NotifyFlow["🔔 Notification Flow"]
+direction TD
+EB2([RabbitMQ]) -->|OrderStatus events| WEB[WebApp]
+WEB -->|NotificationService| BUI[Blazor UI SSE]
+EB2 -->|OrderShipped/Paid| WHAPI[Webhooks.API]
+WHAPI -->|HTTP POST| EXT([External Subscriber])
+end
 
-  %% PHASE 5 - STYLE
-  classDef user fill:#E86F00,stroke:#A84E00,color:#fff
-  classDef svc fill:#0078D4,stroke:#005A9E,color:#fff
-  classDef store fill:#107C10,stroke:#004B1C,color:#fff
-  classDef bus fill:#8764B8,stroke:#4B2D83,color:#fff
+%% PHASE 5 - STYLE
+classDef user fill:#E86F00,stroke:#A84E00,color:#fff
+classDef svc fill:#0078D4,stroke:#005A9E,color:#fff
+classDef store fill:#107C10,stroke:#004B1C,color:#fff
+classDef bus fill:#8764B8,stroke:#4B2D83,color:#fff
 
-  class U1,U2 user
-  class BS,BKAPI,ORAPI,ORP,CTAPI,WEB,BUI,WHAPI svc
-  class RDI,DB1,DB2 store
-  class EB1,EB2,AOI,EXT bus
+class U1,U2 user
+class BS,BKAPI,ORAPI,ORP,CTAPI,WEB,BUI,WHAPI svc
+class RDI,DB1,DB2 store
+class EB1,EB2,AOI,EXT bus
 `
 
 ---
@@ -1749,46 +1740,46 @@ flowchart TD
 `mermaid
 %%{ init: { "theme": "base" } }%%
 graph LR
-  accTitle: eShop Event Subscription Map
-  accDescr: All integration events published and consumed across eShop microservices via RabbitMQ
+accTitle: eShop Event Subscription Map
+accDescr: All integration events published and consumed across eShop microservices via RabbitMQ
 
-  %% PHASE 1 - GOVERNANCE
-  %% Standard: AZURE/FLUENT v2.0
+%% PHASE 1 - GOVERNANCE
+%% Standard: AZURE/FLUENT v2.0
 
-  %% PHASE 2 - NODES
-  OR[Ordering.API]
-  CT[Catalog.API]
-  BK[Basket.API]
-  PP[PaymentProcessor]
-  OP[OrderProcessor]
-  WA[WebApp]
-  WH[Webhooks.API]
+%% PHASE 2 - NODES
+OR[Ordering.API]
+CT[Catalog.API]
+BK[Basket.API]
+PP[PaymentProcessor]
+OP[OrderProcessor]
+WA[WebApp]
+WH[Webhooks.API]
 
-  %% PHASE 3 - EVENTS FROM ORDERING
-  OR -->|GracePeriodConfirmed| OP
-  OR -->|OrderStarted| BK
-  OR -->|AwaitingValidation| CT
-  OR -->|AwaitingValidation| WA
-  OR -->|StockConfirmedStatus| PP
-  OR -->|StockConfirmedStatus| WA
-  OR -->|Submitted| WA
-  OR -->|Cancelled| WA
-  OR -->|Shipped| WA
-  OR -->|Shipped| WH
-  OR -->|Paid| CT
-  OR -->|Paid| WA
-  OR -->|Paid| WH
+%% PHASE 3 - EVENTS FROM ORDERING
+OR -->|GracePeriodConfirmed| OP
+OR -->|OrderStarted| BK
+OR -->|AwaitingValidation| CT
+OR -->|AwaitingValidation| WA
+OR -->|StockConfirmedStatus| PP
+OR -->|StockConfirmedStatus| WA
+OR -->|Submitted| WA
+OR -->|Cancelled| WA
+OR -->|Shipped| WA
+OR -->|Shipped| WH
+OR -->|Paid| CT
+OR -->|Paid| WA
+OR -->|Paid| WH
 
-  %% PHASE 4 - EVENTS FROM CATALOG / PAYMENT
-  CT -->|StockConfirmed| OR
-  CT -->|StockRejected| OR
-  CT -->|ProductPriceChanged| BK
-  PP -->|PaymentSucceeded| OR
-  PP -->|PaymentFailed| OR
+%% PHASE 4 - EVENTS FROM CATALOG / PAYMENT
+CT -->|StockConfirmed| OR
+CT -->|StockRejected| OR
+CT -->|ProductPriceChanged| BK
+PP -->|PaymentSucceeded| OR
+PP -->|PaymentFailed| OR
 
-  %% PHASE 5 - STYLE
-  classDef svc fill:#0078D4,stroke:#005A9E,color:#fff
-  class OR,CT,BK,PP,OP,WA,WH svc
+%% PHASE 5 - STYLE
+classDef svc fill:#0078D4,stroke:#005A9E,color:#fff
+class OR,CT,BK,PP,OP,WA,WH svc
 `
 
 ---
@@ -1798,89 +1789,41 @@ graph LR
 `mermaid
 %%{ init: { "theme": "base" } }%%
 graph TD
-  accTitle: Integration Pattern Matrix
-  accDescr: Seven integration patterns employed across eShop and the services that implement them
+accTitle: Integration Pattern Matrix
+accDescr: Seven integration patterns employed across eShop and the services that implement them
 
-  %% PHASE 1 - GOVERNANCE
-  %% Standard: AZURE/FLUENT v2.0
+%% PHASE 1 - GOVERNANCE
+%% Standard: AZURE/FLUENT v2.0
 
-  %% PHASE 2 - PATTERN NODES
-  P1[🗂️ Transactional Outbox]
-  P2[⚙️ gRPC Contract-First]
-  P3[🔁 HTTP Resilience Pipeline]
-  P4[⚡ Redis Cache-Aside]
-  P5[🔀 YARP Reverse Proxy]
-  P6[🎭 Choreography Saga]
-  P7[👁️ Observer In-Process]
+%% PHASE 2 - PATTERN NODES
+P1[🗂️ Transactional Outbox]
+P2[⚙️ gRPC Contract-First]
+P3[🔁 HTTP Resilience Pipeline]
+P4[⚡ Redis Cache-Aside]
+P5[🔀 YARP Reverse Proxy]
+P6[🎭 Choreography Saga]
+P7[👁️ Observer In-Process]
 
-  %% PHASE 3 - SERVICE USAGE
-  P1 --> OR[Ordering.API]
-  P1 --> BK[Basket.API]
-  P1 --> WH[Webhooks.API]
-  P2 --> BK
-  P2 --> WA[WebApp]
-  P3 --> WA
-  P3 --> OR
-  P3 --> CT[Catalog.API]
-  P4 --> BK
-  P5 --> WA
-  P6 --> OR
-  P6 --> CT
-  P6 --> PP[PaymentProcessor]
-  P7 --> WA
+%% PHASE 3 - SERVICE USAGE
+P1 --> OR[Ordering.API]
+P1 --> BK[Basket.API]
+P1 --> WH[Webhooks.API]
+P2 --> BK
+P2 --> WA[WebApp]
+P3 --> WA
+P3 --> OR
+P3 --> CT[Catalog.API]
+P4 --> BK
+P5 --> WA
+P6 --> OR
+P6 --> CT
+P6 --> PP[PaymentProcessor]
+P7 --> WA
 
-  %% PHASE 4 - STYLE
-  classDef pattern fill:#8764B8,stroke:#4B2D83,color:#fff
-  classDef svc fill:#0078D4,stroke:#005A9E,color:#fff
+%% PHASE 4 - STYLE
+classDef pattern fill:#8764B8,stroke:#4B2D83,color:#fff
+classDef svc fill:#0078D4,stroke:#005A9E,color:#fff
 
-  class P1,P2,P3,P4,P5,P6,P7 pattern
-  class OR,BK,WH,WA,CT,PP svc
+class P1,P2,P3,P4,P5,P6,P7 pattern
+class OR,BK,WH,WA,CT,PP svc
 `
-
----
-
-> **Section 8 Summary:** The eShop integration fabric is built on three communication tiers: (1) **Synchronous** — REST and gRPC over HTTP/2 mediated by HTTP Client Factory resilience pipelines for all direct API calls; (2) **Asynchronous** — a RabbitMQ event bus with 13 distinct integration events and a Transactional Outbox guarantee for all EF-based publishers; (3) **In-process** — Blazor state containers and a NotificationService for real-time UI updates. The Choreography Saga pattern coordinates the multi-step order lifecycle without a central orchestrator, while YARP provides BFF token forwarding and the Redis Cache-Aside pattern delivers low-latency basket operations.
-
-
----
-
-## ✅ Validation Report
-
-This document has been generated against the BDAT Architecture Prompt v5.0.0 specification with the following inputs:
-- output_sections: [1, 2, 3, 4, 5, 8]
-- quality_level: comprehensive
-
-### Validation Gate Results
-
-| # | 🎯 Gate | ✅ Status | 📝 Notes |
-|---|---------|----------|---------|
-| 1 | All requested sections present | ✅ PASS | Sections 1, 2, 3, 4, 5, 8 all present |
-| 2 | Section 1 — Executive Summary with Portfolio Summary table | ✅ PASS | Portfolio Summary table with emoji headers present |
-| 3 | Section 2 — All 11 TOGAF component type subsections | ✅ PASS | 2.1–2.11 all present with tables |
-| 4 | Section 2 — 3 Mermaid diagrams (comprehensive) | ✅ PASS | System Context, Service Ecosystem Map, Integration Tier |
-| 5 | Section 3 — Architecture Principles with evidence | ✅ PASS | 5 principles, evidence observations (Source/Lines removed) |
-| 6 | Section 3 — Principle Relationship Mermaid diagram | ✅ PASS | Comprehensive Mermaid diagram present |
-| 7 | Section 4 — Current State Baseline with 4 tables | ✅ PASS | Service Topology, Protocol Inventory, API Versioning, Health Posture |
-| 8 | Section 4 — Baseline Architecture Mermaid | ✅ PASS | Comprehensive Mermaid diagram present |
-| 9 | Section 5 — All 11 TOGAF subsections (5.1–5.11) | ✅ PASS | Application Services, Components, Interfaces, Collaborations, Functions, Interactions, Events, Data Objects, Integration Patterns, Service Contracts, Dependencies |
-| 10 | Section 5 — Mermaid diagrams (comprehensive) | ✅ PASS | Ordering.API Internal Architecture + Order Lifecycle State Machine |
-| 11 | Section 8 — Service-to-Service Call Graph table | ✅ PASS | 9 call relationships documented |
-| 12 | Section 8 — Database Dependency Map table | ✅ PASS | 7 service-to-store bindings documented |
-| 13 | Section 8 — External API Integrations table | ✅ PASS | Azure OpenAI + RabbitMQ documented |
-| 14 | Section 8 — Event Subscription Map table | ✅ PASS | 13 integration events documented |
-| 15 | Section 8 — Integration Pattern Matrix table | ✅ PASS | 7 patterns documented |
-| 16 | Section 8 — Circuit Breaker & Resilience table | ✅ PASS | 4 resilience strategies documented |
-| 17 | Section 8 — Service Integration Map Mermaid | ✅ PASS | Full topology Mermaid diagram |
-| 18 | Section 8 — Data Flow Mermaid | ✅ PASS | 3-flow diagram (Checkout, Search, Notification) |
-| 19 | Section 8 — Event Subscription Map Mermaid | ✅ PASS | Full event graph Mermaid diagram |
-| 20 | Section 8 — Integration Pattern Matrix Mermaid | ✅ PASS | Pattern-to-service graph Mermaid diagram |
-| 21 | Source/Evidence/Confidence/Maturity columns removed | ✅ PASS | All forbidden columns removed from all tables |
-| 22 | Quick TOC added | ✅ PASS | Linked TOC at document top |
-| 23 | Emojis on all section and subsection headings | ✅ PASS | All headings carry contextual emoji |
-| 24 | Emojis on all table header rows | ✅ PASS | All table header cells carry emoji |
-
-### 🏆 Score: 24/24 gates passed — **100/100**
-
----
-
-*Generated by BDAT Architecture Agent · Prompt Spec v5.0.0 · quality_level: comprehensive*

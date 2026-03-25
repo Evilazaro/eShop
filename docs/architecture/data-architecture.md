@@ -26,36 +26,6 @@ The Ordering domain applies full Domain-Driven Design (DDD) aggregate root patte
 
 A total of **74 data components** were identified and classified across all 11 canonical TOGAF Data Architecture types. The average confidence score across all detected components is **0.93**, reflecting strong evidence from EF Core entity configurations, migration files, repository interfaces, and gRPC proto contracts. The current data architecture maturity is assessed at **Level 3 (Defined)**: schema change is tracked via EF Core migrations across all four relational databases, an outbox pattern ensures reliable event delivery, and the data access layer is abstracted through repository interfaces conforming to the Generic Repository pattern. Gaps toward Level 4 include an absence of formal data quality SLAs, no automated anomaly detection, and no external schema registry.
 
-### 🔍 Key Findings
-
-| 🔍 Finding                       | 📊 Value                     | 🎯 Assessment                  |
-| -------------------------------- | ---------------------------- | ------------------------------ |
-| Total data components identified | 74                           | Comprehensive coverage         |
-| Data domains                     | 5 bounded domains + 1 shared | Well-isolated                  |
-| Relational databases             | 4 (PostgreSQL 16 + pgvector) | Consistent engine              |
-| Key-value stores                 | 1 (Redis)                    | Basket domain only             |
-| Message broker                   | 1 (RabbitMQ)                 | All async event flows          |
-| gRPC contracts                   | 1 (`basket.proto`)           | Basket service only            |
-| Integration event types          | 14                           | Full order lifecycle           |
-| Average confidence score         | 0.93                         | High evidence quality          |
-| Data maturity level              | 3 / 5 (Defined)              | Managed + automated migrations |
-| PII-classified entities          | 5                            | Require governance attention   |
-| Financial data entities          | 2                            | Require encryption controls    |
-| Unmasked card data (risk)        | Confirmed                    | Critical security gap          |
-
-### ✅ Data Quality Scorecard
-
-| 🎯 Quality Dimension     | 📊 Score | 🚦 Status    |
-| ------------------------ | -------- | ------------ |
-| Schema completeness      | 90%      | 🟢 Good      |
-| Data validation coverage | 75%      | 🟡 Fair      |
-| Migration traceability   | 100%     | 🟢 Excellent |
-| Integration reliability  | 85%      | 🟢 Good      |
-| Schema versioning        | 80%      | 🟢 Good      |
-| Data security controls   | 55%      | 🔴 At Risk   |
-| Access control model     | 70%      | 🟡 Fair      |
-| Master data management   | 65%      | 🟡 Fair      |
-
 ### 📋 Coverage Summary
 
 The data architecture covers all five microservice domains with dedicated persistence contexts and explicit schema contracts. The Outbox pattern provides eventual-consistency guarantees for the Ordering workflow. The primary governance gap is the absence of a formal data classification framework in source code—classifications in this document are inferred from field names, `[Required]` annotations, and domain semantics. A critical security finding exists in the PaymentMethod entity (`src/Ordering.Infrastructure/EntityConfigurations/PaymentMethodEntityTypeConfiguration.cs:28-30`), where raw card numbers are stored in the `paymentmethods` table without visible masking or tokenization. This represents a PCI-DSS compliance exposure that requires immediate remediation. Data retention policies are not explicitly declared in source files; all retention assessments below are inferred from domain context.
