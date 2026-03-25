@@ -41,24 +41,6 @@ breaker configuration is delegated to the Aspire `AddStandardResilienceHandler()
 per-service policy definitions, and formal consumer-driven contract tests are absent from the test
 suite. Addressing these gaps is the primary architectural recommendation.
 
-### 📊 Portfolio Summary
-
-| 🏷️ Metric                     | 📈 Value           |
-| ----------------------------- | ------------------ |
-| 🔧 Total Components           | 48                 |
-| 🌐 Application Services       | 18                 |
-| 📦 Application Components     | 12                 |
-| 🔌 Application Interfaces     | 16                 |
-| 🤝 Application Collaborations | 6                  |
-| ⚡ Application Functions      | 12                 |
-| 🔄 Application Interactions   | 6                  |
-| 📣 Application Events         | 13                 |
-| 🗃️ Application Data Objects   | 12                 |
-| 🔗 Integration Patterns       | 6                  |
-| 📜 Service Contracts          | 5                  |
-| 📚 Application Dependencies   | 12                 |
-| 🎯 Maturity Level             | Level 4 — Measured |
-
 ---
 
 ## Section 2: 🗺️ Architecture Landscape
