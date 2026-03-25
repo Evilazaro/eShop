@@ -346,6 +346,7 @@ flowchart TB
     classDef core fill:#EFF6FC,stroke:#0078D4,stroke-width:2px,color:#323130
     classDef success fill:#DFF6DD,stroke:#107C10,stroke-width:2px,color:#323130
     classDef warning fill:#FFF4CE,stroke:#FFB900,stroke-width:2px,color:#323130
+    classDef danger fill:#FDE7E9,stroke:#D13438,stroke-width:2px,color:#323130
 
     %% Subgraph style directives (style only — never class on subgraph)
     style AzureCloud fill:#F3F2F1,stroke:#8A8886,stroke-width:2px,color:#323130
@@ -856,6 +857,7 @@ flowchart LR
     classDef core fill:#EFF6FC,stroke:#0078D4,stroke-width:2px,color:#323130
     classDef success fill:#DFF6DD,stroke:#107C10,stroke-width:2px,color:#323130
     classDef warning fill:#FFF4CE,stroke:#FFB900,stroke-width:2px,color:#323130
+    classDef danger fill:#FDE7E9,stroke:#D13438,stroke-width:2px,color:#323130
 
     %% Subgraph style directives
     style AppServices fill:#F3F2F1,stroke:#8A8886,stroke-width:2px,color:#323130
