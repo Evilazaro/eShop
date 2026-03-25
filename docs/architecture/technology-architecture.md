@@ -27,23 +27,6 @@
 
 The eShop reference application is deployed as a **cloud-native, container-first microservices platform** on **Azure Container Apps (ACA)**, orchestrated by **.NET Aspire 13.x**. The infrastructure is codified entirely in **Bicep** (`infra/`) and **Azure Container Apps templates** (`src/eShop.AppHost/infra/*.tmpl.yaml`), deployed via **Azure Developer CLI (azd)** and an **Azure DevOps CI pipeline** (`ci.yml`).
 
-### 📊 Infrastructure Component Inventory
-
-| 🏷️ Technology Type            | 🔢 Count |
-| ----------------------------- | -------- |
-| 🖥️ Compute Resources          | 13       |
-| 🗄️ Storage Systems            | 1        |
-| 🌐 Network Infrastructure     | 7        |
-| 📦 Container Platforms        | 3        |
-| ☁️ Cloud Services (PaaS/SaaS) | 5        |
-| 🔒 Security Infrastructure    | 6        |
-| 📨 Messaging Infrastructure   | 1        |
-| 📈 Monitoring & Observability | 4        |
-| 🔑 Identity & Access          | 4        |
-| 🔀 API Management             | 1        |
-| ⚡ Caching Infrastructure     | 1        |
-| **Total**                     | **46**   |
-
 ### Key Observations
 
 - **Deployment Model**: All 13 workloads are deployed as **Azure Container Apps** using the Consumption workload profile — serverless, automatically scaled, per-use billed.
@@ -941,40 +924,3 @@ _(accTitle ✅ · accDescr ✅ · style directives on subgraphs ✅ · semantic 
 | Image Build          | `azd` / Docker     | `azd up` / manual | Docker image in ACR         |
 | Infrastructure Apply | `azd` / Bicep      | `azd up`          | Azure resources provisioned |
 | Container Deploy     | `azd` / ACA YAML   | `azd up`          | Running Container Apps      |
-
----
-
-## 📋 Document Validation Summary
-
-### ✅ Pre-Execution Checklist: 16/16 Passed
-
-| 🔢 # | 📝 Criterion                                                             | 🟢 Status |
-| ---- | ------------------------------------------------------------------------ | --------- |
-| 1    | All 11 component types analyzed (Sections 5.1–5.11)                      | ✅        |
-| 2    | Every component has source traceability (`path/file.ext:line-range`)     | ✅        |
-| 3    | Deployment model and availability SLA specified for each resource        | ✅        |
-| 4    | Confidence scores ≥ 0.7 for all classified components (range: 0.86–0.99) | ✅        |
-| 5    | Mermaid diagrams score ≥ 95/100 (2 diagrams: 98/100 and 97/100)          | ✅        |
-| 6    | No placeholder text (`[TODO]`, `[TBD]`)                                  | ✅        |
-| 7    | Sections 1, 2, 3, 4, 5, 8 present (as per `output_sections` input)       | ✅        |
-| 8    | No fabricated components — all have source file evidence                 | ✅        |
-| 9    | No credentials or secrets extracted from source files                    | ✅        |
-| 10   | Negative constraints N-1 through N-9 satisfied                           | ✅        |
-| 11   | Mermaid diagrams: `accTitle` + `accDescr` present                        | ✅        |
-| 12   | Mermaid diagrams: `style` directive on all subgraphs (MRM-S001)          | ✅        |
-| 13   | Mermaid diagrams: semantic classDefs ≤ 5 per diagram                     | ✅        |
-| 14   | Mermaid diagrams: governance block present                               | ✅        |
-| 15   | Source, Evidence, Confidence, Maturity columns removed from all tables   | ✅        |
-| 16   | Section titles match exact canonical list (E-014 gate)                   | ✅        |
-
-### 🎯 Final Score: 100/100
-
-**Gate Summary**:
-
-- GATE-RSN (Reasoning Completeness): ✅ PASSED
-- GATE-TCW (Task Complete When): ✅ All 6 criteria met
-- GATE-NEG (Negative Constraint Enforcement): ✅ All 9 constraints satisfied
-- GATE-SRC (Source Traceability): ✅ All Source cells pass regex `^[a-zA-Z0-9_./-]+:(\d+-\d+|\*)$`
-- GATE-MRM (Mermaid Diagram Validation): ✅ 2/2 diagrams score ≥ 95/100
-- GATE-SEC (Secrets/Credentials Scan): ✅ No credentials in output
-- GATE-OUT (Output Scope Validation): ✅ Only sections 1–5, 8 generated (as requested)
