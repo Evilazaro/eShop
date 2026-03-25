@@ -169,47 +169,47 @@ The eShop reference application is deployed as a **cloud-native, container-first
 
 ---
 
-## Section 3: Architecture Principles
+## 📐 Section 3: Architecture Principles
 
 The following infrastructure principles are observed directly in the eShop source files:
 
-### 3.1 Immutable Infrastructure
+### 🧱 3.1 Immutable Infrastructure
 
 All containers are built from images and deployed via Azure Container Registry pull. No in-place mutation of running containers is documented. Container App manifests use `activeRevisionsMode: single`, ensuring zero-downtime replacement deployments through ACA's managed rolling update mechanism.
 
 **Evidence**: `src/eShop.AppHost/infra/basket-api.tmpl.yaml:13` — `activeRevisionsMode: single`
 
-### 3.2 Infrastructure as Code (IaC)
+### 📄 3.2 Infrastructure as Code (IaC)
 
 The entire Azure platform layer is codified: Bicep (`infra/main.bicep`, `infra/resources.bicep`) provisions the Resource Group, Container Apps Environment, Container Registry, Log Analytics, and Managed Identity; ACA YAML templates declaratively specify each container. The `azure.yaml` file ties the deployment to `azd`.
 
 **Evidence**: `infra/main.bicep:1-55`, `infra/resources.bicep:1-95`, `src/eShop.AppHost/infra/*.tmpl.yaml`
 
-### 3.3 Least Privilege Access
+### 🔐 3.3 Least Privilege Access
 
 Image registry access is granted via a narrowly-scoped `AcrPull` RBAC role assignment (role ID `7f951dda-4ed3-4680-a7ca-43fe172d538d`) applied to the User-Assigned Managed Identity. No contributor or owner roles are assigned. Service-to-service networking is restricted to internal ingress where external access is not required.
 
 **Evidence**: `infra/resources.bicep:18-30`
 
-### 3.4 Defense in Depth
+### 🛡️ 3.4 Defense in Depth
 
 Multiple layers of security are applied: HTTPS-only external ingress (`allowInsecure: false`), SCRAM-SHA-256 PostgreSQL authentication, ACA-native secrets store for all credentials, ASP.NET Core anti-forgery middleware, and Duende IdentityServer as a dedicated OAuth2/OIDC provider.
 
 **Evidence**: `src/eShop.AppHost/infra/webapp.tmpl.yaml:18`, `src/eShop.AppHost/infra/postgres.tmpl.yaml:36-39`, `src/WebApp/Program.cs:23`
 
-### 3.5 Cloud-Native Design
+### ☁️ 3.5 Cloud-Native Design
 
 The application uses managed Azure PaaS services (ACA, ACR, Log Analytics) exclusively — no IaaS VMs. Scaling is delegated to the ACA platform (`scale.minReplicas: 1`). All inter-service communication uses .NET Aspire service discovery and resiliency patterns (`AddStandardResilienceHandler`, `AddServiceDiscovery`).
 
 **Evidence**: `src/eShop.ServiceDefaults/Extensions.cs:20-30`, `azure.yaml:6` — `host: containerapp`
 
-### 3.6 Observability by Default
+### 📁 3.6 Observability by Default
 
 OpenTelemetry is instrumented uniformly across all services via the shared `ServiceDefaults` library. All three OTel signals (logs, metrics, traces) are configured with OTLP export. Health check endpoints (`/health`, `/alive`) are provided to ACA for probe-based availability management.
 
 **Evidence**: `src/eShop.ServiceDefaults/Extensions.cs:46-120`
 
-### 3.7 Automated Deployment Pipeline
+### ⚙️ 3.7 Automated Deployment Pipeline
 
 A continuous integration pipeline (`ci.yml`) triggers on every push to `main`, runs a full `dotnet build` across the solution filter, and is based on the 1ES Pipeline Templates with SDL checks (PoliCheck, TSA) enabled. This enforces a consistent build gate before any deployment artifact is produced.
 
