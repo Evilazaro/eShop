@@ -269,8 +269,16 @@ flowchart TB
     accTitle: eShop Application Layer System Context
     accDescr: Shows all actors and external systems interacting with the eShop application portfolio
 
+    %% ═══════════════════════════════════════════════════════════════════════════
     %% AZURE / FLUENT ARCHITECTURE PATTERN v2.0
-    %% PHASE 1-5: Fluent UI palette, semantic subgraph styles, classDefs, accessibility, governance
+    %% (Semantic + Structural + Font + Accessibility Governance)
+    %% ═══════════════════════════════════════════════════════════════════════════
+    %% PHASE 1 - FLUENT UI: All styling uses approved Fluent UI palette only
+    %% PHASE 2 - GROUPS: Every subgraph has semantic color via style directive
+    %% PHASE 3 - COMPONENTS: Every node has semantic classDef + icon prefix
+    %% PHASE 4 - ACCESSIBILITY: accTitle/accDescr present, WCAG AA contrast
+    %% PHASE 5 - STANDARD: Governance block present, classDefs centralized
+    %% ═══════════════════════════════════════════════════════════════════════════
 
     subgraph actors["👥 Actors"]
         browserUser("👤 Browser User"):::neutral
@@ -331,7 +339,7 @@ flowchart TB
     classDef danger fill:#FDE7E9,stroke:#D13438,stroke-width:2px,color:#323130
 
     style actors fill:#F3F2F1,stroke:#8A8886,stroke-width:2px,color:#323130
-    style eshopSystem fill:#F3F2F1,stroke:#0078D4,stroke-width:2px,color:#323130
+    style eshopSystem fill:#F3F2F1,stroke:#8A8886,stroke-width:2px,color:#323130
     style workers fill:#F3F2F1,stroke:#8A8886,stroke-width:2px,color:#323130
     style external fill:#F3F2F1,stroke:#8A8886,stroke-width:2px,color:#323130
 ```
@@ -354,8 +362,16 @@ flowchart TB
     accTitle: eShop Application Service Ecosystem and Tier Map
     accDescr: Groups all application services by architectural tier
 
+    %% ═══════════════════════════════════════════════════════════════════════════
     %% AZURE / FLUENT ARCHITECTURE PATTERN v2.0
-    %% PHASE 1-5 governance applied
+    %% (Semantic + Structural + Font + Accessibility Governance)
+    %% ═══════════════════════════════════════════════════════════════════════════
+    %% PHASE 1 - FLUENT UI: All styling uses approved Fluent UI palette only
+    %% PHASE 2 - GROUPS: Every subgraph has semantic color via style directive
+    %% PHASE 3 - COMPONENTS: Every node has semantic classDef + icon prefix
+    %% PHASE 4 - ACCESSIBILITY: accTitle/accDescr present, WCAG AA contrast
+    %% PHASE 5 - STANDARD: Governance block present, classDefs centralized
+    %% ═══════════════════════════════════════════════════════════════════════════
 
     subgraph presentationTier["🖥️ Presentation Tier"]
         webApp("🌐 WebApp Blazor"):::core
@@ -407,11 +423,11 @@ flowchart TB
     classDef warning fill:#FFF4CE,stroke:#FFB900,stroke-width:2px,color:#323130
     classDef danger fill:#FDE7E9,stroke:#D13438,stroke-width:2px,color:#323130
 
-    style presentationTier fill:#F3F2F1,stroke:#0078D4,stroke-width:2px,color:#323130
-    style gatewayTier fill:#F3F2F1,stroke:#FFB900,stroke-width:2px,color:#323130
-    style apiTier fill:#F3F2F1,stroke:#0078D4,stroke-width:2px,color:#323130
+    style presentationTier fill:#F3F2F1,stroke:#8A8886,stroke-width:2px,color:#323130
+    style gatewayTier fill:#F3F2F1,stroke:#8A8886,stroke-width:2px,color:#323130
+    style apiTier fill:#F3F2F1,stroke:#8A8886,stroke-width:2px,color:#323130
     style workerTier fill:#F3F2F1,stroke:#8A8886,stroke-width:2px,color:#323130
-    style sharedTier fill:#F3F2F1,stroke:#107C10,stroke-width:2px,color:#323130
+    style sharedTier fill:#F3F2F1,stroke:#8A8886,stroke-width:2px,color:#323130
 ```
 
 ### 🔀 Integration Tier Diagram
@@ -432,8 +448,16 @@ flowchart LR
     accTitle: eShop Application Integration Tier
     accDescr: Highlights the integration patterns connecting application services including event bus, gRPC, REST, and cache-aside
 
+    %% ═══════════════════════════════════════════════════════════════════════════
     %% AZURE / FLUENT ARCHITECTURE PATTERN v2.0
-    %% PHASE 1-5 governance applied
+    %% (Semantic + Structural + Font + Accessibility Governance)
+    %% ═══════════════════════════════════════════════════════════════════════════
+    %% PHASE 1 - FLUENT UI: All styling uses approved Fluent UI palette only
+    %% PHASE 2 - GROUPS: Every subgraph has semantic color via style directive
+    %% PHASE 3 - COMPONENTS: Every node has semantic classDef + icon prefix
+    %% PHASE 4 - ACCESSIBILITY: accTitle/accDescr present, WCAG AA contrast
+    %% PHASE 5 - STANDARD: Governance block present, classDefs centralized
+    %% ═══════════════════════════════════════════════════════════════════════════
 
     subgraph syncChannel["⚡ Synchronous"]
         grpcBasket("🔌 gRPC basket.proto"):::core
@@ -478,10 +502,10 @@ flowchart LR
     classDef warning fill:#FFF4CE,stroke:#FFB900,stroke-width:2px,color:#323130
     classDef danger fill:#FDE7E9,stroke:#D13438,stroke-width:2px,color:#323130
 
-    style syncChannel fill:#F3F2F1,stroke:#0078D4,stroke-width:2px,color:#323130
-    style asyncChannel fill:#F3F2F1,stroke:#FFB900,stroke-width:2px,color:#323130
-    style cacheChannel fill:#F3F2F1,stroke:#107C10,stroke-width:2px,color:#323130
-    style authChannel fill:#F3F2F1,stroke:#D13438,stroke-width:2px,color:#323130
+    style syncChannel fill:#F3F2F1,stroke:#8A8886,stroke-width:2px,color:#323130
+    style asyncChannel fill:#F3F2F1,stroke:#8A8886,stroke-width:2px,color:#323130
+    style cacheChannel fill:#F3F2F1,stroke:#8A8886,stroke-width:2px,color:#323130
+    style authChannel fill:#F3F2F1,stroke:#8A8886,stroke-width:2px,color:#323130
 ```
 
 ---
@@ -600,8 +624,16 @@ flowchart TB
     accTitle: eShop Architecture Principles Relationship Map
     accDescr: Shows how the five architecture principles relate to each other and to system quality attributes
 
+    %% ═══════════════════════════════════════════════════════════════════════════
     %% AZURE / FLUENT ARCHITECTURE PATTERN v2.0
-    %% PHASE 1-5 governance applied
+    %% (Semantic + Structural + Font + Accessibility Governance)
+    %% ═══════════════════════════════════════════════════════════════════════════
+    %% PHASE 1 - FLUENT UI: All styling uses approved Fluent UI palette only
+    %% PHASE 2 - GROUPS: Every subgraph has semantic color via style directive
+    %% PHASE 3 - COMPONENTS: Every node has semantic classDef + icon prefix
+    %% PHASE 4 - ACCESSIBILITY: accTitle/accDescr present, WCAG AA contrast
+    %% PHASE 5 - STANDARD: Governance block present, classDefs centralized
+    %% ═══════════════════════════════════════════════════════════════════════════
 
     subgraph principles["📐 Architecture Principles"]
         p1("📜 P1: API-First Versioned"):::core
@@ -632,8 +664,8 @@ flowchart TB
     classDef warning fill:#FFF4CE,stroke:#FFB900,stroke-width:2px,color:#323130
     classDef danger fill:#FDE7E9,stroke:#D13438,stroke-width:2px,color:#323130
 
-    style principles fill:#F3F2F1,stroke:#0078D4,stroke-width:2px,color:#323130
-    style qualities fill:#F3F2F1,stroke:#107C10,stroke-width:2px,color:#323130
+    style principles fill:#F3F2F1,stroke:#8A8886,stroke-width:2px,color:#323130
+    style qualities fill:#F3F2F1,stroke:#8A8886,stroke-width:2px,color:#323130
 ```
 
 ---
@@ -714,8 +746,16 @@ flowchart TB
     accTitle: eShop Application Baseline Architecture
     accDescr: Documents current-state deployment topology with runtime targets and shared library relationships
 
+    %% ═══════════════════════════════════════════════════════════════════════════
     %% AZURE / FLUENT ARCHITECTURE PATTERN v2.0
-    %% PHASE 1-5 governance applied
+    %% (Semantic + Structural + Font + Accessibility Governance)
+    %% ═══════════════════════════════════════════════════════════════════════════
+    %% PHASE 1 - FLUENT UI: All styling uses approved Fluent UI palette only
+    %% PHASE 2 - GROUPS: Every subgraph has semantic color via style directive
+    %% PHASE 3 - COMPONENTS: Every node has semantic classDef + icon prefix
+    %% PHASE 4 - ACCESSIBILITY: accTitle/accDescr present, WCAG AA contrast
+    %% PHASE 5 - STANDARD: Governance block present, classDefs centralized
+    %% ═══════════════════════════════════════════════════════════════════════════
 
     subgraph aspireOrch["🎭 .NET Aspire 13.1.0 Orchestration"]
         appHost("🎯 eShop.AppHost net10.0 Tooling"):::warning
@@ -763,11 +803,11 @@ flowchart TB
     classDef warning fill:#FFF4CE,stroke:#FFB900,stroke-width:2px,color:#323130
     classDef danger fill:#FDE7E9,stroke:#D13438,stroke-width:2px,color:#323130
 
-    style aspireOrch fill:#F3F2F1,stroke:#FFB900,stroke-width:2px,color:#323130
-    style presentations fill:#F3F2F1,stroke:#0078D4,stroke-width:2px,color:#323130
-    style apiContainers fill:#F3F2F1,stroke:#0078D4,stroke-width:2px,color:#323130
+    style aspireOrch fill:#F3F2F1,stroke:#8A8886,stroke-width:2px,color:#323130
+    style presentations fill:#F3F2F1,stroke:#8A8886,stroke-width:2px,color:#323130
+    style apiContainers fill:#F3F2F1,stroke:#8A8886,stroke-width:2px,color:#323130
     style workerContainers fill:#F3F2F1,stroke:#8A8886,stroke-width:2px,color:#323130
-    style sharedLibs4 fill:#F3F2F1,stroke:#107C10,stroke-width:2px,color:#323130
+    style sharedLibs4 fill:#F3F2F1,stroke:#8A8886,stroke-width:2px,color:#323130
 ```
 
 ### 📋 Summary
@@ -1044,8 +1084,16 @@ flowchart TB
     accTitle: eShop Ordering API Internal Component Architecture
     accDescr: Shows internal layering of Ordering.API including minimal API, CQRS pipeline, domain, and infrastructure layers
 
+    %% ═══════════════════════════════════════════════════════════════════════════
     %% AZURE / FLUENT ARCHITECTURE PATTERN v2.0
-    %% PHASE 1-5 governance applied
+    %% (Semantic + Structural + Font + Accessibility Governance)
+    %% ═══════════════════════════════════════════════════════════════════════════
+    %% PHASE 1 - FLUENT UI: All styling uses approved Fluent UI palette only
+    %% PHASE 2 - GROUPS: Every subgraph has semantic color via style directive
+    %% PHASE 3 - COMPONENTS: Every node has semantic classDef + icon prefix
+    %% PHASE 4 - ACCESSIBILITY: accTitle/accDescr present, WCAG AA contrast
+    %% PHASE 5 - STANDARD: Governance block present, classDefs centralized
+    %% ═══════════════════════════════════════════════════════════════════════════
 
     subgraph apiLayer["📡 API Layer"]
         ordersApi("📋 OrdersApi Minimal API"):::core
@@ -1096,9 +1144,9 @@ flowchart TB
     classDef warning fill:#FFF4CE,stroke:#FFB900,stroke-width:2px,color:#323130
     classDef danger fill:#FDE7E9,stroke:#D13438,stroke-width:2px,color:#323130
 
-    style apiLayer fill:#F3F2F1,stroke:#0078D4,stroke-width:2px,color:#323130
-    style cqrsLayer fill:#F3F2F1,stroke:#107C10,stroke-width:2px,color:#323130
-    style domainLayer fill:#F3F2F1,stroke:#0078D4,stroke-width:2px,color:#323130
+    style apiLayer fill:#F3F2F1,stroke:#8A8886,stroke-width:2px,color:#323130
+    style cqrsLayer fill:#F3F2F1,stroke:#8A8886,stroke-width:2px,color:#323130
+    style domainLayer fill:#F3F2F1,stroke:#8A8886,stroke-width:2px,color:#323130
     style infraLayer fill:#F3F2F1,stroke:#8A8886,stroke-width:2px,color:#323130
 ```
 
@@ -1326,8 +1374,16 @@ flowchart LR
     accTitle: eShop Order Lifecycle Event Choreography
     accDescr: Shows the complete order state machine driven by integration events across all services
 
+    %% ═══════════════════════════════════════════════════════════════════════════
     %% AZURE / FLUENT ARCHITECTURE PATTERN v2.0
-    %% PHASE 1-5 governance applied
+    %% (Semantic + Structural + Font + Accessibility Governance)
+    %% ═══════════════════════════════════════════════════════════════════════════
+    %% PHASE 1 - FLUENT UI: All styling uses approved Fluent UI palette only
+    %% PHASE 2 - GROUPS: Every subgraph has semantic color via style directive
+    %% PHASE 3 - COMPONENTS: Every node has semantic classDef + icon prefix
+    %% PHASE 4 - ACCESSIBILITY: accTitle/accDescr present, WCAG AA contrast
+    %% PHASE 5 - STANDARD: Governance block present, classDefs centralized
+    %% ═══════════════════════════════════════════════════════════════════════════
 
     subgraph userZone["👤 User Actions"]
         checkout5("🛒 Checkout BasketState"):::core
@@ -1378,11 +1434,11 @@ flowchart LR
     classDef warning fill:#FFF4CE,stroke:#FFB900,stroke-width:2px,color:#323130
     classDef danger fill:#FDE7E9,stroke:#D13438,stroke-width:2px,color:#323130
 
-    style userZone fill:#F3F2F1,stroke:#0078D4,stroke-width:2px,color:#323130
-    style orderZone fill:#F3F2F1,stroke:#0078D4,stroke-width:2px,color:#323130
+    style userZone fill:#F3F2F1,stroke:#8A8886,stroke-width:2px,color:#323130
+    style orderZone fill:#F3F2F1,stroke:#8A8886,stroke-width:2px,color:#323130
     style processorZone fill:#F3F2F1,stroke:#8A8886,stroke-width:2px,color:#323130
     style catalogZone5 fill:#F3F2F1,stroke:#8A8886,stroke-width:2px,color:#323130
-    style notifyZone5 fill:#F3F2F1,stroke:#FFB900,stroke-width:2px,color:#323130
+    style notifyZone5 fill:#F3F2F1,stroke:#8A8886,stroke-width:2px,color:#323130
 ```
 
 ---
