@@ -30,28 +30,28 @@ flowchart TB
     %% ═══════════════════════════════════════════════════════════════════════════
 
     subgraph BIZ["🏢 Business Architecture"]
-        direction LR
+        direction TB
         B1("🎯 Capabilities"):::external
         B2("🔄 Value Streams"):::external
         B3("⚙️ Business Processes"):::external
     end
 
     subgraph APP["🖥️ Application Architecture"]
-        direction LR
+        direction TB
         A1("🌐 Microservices"):::core
         A2("📡 APIs & Contracts"):::core
         A3("📣 Integration Events"):::core
     end
 
     subgraph DAT["🗄️ Data Architecture"]
-        direction LR
+        direction TB
         D1("🐘 PostgreSQL"):::data
         D2("⚡ Redis"):::data
         D3("📨 RabbitMQ · Outbox"):::data
     end
 
     subgraph TECH["☁️ Technology Architecture"]
-        direction LR
+        direction TB
         T1("🚀 Azure Container Apps"):::neutral
         T2("🔧 .NET Aspire · Bicep"):::neutral
         T3("🔒 Security · Observability"):::neutral
