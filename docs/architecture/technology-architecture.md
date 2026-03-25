@@ -883,64 +883,64 @@ flowchart LR
 ✅ **Mermaid Verification: 5/5 | Score: 97/100 | Diagrams: 1 | P0 Violations: 0**  
 _(accTitle ✅ · accDescr ✅ · style directives on subgraphs ✅ · semantic classDefs ✅ · governance block ✅)_
 
-### 8.2 Network Connectivity Map
+### 🌐 8.2 Network Connectivity Map
 
-| Source Service  | Target Service / Resource | Protocol    | Port | Direction | TLS   | Source Evidence                                    |
-| --------------- | ------------------------- | ----------- | ---- | --------- | ----- | -------------------------------------------------- |
-| Internet        | webapp                    | HTTP/1.1    | 443  | Inbound   | HTTPS | `webapp.tmpl.yaml:14-18`                           |
-| Internet        | identity-api              | HTTP/1.1    | 443  | Inbound   | HTTPS | `identity-api.tmpl.yaml:14-18`                     |
-| Internet        | mobile-bff                | HTTP/1.1    | 5000 | Inbound   | HTTPS | `mobile-bff.tmpl.yaml:14-18`                       |
-| webapp          | basket-api                | HTTP/2 gRPC | 8080 | Internal  | Plain | `basket-api.tmpl.yaml:16` — `transport: http2`     |
-| webapp          | catalog-api               | HTTP/1.1    | 8080 | Internal  | Plain | `webapp.tmpl.yaml:42-43`                           |
-| webapp          | ordering-api              | HTTP/1.1    | 8080 | Internal  | Plain | `webapp.tmpl.yaml:46-47`                           |
-| webapp          | identity-api              | HTTPS       | 443  | Internal  | HTTPS | `webapp.tmpl.yaml:38` — `IdentityUrl: https://...` |
-| basket-api      | redis                     | TCP         | 6379 | Internal  | Plain | `basket-api.tmpl.yaml:25,51`                       |
-| basket-api      | eventbus (RabbitMQ)       | AMQP        | 5672 | Internal  | Plain | `basket-api.tmpl.yaml:23,47`                       |
-| catalog-api     | postgres (catalogdb)      | TCP         | 5432 | Internal  | Plain | `catalog-api.tmpl.yaml:24,40`                      |
-| catalog-api     | eventbus (RabbitMQ)       | AMQP        | 5672 | Internal  | Plain | `catalog-api.tmpl.yaml:26,48`                      |
-| ordering-api    | postgres (orderingdb)     | TCP         | 5432 | Internal  | Plain | `ordering-api.tmpl.yaml:*`                         |
-| ordering-api    | eventbus (RabbitMQ)       | AMQP        | 5672 | Internal  | Plain | `ordering-api.tmpl.yaml:*`                         |
-| identity-api    | postgres (identitydb)     | TCP         | 5432 | Internal  | Plain | `identity-api.tmpl.yaml:23-24`                     |
-| webhooks-api    | postgres (webhooksdb)     | TCP         | 5432 | Internal  | Plain | `webhooks-api.tmpl.yaml:*`                         |
-| webhooks-api    | eventbus (RabbitMQ)       | AMQP        | 5672 | Internal  | Plain | `webhooks-api.tmpl.yaml:*`                         |
-| CAE Environment | Log Analytics Workspace   | HTTPS       | 443  | Outbound  | HTTPS | `resources.bicep:53-57`                            |
-| ACR             | Container Apps (pull)     | HTTPS       | 443  | Outbound  | HTTPS | `resources.bicep:22-29` — Managed Identity AcrPull |
+| 📡 Source Service | 🎯 Target Service / Resource | 📞 Protocol | 🔢 Port | ➡️ Direction | 🔒 TLS |
+| ----------------- | ---------------------------- | ----------- | ------- | ------------ | ------ |
+| Internet          | webapp                       | HTTP/1.1    | 443     | Inbound      | HTTPS  |
+| Internet          | identity-api                 | HTTP/1.1    | 443     | Inbound      | HTTPS  |
+| Internet          | mobile-bff                   | HTTP/1.1    | 5000    | Inbound      | HTTPS  |
+| webapp            | basket-api                   | HTTP/2 gRPC | 8080    | Internal     | Plain  |
+| webapp            | catalog-api                  | HTTP/1.1    | 8080    | Internal     | Plain  |
+| webapp            | ordering-api                 | HTTP/1.1    | 8080    | Internal     | Plain  |
+| webapp            | identity-api                 | HTTPS       | 443     | Internal     | HTTPS  |
+| basket-api        | redis                        | TCP         | 6379    | Internal     | Plain  |
+| basket-api        | eventbus (RabbitMQ)          | AMQP        | 5672    | Internal     | Plain  |
+| catalog-api       | postgres (catalogdb)         | TCP         | 5432    | Internal     | Plain  |
+| catalog-api       | eventbus (RabbitMQ)          | AMQP        | 5672    | Internal     | Plain  |
+| ordering-api      | postgres (orderingdb)        | TCP         | 5432    | Internal     | Plain  |
+| ordering-api      | eventbus (RabbitMQ)          | AMQP        | 5672    | Internal     | Plain  |
+| identity-api      | postgres (identitydb)        | TCP         | 5432    | Internal     | Plain  |
+| webhooks-api      | postgres (webhooksdb)        | TCP         | 5432    | Internal     | Plain  |
+| webhooks-api      | eventbus (RabbitMQ)          | AMQP        | 5672    | Internal     | Plain  |
+| CAE Environment   | Log Analytics Workspace      | HTTPS       | 443     | Outbound     | HTTPS  |
+| ACR               | Container Apps (pull)        | HTTPS       | 443     | Outbound     | HTTPS  |
 
-### 8.3 Service-to-Infrastructure Bindings
+### 🔗 8.3 Service-to-Infrastructure Bindings
 
-| Application Service | Infrastructure Dependency   | Binding Mechanism        | Secret / Config Reference                                | Source                                           |
-| ------------------- | --------------------------- | ------------------------ | -------------------------------------------------------- | ------------------------------------------------ |
-| basket-api          | Redis (cache)               | Connection string        | `secretRef: connectionstrings--redis`                    | `basket-api.tmpl.yaml:25-26`                     |
-| basket-api          | RabbitMQ (eventbus)         | Connection string (AMQP) | `secretRef: connectionstrings--eventbus`                 | `basket-api.tmpl.yaml:23-24`                     |
-| catalog-api         | PostgreSQL (catalogdb)      | Connection string        | `secretRef: connectionstrings--catalogdb`                | `catalog-api.tmpl.yaml:24-25`                    |
-| catalog-api         | RabbitMQ (eventbus)         | Connection string (AMQP) | `secretRef: connectionstrings--eventbus`                 | `catalog-api.tmpl.yaml:26-27`                    |
-| ordering-api        | PostgreSQL (orderingdb)     | Connection string        | `secretRef: connectionstrings--orderdb`                  | `ordering-api.tmpl.yaml:*`                       |
-| ordering-api        | RabbitMQ (eventbus)         | Connection string (AMQP) | `secretRef: connectionstrings--eventbus`                 | `ordering-api.tmpl.yaml:*`                       |
-| identity-api        | PostgreSQL (identitydb)     | Connection string        | `secretRef: connectionstrings--identitydb`               | `identity-api.tmpl.yaml:23-24`                   |
-| webhooks-api        | PostgreSQL (webhooksdb)     | Connection string        | `secretRef: connectionstrings--webhooksdb`               | `webhooks-api.tmpl.yaml:*`                       |
-| webhooks-api        | RabbitMQ (eventbus)         | Connection string (AMQP) | `secretRef: connectionstrings--eventbus`                 | `webhooks-api.tmpl.yaml:*`                       |
-| All services        | Azure Managed Identity      | Azure client SDK         | `AZURE_CLIENT_ID` env var                                | All `*.tmpl.yaml` — `MANAGED_IDENTITY_CLIENT_ID` |
-| All services        | Azure Container Registry    | Managed Identity pull    | `identity: AZURE_CONTAINER_REGISTRY_MANAGED_IDENTITY_ID` | All `*.tmpl.yaml:7-8`                            |
-| All services        | OpenTelemetry OTLP endpoint | Environment variable     | `OTEL_EXPORTER_OTLP_ENDPOINT` (optional)                 | `Extensions.cs:83-88`                            |
+| 📦 Application Service | 🏗️ Infrastructure Dependency | 🔗 Binding Mechanism     | 🔐 Secret / Config Reference                             |
+| ---------------------- | ---------------------------- | ------------------------ | -------------------------------------------------------- |
+| basket-api             | Redis (cache)                | Connection string        | `secretRef: connectionstrings--redis`                    |
+| basket-api             | RabbitMQ (eventbus)          | Connection string (AMQP) | `secretRef: connectionstrings--eventbus`                 |
+| catalog-api            | PostgreSQL (catalogdb)       | Connection string        | `secretRef: connectionstrings--catalogdb`                |
+| catalog-api            | RabbitMQ (eventbus)          | Connection string (AMQP) | `secretRef: connectionstrings--eventbus`                 |
+| ordering-api           | PostgreSQL (orderingdb)      | Connection string        | `secretRef: connectionstrings--orderdb`                  |
+| ordering-api           | RabbitMQ (eventbus)          | Connection string (AMQP) | `secretRef: connectionstrings--eventbus`                 |
+| identity-api           | PostgreSQL (identitydb)      | Connection string        | `secretRef: connectionstrings--identitydb`               |
+| webhooks-api           | PostgreSQL (webhooksdb)      | Connection string        | `secretRef: connectionstrings--webhooksdb`               |
+| webhooks-api           | RabbitMQ (eventbus)          | Connection string (AMQP) | `secretRef: connectionstrings--eventbus`                 |
+| All services           | Azure Managed Identity       | Azure client SDK         | `AZURE_CLIENT_ID` env var                                |
+| All services           | Azure Container Registry     | Managed Identity pull    | `identity: AZURE_CONTAINER_REGISTRY_MANAGED_IDENTITY_ID` |
+| All services           | OpenTelemetry OTLP endpoint  | Environment variable     | `OTEL_EXPORTER_OTLP_ENDPOINT` (optional)                 |
 
-### 8.4 External Service Integrations
+### 🌐 8.4 External Service Integrations
 
-| External Service          | Integration Type        | Configuration                      | Source                                       |
-| ------------------------- | ----------------------- | ---------------------------------- | -------------------------------------------- |
-| Azure DevOps (CI)         | Build pipeline          | `ci.yml` — triggers on `main`      | `ci.yml:1-45`                                |
-| Azure Cognitive Services  | AI/OpenAI (optional)    | `useOpenAI: false` (disabled)      | `src/eShop.AppHost/Program.cs:72-77`         |
-| Ollama (local AI)         | AI inference (optional) | `useOllama: false` (disabled)      | `src/eShop.AppHost/Program.cs:79-84`         |
-| Docker Hub                | Base image source       | `ankane/pgvector:latest`, RabbitMQ | `src/eShop.AppHost/Program.cs:10-12`         |
-| OTLP Collector (optional) | Telemetry export        | `OTEL_EXPORTER_OTLP_ENDPOINT` env  | `src/eShop.ServiceDefaults/Extensions.cs:83` |
+| 🌐 External Service       | 🔗 Integration Type     | ⚙️ Configuration                   |
+| ------------------------- | ----------------------- | ---------------------------------- |
+| Azure DevOps (CI)         | Build pipeline          | `ci.yml` — triggers on `main`      |
+| Azure Cognitive Services  | AI/OpenAI (optional)    | `useOpenAI: false` (disabled)      |
+| Ollama (local AI)         | AI inference (optional) | `useOllama: false` (disabled)      |
+| Docker Hub                | Base image source       | `ankane/pgvector:latest`, RabbitMQ |
+| OTLP Collector (optional) | Telemetry export        | `OTEL_EXPORTER_OTLP_ENDPOINT` env  |
 
-### 8.5 Deployment Pipeline Integration
+### ⚙️ 8.5 Deployment Pipeline Integration
 
-| Pipeline Stage       | Tool               | Trigger           | Artifact Produced           | Source                                |
-| -------------------- | ------------------ | ----------------- | --------------------------- | ------------------------------------- |
-| Build & Verify       | Azure DevOps + 1ES | Push to `main`    | Build validation result     | `ci.yml:33-45`                        |
-| Image Build          | `azd` / Docker     | `azd up` / manual | Docker image in ACR         | `azure.yaml:1-7`                      |
-| Infrastructure Apply | `azd` / Bicep      | `azd up`          | Azure resources provisioned | `infra/main.bicep:1-55`               |
-| Container Deploy     | `azd` / ACA YAML   | `azd up`          | Running Container Apps      | `src/eShop.AppHost/infra/*.tmpl.yaml` |
+| ⚙️ Pipeline Stage    | 🛠️ Tool            | 🔔 Trigger        | 📦 Artifact Produced        |
+| -------------------- | ------------------ | ----------------- | --------------------------- |
+| Build & Verify       | Azure DevOps + 1ES | Push to `main`    | Build validation result     |
+| Image Build          | `azd` / Docker     | `azd up` / manual | Docker image in ACR         |
+| Infrastructure Apply | `azd` / Bicep      | `azd up`          | Azure resources provisioned |
+| Container Deploy     | `azd` / ACA YAML   | `azd up`          | Running Container Apps      |
 
 ---
 
