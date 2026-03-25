@@ -14,6 +14,17 @@ This folder contains the TOGAF 10-aligned architecture documentation for the **e
 ## Architecture at a Glance
 
 ```mermaid
+---
+title: eShop TOGAF Architecture Layers
+config:
+  theme: base
+  look: classic
+  layout: dagre
+  themeVariables:
+    fontSize: '16px'
+  flowchart:
+    htmlLabels: true
+---
 flowchart TB
     accTitle: eShop TOGAF Architecture Layers
     accDescr: WCAG AA compliant layered architecture diagram showing the four TOGAF layers of the eShop platform stacked top-to-bottom — Business, Application, Data, and Technology — with directional arrows indicating dependency flow.
@@ -31,9 +42,9 @@ flowchart TB
 
     subgraph BIZ["🏢 Business Architecture"]
         direction TB
-        B1("🎯 Capabilities"):::external
-        B2("🔄 Value Streams"):::external
-        B3("⚙️ Business Processes"):::external
+        B1("🎯 Capabilities"):::warning
+        B2("🔄 Value Streams"):::warning
+        B3("⚙️ Business Processes"):::warning
     end
 
     subgraph APP["🖥️ Application Architecture"]
@@ -45,9 +56,9 @@ flowchart TB
 
     subgraph DAT["🗄️ Data Architecture"]
         direction TB
-        D1("🐘 PostgreSQL"):::data
-        D2("⚡ Redis"):::data
-        D3("📨 RabbitMQ · Outbox"):::data
+        D1("🐘 PostgreSQL"):::neutral
+        D2("⚡ Redis"):::success
+        D3("📨 RabbitMQ · Outbox"):::warning
     end
 
     subgraph TECH["☁️ Technology Architecture"]
@@ -61,18 +72,18 @@ flowchart TB
     APP --> DAT
     DAT --> TECH
 
-    style BIZ  fill:#E0F7F7,stroke:#038387,stroke-width:2px
-    style APP  fill:#EFF6FC,stroke:#0078D4,stroke-width:2px
-    style DAT  fill:#F0E6FF,stroke:#5C2D91,stroke-width:2px
-    style TECH fill:#FAFAFA,stroke:#8A8886,stroke-width:2px
-
+    %% Centralized classDefs (AZURE/FLUENT v1.1)
     classDef neutral  fill:#FAFAFA,stroke:#8A8886,stroke-width:2px,color:#323130
     classDef core     fill:#EFF6FC,stroke:#0078D4,stroke-width:2px,color:#323130
     classDef success  fill:#DFF6DD,stroke:#107C10,stroke-width:2px,color:#323130
     classDef warning  fill:#FFF4CE,stroke:#FFB900,stroke-width:2px,color:#323130
     classDef danger   fill:#FDE7E9,stroke:#D13438,stroke-width:2px,color:#323130
-    classDef data     fill:#F0E6FF,stroke:#5C2D91,stroke-width:2px,color:#323130
-    classDef external fill:#E0F7F7,stroke:#038387,stroke-width:2px,color:#323130
+
+    %% Subgraph style directives (style only — never class on subgraph)
+    style BIZ  fill:#F3F2F1,stroke:#8A8886,stroke-width:2px,color:#323130
+    style APP  fill:#F3F2F1,stroke:#8A8886,stroke-width:2px,color:#323130
+    style DAT  fill:#F3F2F1,stroke:#8A8886,stroke-width:2px,color:#323130
+    style TECH fill:#F3F2F1,stroke:#8A8886,stroke-width:2px,color:#323130
 ```
 
 ## Key Design Decisions

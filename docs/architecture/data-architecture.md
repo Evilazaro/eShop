@@ -413,8 +413,8 @@ flowchart TD
     financial -->|"standard operational"| internal
     internal -->|"open reference data"| public
 
-    classDef danger fill:#FDE7E9,stroke:#D83B01,stroke-width:2px,color:#323130
-    classDef warning fill:#FFF4CE,stroke:#C19C00,stroke-width:2px,color:#323130
+    classDef danger fill:#FDE7E9,stroke:#D13438,stroke-width:2px,color:#323130
+    classDef warning fill:#FFF4CE,stroke:#FFB900,stroke-width:2px,color:#323130
     classDef core fill:#EFF6FC,stroke:#0078D4,stroke-width:2px,color:#323130
     classDef success fill:#DFF6DD,stroke:#107C10,stroke-width:2px,color:#323130
 ```
