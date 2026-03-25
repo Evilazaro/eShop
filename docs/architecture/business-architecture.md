@@ -468,9 +468,9 @@ flowchart LR
     L2 -->|"target: L3"| L3
     L3 -->|"target: L4"| L4
 
-    style L4 fill:#DFF6DD,stroke:#107C10,stroke-width:2px,color:#323130
-    style L3 fill:#FFF4CE,stroke:#FFB900,stroke-width:2px,color:#323130
-    style L2 fill:#FDE7E9,stroke:#D13438,stroke-width:2px,color:#323130
+    style L4 fill:#F3F2F1,stroke:#8A8886,stroke-width:2px,color:#323130
+    style L3 fill:#F3F2F1,stroke:#8A8886,stroke-width:2px,color:#323130
+    style L2 fill:#F3F2F1,stroke:#8A8886,stroke-width:2px,color:#323130
 
     classDef neutral fill:#FAFAFA,stroke:#8A8886,stroke-width:2px,color:#323130
     classDef core fill:#EFF6FC,stroke:#0078D4,stroke-width:2px,color:#323130
