@@ -957,7 +957,7 @@ For established projects, ADRs should be stored in `/docs/architecture/decisions
 | ADR-006 | pgvector Extension for AI Catalog Embeddings             | Accepted | Inferred |
 | ADR-007 | gRPC as Basket API Transport Protocol                    | Accepted | Inferred |
 
-### 6.1 Detailed ADRs
+### 📋 6.1 Detailed ADRs
 
 #### 6.1.1 ADR-001: Database-per-Service Pattern for Data Isolation
 
@@ -1281,7 +1281,7 @@ The access control model is JWT-based: clients authenticate with Identity.API us
 | Webhooks | Webhooks Team     | Webhooks.API                    | webhooksdb, WebhookSubscription                                                |
 | Platform | Platform Team     | AppHost / IntegrationEventLogEF | IntegrationEventLog, ClientRequest, RabbitMQ event bus                         |
 
-### Access Control Model
+### 🔐 Access Control Model
 
 | Control            | Mechanism                                  | Coverage                                            | Gap                                                    |
 | ------------------ | ------------------------------------------ | --------------------------------------------------- | ------------------------------------------------------ |
