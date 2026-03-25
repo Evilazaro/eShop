@@ -97,7 +97,7 @@ data_layer_reasoning:
 
 ## 📊 Section 1: Executive Summary
 
-### Overview
+### 🔍 Overview
 
 The eShop reference application implements a microservices data architecture composed of five independently bounded data domains: **Catalog**, **Ordering**, **Basket**, **Identity**, and **Webhooks**, plus a shared **IntegrationEventLog** cross-cutting concern. Each domain maintains strict data sovereignty through dedicated database instances, a recognized DDD best practice confirmed across the Aspire AppHost orchestration configuration (`src/eShop.AppHost/Program.cs:10-18`). The data estate spans four PostgreSQL databases for relational persistence, one Redis key-value store for ephemeral basket state, and a RabbitMQ message broker for asynchronous integration event delivery, yielding a polyglot persistence architecture well-suited to the varying data access and consistency requirements of each domain.
 
@@ -105,7 +105,7 @@ The Ordering domain applies full Domain-Driven Design (DDD) aggregate root patte
 
 A total of **74 data components** were identified and classified across all 11 canonical TOGAF Data Architecture types. The average confidence score across all detected components is **0.93**, reflecting strong evidence from EF Core entity configurations, migration files, repository interfaces, and gRPC proto contracts. The current data architecture maturity is assessed at **Level 3 (Defined)**: schema change is tracked via EF Core migrations across all four relational databases, an outbox pattern ensures reliable event delivery, and the data access layer is abstracted through repository interfaces conforming to the Generic Repository pattern. Gaps toward Level 4 include an absence of formal data quality SLAs, no automated anomaly detection, and no external schema registry.
 
-### Key Findings
+### 🔍 Key Findings
 
 | Finding                          | Value                        | Assessment                     |
 | -------------------------------- | ---------------------------- | ------------------------------ |
@@ -122,7 +122,7 @@ A total of **74 data components** were identified and classified across all 11 c
 | Financial data entities          | 2                            | Require encryption controls    |
 | Unmasked card data (risk)        | Confirmed                    | Critical security gap          |
 
-### Data Quality Scorecard
+### ✅ Data Quality Scorecard
 
 | Quality Dimension        | Score | Status       | Evidence                                                                                            |
 | ------------------------ | ----- | ------------ | --------------------------------------------------------------------------------------------------- |
@@ -135,7 +135,7 @@ A total of **74 data components** were identified and classified across all 11 c
 | Access control model     | 70%   | 🟡 Fair      | JWT+RBAC via ASP.NET Core Authorization; no observable row-level security                           |
 | Master data management   | 65%   | 🟡 Fair      | Reference tables present (CatalogBrand, CatalogType, CardType); no observable MDM hub               |
 
-### Coverage Summary
+### 📋 Coverage Summary
 
 The data architecture covers all five microservice domains with dedicated persistence contexts and explicit schema contracts. The Outbox pattern provides eventual-consistency guarantees for the Ordering workflow. The primary governance gap is the absence of a formal data classification framework in source code—classifications in this document are inferred from field names, `[Required]` annotations, and domain semantics. A critical security finding exists in the PaymentMethod entity (`src/Ordering.Infrastructure/EntityConfigurations/PaymentMethodEntityTypeConfiguration.cs:28-30`), where raw card numbers are stored in the `paymentmethods` table without visible masking or tokenization. This represents a PCI-DSS compliance exposure that requires immediate remediation. Data retention policies are not explicitly declared in source files; all retention assessments below are inferred from domain context.
 
@@ -143,7 +143,7 @@ The data architecture covers all five microservice domains with dedicated persis
 
 ## 🗺️ Section 2: Architecture Landscape
 
-### Overview
+### 🔍 Overview
 
 The eShop data landscape is organized around five clearly delineated bounded contexts, each with domain-exclusive data stores that prevent cross-domain direct database access. This Database-per-Service pattern is a foundational architectural choice visible in the .NET Aspire AppHost orchestration (`src/eShop.AppHost/Program.cs:10-18`), where four named PostgreSQL databases (`catalogdb`, `identitydb`, `orderingdb`, `webhooksdb`) and one Redis instance are provisioned as separate infrastructure resources with explicit service references. The data topology therefore embodies microservices data sovereignty: no DbContext spans more than one bounded context, and cross-domain data access is performed exclusively through integration events over RabbitMQ or synchronous API calls.
 
@@ -151,7 +151,7 @@ The Catalog and Ordering domains are the most data-rich, together accounting for
 
 Cross-domain data integration is achieved through 14 integration event types, all derived from the base `IntegrationEvent` record (`src/EventBus/Events/IntegrationEvent.cs:3-17`), propagated through RabbitMQ (`EventBusRabbitMQ`). The `IntegrationEventLogEF` library provides an Outbox pattern implementation, storing serialized event payloads in a dedicated `integration_log` table co-located with the publishing service's database and tracking publication state through `EventStateEnum`.
 
-### 2.1 Data Entities
+### 🏢 2.1 Data Entities
 
 | Name                     | Description                                                             | Classification  |
 | ------------------------ | ----------------------------------------------------------------------- | --------------- |
@@ -171,7 +171,7 @@ Cross-domain data integration is achieved through 14 integration event types, al
 | ClientRequest            | Idempotency guard record for command deduplication                      | Internal        |
 | Address                  | Value object representing a physical address; persisted as owned entity | PII             |
 
-### 2.2 Data Models
+### 🗃️ 2.2 Data Models
 
 | Name                                 | Description                                                                          | Classification |
 | ------------------------------------ | ------------------------------------------------------------------------------------ | -------------- |
@@ -187,7 +187,7 @@ Cross-domain data integration is achieved through 14 integration event types, al
 | OrderItemEntityTypeConfiguration     | EF Fluent API model for OrderItem (table: orderitems)                                | Internal       |
 | PaymentMethodEntityTypeConfiguration | EF Fluent API model for PaymentMethod (table: paymentmethods, private field mapping) | Internal       |
 
-### 2.3 Data Stores
+### 🗄️ 2.3 Data Stores
 
 | Name                    | Description                                                                         | Classification |
 | ----------------------- | ----------------------------------------------------------------------------------- | -------------- |
@@ -197,7 +197,7 @@ Cross-domain data integration is achieved through 14 integration event types, al
 | webhooksdb (PostgreSQL) | Relational store for Webhooks domain                                                | Internal       |
 | Redis (basket)          | Key-value store for Basket domain; keys: `/basket/{userId}`; JSON-serialized values | Internal       |
 
-### 2.4 Data Flows
+### 🔄 2.4 Data Flows
 
 | Name                                                   | Description                                                                     | Classification |
 | ------------------------------------------------------ | ------------------------------------------------------------------------------- | -------------- |
@@ -214,7 +214,7 @@ Cross-domain data integration is achieved through 14 integration event types, al
 | OrderStatusChangedToShippedIntegrationEvent            | Flow: Ordering → Webhooks for external notification                             | Internal       |
 | gRPC Basket CRUD                                       | Flow: WebApp/ClientApp → Basket.API via gRPC for basket read/write/delete       | Internal       |
 
-### 2.5 Data Services
+### ⚙️ 2.5 Data Services
 
 | Name                                                     | Description                                                                 | Classification |
 | -------------------------------------------------------- | --------------------------------------------------------------------------- | -------------- |
@@ -225,7 +225,7 @@ Cross-domain data integration is achieved through 14 integration event types, al
 | ICatalogAI / CatalogAI                                   | AI embedding service generating 384-dim float vectors from CatalogItem text | Internal       |
 | IRequestManager / RequestManager                         | Idempotency manager checking and registering command requests               | Internal       |
 
-### 2.6 Data Governance
+### 🏛️ 2.6 Data Governance
 
 | Name                                   | Description                                                                                                      | Classification |
 | -------------------------------------- | ---------------------------------------------------------------------------------------------------------------- | -------------- |
@@ -234,7 +234,7 @@ Cross-domain data integration is achieved through 14 integration event types, al
 | IDbSeeder Pattern                      | Typed data seeding interface (CatalogContextSeed, OrderingContextSeed, UsersSeed) called during startup          | Internal       |
 | Schema Isolation (ordering schema)     | PostgreSQL schema namespacing (`ordering`) applied to all Ordering domain tables via `HasDefaultSchema`          | Internal       |
 
-### 2.7 Data Quality Rules
+### ✅ 2.7 Data Quality Rules
 
 | Name                                   | Description                                                                                                                   | Classification |
 | -------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- | -------------- |
@@ -247,7 +247,7 @@ Cross-domain data integration is achieved through 14 integration event types, al
 | CatalogItem stock invariants           | AvailableStock, RestockThreshold, MaxStockThreshold fields with business logic for reorder detection                          | Internal       |
 | ClientRequest idempotency              | Command deduplication via RequestManager.ExistAsync(Guid id) before processing                                                | Internal       |
 
-### 2.8 Master Data
+### 📚 2.8 Master Data
 
 | Name         | Description                                                                                       | Classification |
 | ------------ | ------------------------------------------------------------------------------------------------- | -------------- |
@@ -256,7 +256,7 @@ Cross-domain data integration is achieved through 14 integration event types, al
 | CardType     | Authoritative list of payment card types (e.g., Visa, Mastercard); seeded via OrderingContextSeed | Internal       |
 | OrderStatus  | Enum-backed lookup table defining valid order lifecycle states (Submitted through Cancelled)      | Internal       |
 
-### 2.9 Data Transformations
+### 🔄 2.9 Data Transformations
 
 | Name                                | Description                                                                                                   | Classification |
 | ----------------------------------- | ------------------------------------------------------------------------------------------------------------- | -------------- |
@@ -266,7 +266,7 @@ Cross-domain data integration is achieved through 14 integration event types, al
 | gRPC Protobuf Serialization         | Basket request/response models serialized via Protocol Buffers (basket.proto schema)                          | Internal       |
 | EF Core Value Conversion            | OrderStatus enum serialized as string in PostgreSQL; Address value object serialized as owned entity columns  | Internal       |
 
-### 2.10 Data Contracts
+### 📜 2.10 Data Contracts
 
 | Name                                | Description                                                                                                | Classification |
 | ----------------------------------- | ---------------------------------------------------------------------------------------------------------- | -------------- |
@@ -276,7 +276,7 @@ Cross-domain data integration is achieved through 14 integration event types, al
 | IOrderRepository / IBuyerRepository | C# interface contracts for ordering domain aggregate access with IUnitOfWork                               | Internal       |
 | EF Entity Type Configurations       | Implicit data model contracts defined via IEntityTypeConfiguration Fluent API for all relational entities  | Internal       |
 
-### 2.11 Data Security
+### 🔒 2.11 Data Security
 
 | Name                                | Description                                                                                                   | Classification  |
 | ----------------------------------- | ------------------------------------------------------------------------------------------------------------- | --------------- |
@@ -433,7 +433,7 @@ flowchart LR
     style stores fill:#F3F2F1,stroke:#8A8886,stroke-width:2px,color:#323130
 ```
 
-### Summary
+### 📝 Summary
 
 The eShop data landscape comprises 74 components across 11 canonical data types. The architecture demonstrates strong domain isolation through the Database-per-Service pattern with five dedicated data stores, each aligned to a single bounded context. The dominant storage technology is PostgreSQL (four instances), complemented by Redis for Basket and RabbitMQ for asynchronous data flows. The Catalog domain is unique in applying AI-powered vector search via the pgvector extension, making it the highest-complexity data domain. Master data (brands, types, card types) is seeded at startup and remains relatively static.
 
@@ -443,7 +443,7 @@ Key gaps in the landscape include the absence of formalized data retention polic
 
 ## 🏛️ Section 3: Architecture Principles
 
-### Overview
+### 🔍 Overview
 
 The eShop data architecture is governed by three primary architecture principles observable from the source code: **Database-per-Service Isolation**, **Domain-Driven Data Modeling**, and **Event-Driven Data Consistency**. These principles are embedded in the implementation patterns across all five bounded contexts rather than declared in a formal architecture decision record. Their consistent application across the codebase indicates deliberate architectural intention confirmed by the .NET Aspire AppHost service configuration, the DDD aggregate patterns in the Ordering domain, and the Outbox pattern in `IntegrationEventLogEF`.
 
@@ -451,7 +451,7 @@ The Database-per-Service principle prevents tight coupling between domains by en
 
 Privacy-by-design is partially implemented: ASP.NET Core Identity provides password hashing and token-based authentication. However, the principle is not fully realized due to the unmasked card data in `PaymentMethod`. The absence of an explicit data classification framework in source code indicates that privacy controls are applied reactively through framework defaults rather than proactively through design. Recommendations for each principle are outlined in the sections below.
 
-### Core Data Principles
+### 🏛️ Core Data Principles
 
 | Principle                     | Status         | Implementation Evidence                                                                                       | Recommendation                                     |
 | ----------------------------- | -------------- | ------------------------------------------------------------------------------------------------------------- | -------------------------------------------------- |
@@ -464,7 +464,7 @@ Privacy-by-design is partially implemented: ASP.NET Core Identity provides passw
 | Data Minimization             | ⚠️ Partial     | Basket uses ephemeral Redis (no persistence after checkout)                                                   | Review Identity user PII fields for necessity      |
 | Single Source of Truth        | ✅ Implemented | Each entity owned by exactly one service; cross-domain reference by ID only                                   | Document canonical data ownership per domain       |
 
-### Data Schema Design Standards
+### 📐 Data Schema Design Standards
 
 - **Relational schema**: EF Core Fluent API configurations (`IEntityTypeConfiguration<T>`) serve as the authoritative schema definition for all relational entities; inline data annotation `[Required]` is used for model-level constraints only
 - **String length caps**: All critical string fields use `HasMaxLength()` in entity configurations — e.g., `IdentityGuid` (200), `CardHolderName` (200), `OrderStatus` (30), `CardNumber` (25)
@@ -474,7 +474,7 @@ Privacy-by-design is partially implemented: ASP.NET Core Identity provides passw
 - **Enum handling**: `OrderStatus` enum stored as string (`HasConversion<string>()`) for human-readability in the database
 - **Vector columns**: `CatalogItem.Embedding` mapped as `vector(384)` via Npgsql.EntityFrameworkCore.PostgreSQL with pgvector extension
 
-### Data Classification Taxonomy
+### 🏷️ Data Classification Taxonomy
 
 | Classification  | Description                         | Entities                                                                                                                                      | Required Controls                                            |
 | --------------- | ----------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------ |
@@ -488,7 +488,7 @@ Privacy-by-design is partially implemented: ASP.NET Core Identity provides passw
 
 ## 📐 Section 4: Current State Baseline
 
-### Overview
+### 🔍 Overview
 
 The eShop current state represents a modern cloud-native microservices architecture built on .NET Aspire, leveraging container-based service orchestration with explicit dependency and lifetime management. The data persistence layer makes deliberate, domain-aligned technology choices: PostgreSQL for transactional relational data across four bounded contexts, Redis for ephemeral basket state requiring sub-millisecond access, and RabbitMQ as the asynchronous backbone for inter-service data flows. This technology selection is confirmed in the AppHost orchestration at `src/eShop.AppHost/Program.cs:7-18`, which provisions all data infrastructure resources as named Aspire components with persistent lifetime settings.
 
@@ -496,7 +496,7 @@ The current data topology reflects a mature decomposition: five bounded contexts
 
 The baseline assessment reveals Level 3 maturity (Defined) on the Data Maturity Scale: automated schema migration is present across all relational databases, data access is abstracted through repository interfaces, and the Outbox pattern provides reliable integration event delivery. The primary gaps preventing Level 4 maturity are the absence of formal data quality SLAs, no automated anomaly detection on data flows, and the lack of a schema registry for event contracts — all of which represent improvement opportunities for the next architectural iteration.
 
-### Baseline Data Architecture
+### 🗺️ Baseline Data Architecture
 
 ```mermaid
 ---
@@ -585,7 +585,7 @@ flowchart TB
     style stores fill:#F3F2F1,stroke:#8A8886,stroke-width:2px,color:#323130
 ```
 
-### Storage Distribution
+### 🗄️ Storage Distribution
 
 | Store      | Type                                  | Domain        | Persistence                               | Primary Access      |
 | ---------- | ------------------------------------- | ------------- | ----------------------------------------- | ------------------- |
@@ -596,7 +596,7 @@ flowchart TB
 | Redis      | Key-Value                             | Basket        | Session-scoped (ephemeral per buyer ID)   | StackExchange.Redis |
 | RabbitMQ   | Message Broker                        | Cross-cutting | Persistent (ContainerLifetime.Persistent) | EventBusRabbitMQ    |
 
-### Quality Baseline
+### ✅ Quality Baseline
 
 | Metric                     | Current State                                                                  | Target                  | Gap                                  |
 | -------------------------- | ------------------------------------------------------------------------------ | ----------------------- | ------------------------------------ |
@@ -607,7 +607,7 @@ flowchart TB
 | Event delivery reliability | Outbox pattern in Ordering/Catalog                                             | All event publishers    | Apply outbox to Webhooks publisher   |
 | PII data protection        | Password hashing (Identity); no card masking                                   | Full PCI-DSS compliance | Tokenize card numbers                |
 
-### Governance Maturity
+### 📈 Governance Maturity
 
 **Assessed Level: 3 — Defined**
 
@@ -621,7 +621,7 @@ flowchart TB
 
 The architecture is firmly at Level 3 for schema management, data access abstraction, and lineage. Quality monitoring and data catalog capabilities are at Level 2, constrained by the absence of structured quality SLAs, anomaly detection, and a formal data catalog tool.
 
-### Compliance Posture
+### 🛡️ Compliance Posture
 
 | Control                 | Status                           | Evidence                                                                              | Risk               |
 | ----------------------- | -------------------------------- | ------------------------------------------------------------------------------------- | ------------------ |
@@ -634,7 +634,7 @@ The architecture is firmly at Level 3 for schema management, data access abstrac
 | Data retention policies | ❌ Not Declared                  | No explicit retention policy annotations or configuration detected                    | Medium             |
 | GDPR right-to-erasure   | ❌ Not Implemented               | No observable user data deletion mechanism beyond account deletion                    | High               |
 
-### Summary
+### 📝 Summary
 
 The eShop baseline data architecture achieves a solid Level 3 maturity characterized by automated schema migrations, repository-pattern data access, and reliable event publishing via the Outbox pattern. The polyglot persistence approach correctly aligns technology to domain needs: PostgreSQL for transactional relational data, Redis for low-latency ephemeral state, and RabbitMQ for asynchronous inter-service communication.
 
@@ -644,7 +644,7 @@ The primary gap is data security: raw card numbers stored in the `paymentmethods
 
 ## 📦 Section 5: Component Catalog
 
-### Overview
+### 🔍 Overview
 
 This section provides the complete data component inventory across all 11 canonical TOGAF Data Architecture types. A total of 74 components were identified from analysis of source files in the eShop workspace, covering entity definitions, EF Core data models, infrastructure configurations, repository implementations, integration event contracts, AI service interfaces, and security mechanisms. Each component is documented with its data classification, storage type, owning team, retention policy, freshness SLA, source systems, consumers, and a plain-text source file reference with line range.
 
@@ -652,7 +652,7 @@ The catalog reveals a mature, well-structured microservices data architecture wh
 
 Source file references follow the format `path/file.ext:N-M` (plain text, no markdown links). Confidence scores were calculated using the formula: 30% (filename indicator) + 25% (path indicator) + 35% (content keyword match) + 10% (cross-reference verification). All components scored ≥ 0.85, meeting the configured threshold of 0.70.
 
-### 5.1 Data Entities
+### 🏢 5.1 Data Entities
 
 | Component                | Description                                                                        | Classification  | Storage       | Owner         | Retention  | Freshness SLA | Source Systems              | Consumers                                | Source File                                                              |
 | ------------------------ | ---------------------------------------------------------------------------------- | --------------- | ------------- | ------------- | ---------- | ------------- | --------------------------- | ---------------------------------------- | ------------------------------------------------------------------------ |
@@ -813,7 +813,7 @@ erDiagram
 
 ---
 
-### 5.2 Data Models
+### 🗃️ 5.2 Data Models
 
 | Component                            | Description                                                                                                            | Classification | Storage       | Owner         | Retention  | Freshness SLA | Source Systems        | Consumers                       | Source File                                                                                     |
 | ------------------------------------ | ---------------------------------------------------------------------------------------------------------------------- | -------------- | ------------- | ------------- | ---------- | ------------- | --------------------- | ------------------------------- | ----------------------------------------------------------------------------------------------- |
@@ -829,7 +829,7 @@ erDiagram
 | OrderItemEntityTypeConfiguration     | EF Fluent API: table=orderitems, HiLo(orderitemseq)                                                                    | Internal       | Relational DB | Ordering Team | indefinite | real-time     | OrderingContext       | EF Core migration engine        | src/Ordering.Infrastructure/EntityConfigurations/OrderItemEntityTypeConfiguration.cs:1-15       |
 | PaymentMethodEntityTypeConfiguration | EF Fluent API: table=paymentmethods, HiLo(paymentseq), private field mapping for CardHolderName, Alias, CardNumber     | Internal       | Relational DB | Ordering Team | indefinite | real-time     | OrderingContext       | EF Core migration engine        | src/Ordering.Infrastructure/EntityConfigurations/PaymentMethodEntityTypeConfiguration.cs:1-35   |
 
-### 5.3 Data Stores
+### 🗄️ 5.3 Data Stores
 
 | Component      | Description                                                                                            | Classification | Storage       | Owner         | Retention  | Freshness SLA | Source Systems                   | Consumers                    | Source File                                               |
 | -------------- | ------------------------------------------------------------------------------------------------------ | -------------- | ------------- | ------------- | ---------- | ------------- | -------------------------------- | ---------------------------- | --------------------------------------------------------- |
@@ -839,7 +839,7 @@ erDiagram
 | webhooksdb     | PostgreSQL 16 database for Webhooks domain                                                             | Internal       | Relational DB | Webhooks Team | indefinite | real-time     | WebhooksContext migrations       | Webhooks.API                 | src/eShop.AppHost/Program.cs:10-18                        |
 | Redis (basket) | Redis key-value store; keys: `/basket/{userId}` (UTF-8 prefix); values: JSON-serialized CustomerBasket | Internal       | Key-Value     | Basket Team   | Session    | real-time     | Basket.API RedisBasketRepository | Basket.API                   | src/Basket.API/Repositories/RedisBasketRepository.cs:6-53 |
 
-### 5.4 Data Flows
+### 🔄 5.4 Data Flows
 
 | Component                                              | Description                                                                                  | Classification | Storage        | Owner         | Retention | Freshness SLA | Source Systems    | Consumers                 | Source File                                                                                           |
 | ------------------------------------------------------ | -------------------------------------------------------------------------------------------- | -------------- | -------------- | ------------- | --------- | ------------- | ----------------- | ------------------------- | ----------------------------------------------------------------------------------------------------- |
@@ -856,7 +856,7 @@ erDiagram
 | OrderStatusChangedToShippedIntegrationEvent            | Published by Ordering domain; consumed by Webhooks for external notification                 | Internal       | Message Broker | Ordering Team | real-time | real-time     | Ordering.API      | Webhooks.API              | src/Webhooks.API/IntegrationEvents/OrderStatusChangedToShippedIntegrationEvent.cs:3                   |
 | gRPC Basket CRUD                                       | Real-time gRPC data flow for basket read/write/delete between clients and Basket.API         | Internal       | Not detected   | Basket Team   | Session   | real-time     | WebApp, ClientApp | Basket.API gRPC server    | src/Basket.API/Proto/basket.proto:1-40                                                                |
 
-### 5.5 Data Services
+### ⚙️ 5.5 Data Services
 
 | Component                                                | Description                                                                                                                           | Classification | Storage       | Owner         | Retention  | Freshness SLA | Source Systems                | Consumers                                                  | Source File                                                           |
 | -------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- | -------------- | ------------- | ------------- | ---------- | ------------- | ----------------------------- | ---------------------------------------------------------- | --------------------------------------------------------------------- |
@@ -867,7 +867,7 @@ erDiagram
 | ICatalogAI / CatalogAI                                   | AI embedding service using Microsoft.Extensions.AI; generates 384-dim float vectors from CatalogItem text; optional (IsEnabled check) | Internal       | Relational DB | Catalog Team  | indefinite | batch         | AI model provider             | CatalogContext (Embedding column), semantic search queries | src/Catalog.API/Services/CatalogAI.cs:8-55                            |
 | IRequestManager / RequestManager                         | Idempotency service checking and registering command requests in ClientRequest table                                                  | Internal       | Relational DB | Ordering Team | 7d         | real-time     | Ordering.API commands         | CreateOrderCommandHandler and other command handlers       | src/Ordering.Infrastructure/Idempotency/RequestManager.cs:4-25        |
 
-### 5.6 Data Governance
+### 🏛️ 5.6 Data Governance
 
 | Component                              | Description                                                                                                                                          | Classification | Storage       | Owner            | Retention  | Freshness SLA | Source Systems            | Consumers                                             | Source File                                                            |
 | -------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- | ------------- | ---------------- | ---------- | ------------- | ------------------------- | ----------------------------------------------------- | ---------------------------------------------------------------------- |
@@ -876,7 +876,7 @@ erDiagram
 | IDbSeeder Pattern                      | Typed seeding interface executed at service startup; implements idempotent seed-if-empty logic                                                       | Internal       | Relational DB | All domain teams | indefinite | batch         | JSON seed files, code     | CatalogContext, OrderingContext, ApplicationDbContext | src/Shared/MigrateDbContextExtensions.cs:25-76                         |
 | Ordering Schema Isolation              | `ordering` PostgreSQL schema applied via `HasDefaultSchema("ordering")`; isolates ordering tables from ASP.NET Identity and other schemas            | Internal       | Relational DB | Ordering Team    | indefinite | batch         | OrderingContext           | EF Core, PostgreSQL DBA                               | src/Ordering.Infrastructure/OrderingContext.cs:37                      |
 
-### 5.7 Data Quality Rules
+### ✅ 5.7 Data Quality Rules
 
 | Component                        | Description                                                                                                                                  | Classification | Storage       | Owner         | Retention    | Freshness SLA | Source Systems             | Consumers                                             | Source File                                                                                    |
 | -------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- | -------------- | ------------- | ------------- | ------------ | ------------- | -------------------------- | ----------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
@@ -889,7 +889,7 @@ erDiagram
 | IntegrationEvent state machine   | EventStateEnum (NotPublished, InProgress, Published, PublishedFailed); state transitions tracked in database                                 | Internal       | Relational DB | Platform Team | 30d          | real-time     | IntegrationEventLogService | RabbitMQ publisher, retry logic                       | src/IntegrationEventLogEF/EventStateEnum.cs:1-10                                               |
 | CatalogItem stock invariants     | RemoveStock validates quantityDesired > 0 and available stock; AddStock validates quantityAdded > 0                                          | Internal       | Relational DB | Catalog Team  | Not detected | real-time     | Catalog.API stock commands | Catalog.API, Ordering event handlers                  | src/Catalog.API/Model/CatalogItem.cs:60-90                                                     |
 
-### 5.8 Master Data
+### 📚 5.8 Master Data
 
 | Component    | Description                                                                                                          | Classification | Storage       | Owner         | Retention  | Freshness SLA | Source Systems                                    | Consumers                                                       | Source File                                                            |
 | ------------ | -------------------------------------------------------------------------------------------------------------------- | -------------- | ------------- | ------------- | ---------- | ------------- | ------------------------------------------------- | --------------------------------------------------------------- | ---------------------------------------------------------------------- |
@@ -898,7 +898,7 @@ erDiagram
 | CardType     | Authoritative payment card type reference data seeded via OrderingContextSeed at startup                             | Internal       | Relational DB | Ordering Team | indefinite | batch         | OrderingContextSeed                               | PaymentMethod (FK), order checkout                              | src/Ordering.API/Infrastructure/OrderingContextSeed.cs:5-30            |
 | OrderStatus  | Enum-backed lookup defining valid order states (Submitted=1 through Cancelled=6); stored as string in DB             | Internal       | Relational DB | Ordering Team | indefinite | batch         | OrderStatus.cs enum definition                    | Order entity, all order command handlers, WebApp status display | src/Ordering.Domain/AggregatesModel/OrderAggregate/OrderStatus.cs:8-15 |
 
-### 5.9 Data Transformations
+### 🔄 5.9 Data Transformations
 
 | Component                           | Description                                                                                                                                                    | Classification | Storage       | Owner         | Retention  | Freshness SLA | Source Systems                              | Consumers                                              | Source File                                                                            |
 | ----------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- | ------------- | ------------- | ---------- | ------------- | ------------------------------------------- | ------------------------------------------------------ | -------------------------------------------------------------------------------------- |
@@ -908,7 +908,7 @@ erDiagram
 | gRPC Protobuf Serialization         | Basket request/response models (CustomerBasketResponse, BasketItem, UpdateBasketRequest) serialized via Protocol Buffers                                       | Internal       | Not detected  | Basket Team   | Session    | real-time     | WebApp, ClientApp                           | Basket.API gRPC handler                                | src/Basket.API/Proto/basket.proto:16-35                                                |
 | EF Core Value Conversion            | OrderStatus enum stored as string via HasConversion<string>(); Address value object flattened to owned entity columns in orders table                          | Internal       | Relational DB | Ordering Team | indefinite | real-time     | OrderingContext                             | PostgreSQL orders table                                | src/Ordering.Infrastructure/EntityConfigurations/OrderEntityTypeConfiguration.cs:20-23 |
 
-### 5.10 Data Contracts
+### 📜 5.10 Data Contracts
 
 | Component                                     | Description                                                                                                                     | Classification | Storage        | Owner                           | Retention  | Freshness SLA | Source Systems                                 | Consumers                                      | Source File                                                                           |
 | --------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- | -------------- | -------------- | ------------------------------- | ---------- | ------------- | ---------------------------------------------- | ---------------------------------------------- | ------------------------------------------------------------------------------------- |
@@ -918,7 +918,7 @@ erDiagram
 | IOrderRepository / IBuyerRepository contracts | C# interfaces with IUnitOfWork integration; define aggregate retrieval and persistence operations                               | Financial      | Relational DB  | Ordering Team                   | indefinite | real-time     | OrderRepository, BuyerRepository               | All Ordering.API command handlers              | src/Ordering.Domain/AggregatesModel/OrderAggregate/IOrderRepository.cs:1-10           |
 | EF Entity configurations as schema contracts  | 6 IEntityTypeConfiguration implementations define column names, types, constraints, and FK relationships as code-as-schema      | Internal       | Relational DB  | Both Catalog and Ordering teams | indefinite | batch         | OrderingContext, CatalogContext                | EF migrations, PostgreSQL schema               | src/Ordering.Infrastructure/EntityConfigurations/OrderEntityTypeConfiguration.cs:1-34 |
 
-### 5.11 Data Security
+### 🔒 5.11 Data Security
 
 | Component                                | Description                                                                                                                                       | Classification  | Storage       | Owner         | Retention    | Freshness SLA | Source Systems                             | Consumers                       | Source File                                                                                    |
 | ---------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- | --------------- | ------------- | ------------- | ------------ | ------------- | ------------------------------------------ | ------------------------------- | ---------------------------------------------------------------------------------------------- |
@@ -927,7 +927,7 @@ erDiagram
 | SecurityHeadersAttribute                 | HTTP response security headers (X-Content-Type-Options, X-Frame-Options, Content-Security-Policy) applied to Identity API views                   | Internal        | Not detected  | Identity Team | Not detected | Not detected  | Identity.API                               | Browser clients                 | src/Identity.API/Quickstart/SecurityHeadersAttribute.cs:7-30                                   |
 | Unmasked Card Number (Critical Risk)     | PaymentMethod.\_cardNumber mapped to CardNumber column (varchar 25) without masking, hashing, or tokenization — raw card data in relational store | PII + Financial | Relational DB | Ordering Team | indefinite   | real-time     | Order checkout (PaymentMethod constructor) | orderingdb paymentmethods table | src/Ordering.Infrastructure/EntityConfigurations/PaymentMethodEntityTypeConfiguration.cs:28-31 |
 
-### Summary
+### 📝 Summary
 
 A total of 74 data components were documented across all 11 canonical Data Architecture types. The Ordering domain is the most data-intensive, contributing 6 entities, 6 entity configurations, 2 repositories, 4 data quality rules, and participation in 10 of 14 integration event flows. The Catalog domain is the most technologically advanced, incorporating relational storage, AI embedding vectors, and seeded master data. All 15 entities are traceable to specific source files with line ranges, and all 5 data stores are confirmed by AppHost orchestration configuration at `src/eShop.AppHost/Program.cs:10-18`.
 
@@ -937,7 +937,7 @@ The primary data architecture risk identified in this catalog is the unmasked ca
 
 ## 🔀 Section 6: Architecture Decisions
 
-### Overview
+### 🔍 Overview
 
 This section documents key architectural decisions (ADRs) made during the design and implementation of the Data architecture. ADRs capture the context, decision, rationale, and consequences of significant design choices. No formal ADRs were detected as standalone decision record files in the source files analyzed; all decisions below are inferred from implementation patterns evidenced in source code.
 
@@ -945,7 +945,7 @@ The most significant architectural decisions in the eShop data layer are: the Da
 
 For established projects, ADRs should be stored in `/docs/architecture/decisions/` following the Markdown ADR (MADR) format with sequential numbering (e.g., ADR-001, ADR-002). The decisions below serve as a baseline for formal ADR documentation.
 
-### ADR Summary
+### 📋 ADR Summary
 
 | ID      | Title                                                    | Status   | Date     |
 | ------- | -------------------------------------------------------- | -------- | -------- |
@@ -1011,7 +1011,7 @@ For established projects, ADRs should be stored in `/docs/architecture/decisions
 
 ## 📏 Section 7: Architecture Standards
 
-### Overview
+### 🔍 Overview
 
 This section defines the data architecture standards, naming conventions, schema design guidelines, and data quality rules that govern data assets in the eShop system. No formal standards documentation file (e.g., `/docs/standards/data-standards.md`) was detected in the source files analyzed. The standards below are inferred from consistent patterns observed across all data components in the codebase.
 
@@ -1019,7 +1019,7 @@ Typical standards in this codebase include: EF Core Fluent API as the authoritat
 
 For mature data platforms, formal standards should be codified as schema policy documents in `/docs/standards/` and enforced through automated validation in CI/CD pipelines. The standards documented here should serve as the baseline for such formalization.
 
-### Data Naming Conventions
+### 🏷️ Data Naming Conventions
 
 | Element                | Convention                                   | Example                                      | Evidence                                                                                      |
 | ---------------------- | -------------------------------------------- | -------------------------------------------- | --------------------------------------------------------------------------------------------- |
@@ -1031,7 +1031,7 @@ For mature data platforms, formal standards should be codified as schema policy 
 | Integration events     | PascalCase + IntegrationEvent suffix         | `OrderStartedIntegrationEvent`               | `src/EventBus/Events/IntegrationEvent.cs:3`                                                   |
 | Redis key prefix       | lowercase path-style                         | `/basket/{userId}`                           | `src/Basket.API/Repositories/RedisBasketRepository.cs:13`                                     |
 
-### Schema Design Standards
+### 📐 Schema Design Standards
 
 | Standard                                   | Description                                                                               | Evidence                                                                                         |
 | ------------------------------------------ | ----------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
@@ -1042,7 +1042,7 @@ For mature data platforms, formal standards should be codified as schema policy 
 | pgvector column type                       | `HasColumnType("vector(384)")` for AI embedding columns                                   | `src/Catalog.API/Infrastructure/EntityConfigurations/CatalogItemEntityTypeConfiguration.cs:13`   |
 | Private field mapping                      | `Property("_fieldName").HasColumnName("ColumnName")` for encapsulation in PaymentMethod   | `src/Ordering.Infrastructure/EntityConfigurations/PaymentMethodEntityTypeConfiguration.cs:18-31` |
 
-### Data Quality Standards
+### ✅ Data Quality Standards
 
 | Standard                       | Description                                                                                                     | Evidence                                   |
 | ------------------------------ | --------------------------------------------------------------------------------------------------------------- | ------------------------------------------ |
@@ -1056,7 +1056,7 @@ For mature data platforms, formal standards should be codified as schema policy 
 
 ## 🔗 Section 8: Dependencies & Integration
 
-### Overview
+### 🔍 Overview
 
 The eShop data integration architecture is built on three complementary patterns: **Asynchronous Event-Driven integration** via RabbitMQ for decoupled cross-domain data flows, **Synchronous gRPC** for low-latency basket operations, and **REST HTTP APIs** for catalog and ordering read/write operations consumed by front-end clients. The integration backbone is the `EventBus` abstraction (`IEventBus`, `IIntegrationEventHandler<T>`) implemented by `EventBusRabbitMQ`, which provides a clean separation between the integration event contract and the underlying transport. All integration events inherit from `IntegrationEvent` (id, creation date) and are serialized as JSON for transport.
 
@@ -1064,7 +1064,7 @@ The Outbox pattern, implemented in `IntegrationEventLogEF`, is the cornerstone o
 
 The complete Order lifecycle data flow involves six services, five integration event types, and four sequential state transitions (Submitted → AwaitingValidation → StockConfirmed → Paid → Shipped), making the Ordering saga the most complex data flow in the system. Understanding this flow is critical for impact analysis when modifying any ordering-related data schema or event contract. The following subsections document each integration pattern in detail.
 
-### Data Flow Patterns
+### 🔄 Data Flow Patterns
 
 | Pattern                          | Type              | Direction                   | Publisher         | Consumer                 | Contract                                                                   | Quality Gate                  |
 | -------------------------------- | ----------------- | --------------------------- | ----------------- | ------------------------ | -------------------------------------------------------------------------- | ----------------------------- |
@@ -1079,7 +1079,7 @@ The complete Order lifecycle data flow involves six services, five integration e
 | Stock decrement on payment       | Event-Driven      | Ordering → Catalog          | Ordering.API      | Catalog.API              | OrderStatusChangedToPaidIntegrationEvent                                   | Via Outbox                    |
 | Webhook notification trigger     | Event-Driven      | Ordering → Webhooks         | Ordering domain   | Webhooks.API             | OrderStatusChangedToShippedIntegrationEvent                                | Not detected                  |
 
-### Producer-Consumer Relationships
+### 🔗 Producer-Consumer Relationships
 
 | Producer         | Event / Data                                                                      | Consumer(s)               | Data Dependency                                                             |
 | ---------------- | --------------------------------------------------------------------------------- | ------------------------- | --------------------------------------------------------------------------- |
@@ -1252,7 +1252,7 @@ flowchart TB
     classDef warning fill:#FFF4CE,stroke:#FFB900,stroke-width:2px,color:#323130
 ```
 
-### Summary
+### 📝 Summary
 
 The eShop data integration architecture demonstrates a well-designed event-driven model with clear producer-consumer boundaries. The Outbox pattern in `IntegrationEventLogEF` provides at-least-once delivery guarantees for the most critical flows (basket checkout → order creation, stock validation, payment). The gRPC contract for the Basket service provides a strongly-typed, versioned API contract for synchronous client-to-service communication. The complete order lifecycle saga is a 14-step flow spanning 6 services, making it the highest-risk integration path for schema changes.
 
@@ -1262,7 +1262,7 @@ Key integration risks include: (1) the PaymentProcessor and OrderProcessor do no
 
 ## 🛡️ Section 9: Governance & Management
 
-### Overview
+### 🔍 Overview
 
 This section defines the data governance model, ownership structure, access control policies, audit procedures, and compliance tracking mechanisms. Effective governance ensures data quality, security, and regulatory compliance across the eShop data estate. No formal governance documentation was detected in the source files; the following is inferred from implementation patterns confirming domain ownership, the JWT authentication model, and the Identity API's role as the central identity provider.
 
@@ -1270,7 +1270,7 @@ Key governance elements observable in code include: data ownership aligned to mi
 
 The access control model is JWT-based: clients authenticate with Identity.API using OpenID Connect / OAuth2, receive a JWT containing user claims (sub, name, email), and present this token to downstream services. Each service validates the token via `Microsoft.AspNetCore.Authentication.JwtBearer`. Authorization is currently role-based at the API level, with no observable row-level security in the database tier.
 
-### Data Ownership Model
+### 👥 Data Ownership Model
 
 | Domain   | Data Owner (Team) | Data Steward                    | Assets Owned                                                                   |
 | -------- | ----------------- | ------------------------------- | ------------------------------------------------------------------------------ |
@@ -1292,7 +1292,7 @@ The access control model is JWT-based: clients authenticate with Identity.API us
 | Row-level security | Not detected                               | No PostgreSQL RLS policies observed                 | Row-level security not implemented                     |
 | Data masking       | Not detected                               | No column masking observed                          | Card data requires masking (PCI-DSS)                   |
 
-### Audit & Compliance
+### 📋 Audit & Compliance
 
 | Requirement           | Status             | Mechanism                                                                       | Gap                                                 |
 | --------------------- | ------------------ | ------------------------------------------------------------------------------- | --------------------------------------------------- |
