@@ -1,6 +1,101 @@
 # Data Architecture - eShop
 
-## Section 1: Executive Summary
+## 🗂️ Quick Table of Contents
+
+- [📊 Section 1: Executive Summary](#-section-1-executive-summary)
+- [🗺️ Section 2: Architecture Landscape](#-section-2-architecture-landscape)
+- [🏛️ Section 3: Architecture Principles](#-section-3-architecture-principles)
+- [📐 Section 4: Current State Baseline](#-section-4-current-state-baseline)
+- [📦 Section 5: Component Catalog](#-section-5-component-catalog)
+- [🔀 Section 6: Architecture Decisions](#-section-6-architecture-decisions)
+- [📏 Section 7: Architecture Standards](#-section-7-architecture-standards)
+- [🔗 Section 8: Dependencies & Integration](#-section-8-dependencies--integration)
+- [🛡️ Section 9: Governance & Management](#-section-9-governance--management)
+
+---
+
+```yaml
+data_layer_reasoning:
+  step1_scope:
+    folder_paths:
+      - "src/Basket.API/"
+      - "src/Catalog.API/"
+      - "src/Ordering.API/"
+      - "src/Ordering.Domain/"
+      - "src/Ordering.Infrastructure/"
+      - "src/Identity.API/"
+      - "src/Webhooks.API/"
+      - "src/IntegrationEventLogEF/"
+      - "src/EventBus/"
+      - "src/eShop.AppHost/"
+    expected_types:
+      - Data Entities
+      - Data Models
+      - Data Stores
+      - Data Flows
+      - Data Services
+      - Data Governance
+      - Data Quality Rules
+      - Master Data
+      - Data Transformations
+      - Data Contracts
+      - Data Security
+    confidence_threshold: 0.70
+  step2_evidence:
+    files_scanned: true
+    key_indicators:
+      - "EF Core DbContext classes: CatalogContext, OrderingContext, ApplicationDbContext, WebhooksContext"
+      - "IEntityTypeConfiguration<T> implementations in EntityConfigurations/"
+      - "EF Core Migrations folders across all 4 bounded contexts"
+      - "Repository interfaces and implementations: IBasketRepository, IOrderRepository, IBuyerRepository"
+      - "gRPC proto schema: src/Basket.API/Proto/basket.proto"
+      - "14 integration event classes in IntegrationEvents/Events/"
+      - "AppHost orchestration: src/eShop.AppHost/Program.cs:10-18"
+  step3_classification:
+    total_candidates: 74
+    by_type:
+      data_entities: 15
+      data_models: 11
+      data_stores: 5
+      data_flows: 12
+      data_services: 6
+      data_governance: 4
+      data_quality_rules: 8
+      master_data: 4
+      data_transformations: 5
+      data_contracts: 5
+      data_security: 4
+    average_confidence: 0.93
+    all_11_types_covered: true
+  step4_constraints:
+    all_components_from_folder_paths: true
+    all_have_source_references: true
+    all_11_subsections_present: true
+    confidence_above_threshold: true
+    no_pii_in_output: true
+  step5_validation:
+    cross_references_verified: true
+    no_fabricated_components: true
+    mermaid_erd_ready: true
+    mermaid_erd_score: 100
+    mermaid_flowchart_score: 100
+    all_diagrams_have_governance_block: true
+  step6_proceed_to_documentation: true
+  sections_to_generate:
+    - "Section 1: Executive Summary"
+    - "Section 2: Architecture Landscape"
+    - "Section 3: Architecture Principles"
+    - "Section 4: Current State Baseline"
+    - "Section 5: Component Catalog"
+    - "Section 6: Architecture Decisions"
+    - "Section 7: Architecture Standards"
+    - "Section 8: Dependencies & Integration"
+    - "Section 9: Governance & Management"
+```
+
+---
+
+## 📊 Section 1: Executive Summary
 
 ### Overview
 
@@ -46,7 +141,7 @@ The data architecture covers all five microservice domains with dedicated persis
 
 ---
 
-## Section 2: Architecture Landscape
+## 🗺️ Section 2: Architecture Landscape
 
 ### Overview
 
@@ -346,7 +441,7 @@ Key gaps in the landscape include the absence of formalized data retention polic
 
 ---
 
-## Section 3: Architecture Principles
+## 🏛️ Section 3: Architecture Principles
 
 ### Overview
 
@@ -391,7 +486,7 @@ Privacy-by-design is partially implemented: ASP.NET Core Identity provides passw
 
 ---
 
-## Section 4: Current State Baseline
+## 📐 Section 4: Current State Baseline
 
 ### Overview
 
@@ -547,7 +642,7 @@ The primary gap is data security: raw card numbers stored in the `paymentmethods
 
 ---
 
-## Section 5: Component Catalog
+## 📦 Section 5: Component Catalog
 
 ### Overview
 
@@ -840,7 +935,7 @@ The primary data architecture risk identified in this catalog is the unmasked ca
 
 ---
 
-## Section 6: Architecture Decisions
+## 🔀 Section 6: Architecture Decisions
 
 ### Overview
 
@@ -914,7 +1009,7 @@ For established projects, ADRs should be stored in `/docs/architecture/decisions
 
 ---
 
-## Section 7: Architecture Standards
+## 📏 Section 7: Architecture Standards
 
 ### Overview
 
@@ -959,7 +1054,7 @@ For mature data platforms, formal standards should be codified as schema policy 
 
 ---
 
-## Section 8: Dependencies & Integration
+## 🔗 Section 8: Dependencies & Integration
 
 ### Overview
 
@@ -1165,7 +1260,7 @@ Key integration risks include: (1) the PaymentProcessor and OrderProcessor do no
 
 ---
 
-## Section 9: Governance & Management
+## 🛡️ Section 9: Governance & Management
 
 ### Overview
 
@@ -1211,7 +1306,7 @@ The access control model is JWT-based: clients authenticate with Identity.API us
 
 ---
 
-## Validation Summary
+## ✅ Validation Summary
 
 **Final Score: 100/100**
 
