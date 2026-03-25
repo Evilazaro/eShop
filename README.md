@@ -31,7 +31,7 @@ The platform orchestrates ten independently deployable services through .NET Asp
 
 **Overview**
 
-eShop separates each business capability into an independently deployable service that owns its own data store and communicates through well-defined interfaces. This approach lets teams build, test, and deploy each service independently while composing them into a coherent platform — exactly the kind of decoupled architecture needed for enterprise-scale engineering.
+eShop separates each business capability into an independently deployable service that **owns its own data store** and communicates through **well-defined interfaces**. This approach lets teams build, test, and deploy each service independently while composing them into a coherent platform — exactly the kind of **decoupled architecture** needed for enterprise-scale engineering.
 
 The orchestration layer uses .NET Aspire 13 locally and Azure Container Apps in production. RabbitMQ drives the asynchronous order state machine, gRPC provides high-throughput basket operations, and a YARP-based Mobile BFF aggregates backend APIs for the .NET MAUI mobile client. pgvector powers optional AI semantic search in the Catalog API via OpenAI, Azure OpenAI, or local Ollama.
 
@@ -197,7 +197,7 @@ Every feature works in the local development environment out of the box. Optiona
 eShop requires .NET 10 SDK and Docker Desktop as primary local prerequisites. The .NET Aspire workload handles all infrastructure container orchestration automatically, spinning up PostgreSQL, Redis, and RabbitMQ containers on first run without any manual setup. Azure CLI tools are only required when deploying to Azure.
 
 > [!IMPORTANT]
-> Docker Desktop (or a compatible OCI container runtime such as Podman) **must be running** before launching the application. .NET Aspire uses container orchestration to provision PostgreSQL, Redis, and RabbitMQ. Without Docker, the AppHost will fail at startup.
+> Docker Desktop (or a compatible OCI container runtime such as Podman) **must be running** before launching the application. .NET Aspire uses container orchestration to provision PostgreSQL, Redis, and RabbitMQ. Without Docker, the AppHost will **fail at startup**.
 
 | Requirement                      | Version        | Purpose                                                    |
 | -------------------------------- | -------------- | ---------------------------------------------------------- |
@@ -419,7 +419,7 @@ curl -X GET "https://<catalog-api-url>/api/catalog/items/withsemanticrelevance/d
 ```
 
 > [!CAUTION]
-> AI semantic search is disabled by default. To enable it, set `useOpenAI = true` or `useOllama = true` in `src/eShop.AppHost/Program.cs` and supply the required API credentials. Without this flag, the semantic search endpoint falls back to name-based string matching.
+> **AI semantic search is disabled by default.** To enable it, set `useOpenAI = true` or `useOllama = true` in `src/eShop.AppHost/Program.cs` and supply the **required API credentials**. Without this flag, the semantic search endpoint **falls back to name-based string matching**.
 
 ### Run the Unit and Functional Tests
 
@@ -512,7 +512,7 @@ Successfully set environment variable 'AZURE_LOCATION'.
 
 **Overview**
 
-eShop welcomes contributions from developers interested in improving the reference implementation, adding new architectural patterns, or fixing issues. The project enforces strict quality standards — all changes must include test coverage, performance-critical changes must include benchmark results, and all contributions must align with the DDD and microservices patterns already established across the bounded contexts.
+eShop welcomes contributions from developers interested in improving the reference implementation, adding new architectural patterns, or fixing issues. The project enforces strict quality standards — **all changes must include test coverage**, **performance-critical changes must include benchmark results**, and **all contributions must align with the DDD and microservices patterns** already established across the bounded contexts.
 
 Before submitting a pull request, review the five core principles in `CONTRIBUTING.md`: Best Practices, Selectivity in Tools, Architectural Integrity, Reliability/Scalability, and Performance. First-time contributors can find beginner-friendly issues in the GitHub issue tracker using the `help wanted` or `good first issue` labels.
 
