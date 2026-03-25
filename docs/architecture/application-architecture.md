@@ -36,10 +36,10 @@ status push via Blazor Server in-process pub/sub.
 The Application portfolio reaches **Maturity Level 4 — Measured** on the BDAT Application Maturity
 Scale. All services expose structured health endpoints (`/health`, `/alive`), use distributed tracing
 with OpenTelemetry, define explicit SLIs via Aspire health dashboard integration, and are deployable
-on cloud infrastructure via `.azd` toolchain. Two areas require improvement to reach Level 5: circuit
-breaker configuration is delegated to the Aspire `AddStandardResilienceHandler()` rather than
-per-service policy definitions, and formal consumer-driven contract tests are absent from the test
-suite. Addressing these gaps is the primary architectural recommendation.
+on cloud infrastructure via `.azd` toolchain. Two areas require improvement to reach Level 5: **circuit
+breaker configuration** is delegated to the Aspire `AddStandardResilienceHandler()` rather than
+per-service policy definitions, and **formal consumer-driven contract tests are absent** from the test
+suite. **Addressing these gaps is the primary architectural recommendation.**
 
 ---
 
@@ -231,7 +231,7 @@ The architecture is composed of 12 independently deployable services coordinated
 by .NET Aspire. Services communicate through explicit contracts — gRPC protobuf for basket, versioned
 REST OpenAPI for catalog/ordering/webhooks, and an event-driven AMQP backbone for asynchronous
 lifecycle coordination. All cross-cutting concerns (auth, telemetry, resilience, service discovery)
-are centralized in `eShop.ServiceDefaults`, demonstrating strong DRY discipline across the portfolio.
+are **centralized in `eShop.ServiceDefaults`**, demonstrating **strong DRY discipline** across the portfolio.
 
 ### 🖼️ System Context Diagram
 

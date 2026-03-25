@@ -33,7 +33,7 @@ The eShop reference application is deployed as a **cloud-native, container-first
 - **Orchestration**: **.NET Aspire 13.1.0** orchestrates local development and generates ACA deployment manifests. The `azure.yaml` (`azure.yaml:1-7`) declares `host: containerapp`.
 - **IaC**: Two-layer IaC — Bicep for Azure PaaS scaffolding (`infra/`) and ACA YAML templates for each container (`src/eShop.AppHost/infra/`).
 - **Observability**: **OpenTelemetry (OTel)** is wired into every service via `ServiceDefaults`, with OTLP export and an **Aspire Dashboard** embedded in the Container Apps Environment.
-- **Security posture**: External HTTPS ingress enforced with `allowInsecure: false`; secrets stored in ACA secret store; **User-Assigned Managed Identity** for ACR image pull — no embedded credentials in manifests.
+- **Security posture**: External HTTPS ingress enforced with `allowInsecure: false`; secrets stored in ACA secret store; **User-Assigned Managed Identity** for ACR image pull — **no embedded credentials in manifests**.
 - **Average Confidence Score**: 0.97 (High) — all 11 component types confirmed from source evidence.
 
 ---
@@ -170,13 +170,13 @@ The entire Azure platform layer is codified: Bicep (`infra/main.bicep`, `infra/r
 
 ### 🔐 3.3 Least Privilege Access
 
-Image registry access is granted via a narrowly-scoped `AcrPull` RBAC role assignment (role ID `7f951dda-4ed3-4680-a7ca-43fe172d538d`) applied to the User-Assigned Managed Identity. No contributor or owner roles are assigned. Service-to-service networking is restricted to internal ingress where external access is not required.
+Image registry access is granted via a narrowly-scoped `AcrPull` RBAC role assignment (role ID `7f951dda-4ed3-4680-a7ca-43fe172d538d`) applied to the User-Assigned Managed Identity. **No contributor or owner roles are assigned.** Service-to-service networking is restricted to internal ingress where external access is not required.
 
 **Evidence**: `infra/resources.bicep:18-30`
 
 ### 🛡️ 3.4 Defense in Depth
 
-Multiple layers of security are applied: HTTPS-only external ingress (`allowInsecure: false`), SCRAM-SHA-256 PostgreSQL authentication, ACA-native secrets store for all credentials, ASP.NET Core anti-forgery middleware, and Duende IdentityServer as a dedicated OAuth2/OIDC provider.
+**Multiple layers of security** are applied: HTTPS-only external ingress (`allowInsecure: false`), SCRAM-SHA-256 PostgreSQL authentication, ACA-native secrets store for all credentials, ASP.NET Core anti-forgery middleware, and Duende IdentityServer as a dedicated OAuth2/OIDC provider.
 
 **Evidence**: `src/eShop.AppHost/infra/webapp.tmpl.yaml:18`, `src/eShop.AppHost/infra/postgres.tmpl.yaml:36-39`, `src/WebApp/Program.cs:23`
 
@@ -446,7 +446,7 @@ _(accTitle ✅ · accDescr ✅ · style directives on subgraphs ✅ · semantic 
 **Lifecycle:**
 
 - **Provisioning**: Container started via `postgres.tmpl.yaml`; database schemas applied at service startup via EF Core migrations (`AddMigration<>` pattern in `Identity.API/Program.cs`)
-- **Patching**: Using community `ankane/pgvector` image pinned to `latest` — recommend pinning to a specific version tag in production
+- **Patching**: Using community `ankane/pgvector` image pinned to `latest` — **recommend pinning to a specific version tag in production**
 - **Image Management**: Image sourced from Docker Hub; ACR proxy or private mirror not documented in source
 - **EOL/EOS**: PostgreSQL 16 community support until November 2028
 
@@ -576,7 +576,7 @@ _(accTitle ✅ · accDescr ✅ · style directives on subgraphs ✅ · semantic 
 - **Network Isolation**: ACR pull uses Managed Identity — no static admin credentials; ACA secrets store decouples secret values from manifest files
 - **Access Control**: AcrPull role scoped to specific ACR resource (`containerRegistry.id`) and specific principal (`managedIdentity.id`) — no wildcard resource scoping detected
 - **Compliance**: Managed Identity is a Microsoft Entra ID principal compliant with NIST SP 800-63, ISO 27001, SOC 2
-- **Monitoring**: ACA secrets access is not explicitly logged in source; recommend enabling Azure Monitor diagnostics for Managed Identity operations
+- **Monitoring**: ACA secrets access is not explicitly logged in source; **recommend enabling Azure Monitor diagnostics for Managed Identity operations**
 
 **Lifecycle:**
 

@@ -100,19 +100,19 @@ The landscape reflects a modern, microservices e-commerce reference implementati
 
 ### 2.8 📏 Business Rules (11)
 
-| Name                             | Description                                                                                                                                                                             |
-| -------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 📍 Address Completeness Rule     | All orders must include a complete delivery address: street, city, state, country, and zip code — none may be empty.                                                                    |
-| 💳 Card Number Length Rule       | Payment card number must be between 12 and 19 characters in length.                                                                                                                     |
-| 🧑 Card Holder Name Rule         | Payment card holder name must not be empty.                                                                                                                                             |
-| 📅 Card Expiration Rule          | Payment card expiration date must be a future date (≥ current UTC time).                                                                                                                |
-| 🔐 Security Number Length Rule   | Payment security number (CVV) must be exactly 3 characters.                                                                                                                             |
-| 🛒 Minimum Order Items Rule      | Each order must contain at least one order item; empty cart checkout is not permitted.                                                                                                  |
-| 🔄 Order State Transition Rule   | Order status follows a strict, forward-only lifecycle sequence: Submitted → AwaitingValidation → StockConfirmed → Paid → Shipped, with Cancelled reachable only before Paid or Shipped. |
-| ❌ Cancellation Eligibility Rule | An order may only be cancelled before it reaches the Paid or Shipped status; attempts after those states raise a domain exception.                                                      |
-| 🎁 Discount Maximization Rule    | When an item is added to an existing order line, only a higher discount replaces the current one; a lower discount offer is silently ignored.                                           |
-| 📦 Stock Reorder Threshold Rule  | A catalog item's available stock may not be reduced below zero; if remaining stock after a transaction falls at or below the RestockThreshold, a restock alert is triggered.            |
-| 🔁 Order Idempotency Rule        | Duplicate order creation requests bearing the same idempotency key must be silently accepted and return success without creating duplicate orders.                                      |
+| Name                             | Description                                                                                                                                                                                 |
+| -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 📍 Address Completeness Rule     | All orders must include a complete delivery address: street, city, state, country, and zip code — none may be empty.                                                                        |
+| 💳 Card Number Length Rule       | Payment card number must be between 12 and 19 characters in length.                                                                                                                         |
+| 🧑 Card Holder Name Rule         | Payment card holder name must not be empty.                                                                                                                                                 |
+| 📅 Card Expiration Rule          | Payment card expiration date **must be a future date (≥ current UTC time)**.                                                                                                                |
+| 🔐 Security Number Length Rule   | Payment security number (CVV) must be exactly 3 characters.                                                                                                                                 |
+| 🛒 Minimum Order Items Rule      | Each order **must contain at least one order item**; empty cart checkout is not permitted.                                                                                                  |
+| 🔄 Order State Transition Rule   | Order status follows a **strict, forward-only lifecycle sequence**: Submitted → AwaitingValidation → StockConfirmed → Paid → Shipped, with Cancelled reachable only before Paid or Shipped. |
+| ❌ Cancellation Eligibility Rule | An order **may only be cancelled before it reaches the Paid or Shipped status**; attempts after those states raise a domain exception.                                                      |
+| 🎁 Discount Maximization Rule    | When an item is added to an existing order line, only a higher discount replaces the current one; a lower discount offer is silently ignored.                                               |
+| 📦 Stock Reorder Threshold Rule  | A catalog item's available stock may not be reduced below zero; if remaining stock after a transaction falls at or below the RestockThreshold, a restock alert is triggered.                |
+| 🔁 Order Idempotency Rule        | Duplicate order creation requests bearing the same idempotency key **must be silently accepted and return success** without creating duplicate orders.                                      |
 
 ### 2.9 ⚡ Business Events (14)
 
@@ -260,7 +260,7 @@ The principles below are classified by evidence strength: **inferred from struct
 
 ### 🔒 Principle 3: Business Process Integrity via Explicit State Management
 
-**Statement**: Critical business objects (orders) enforce lifecycle integrity through explicit, code-validated state transitions with domain exceptions for invalid paths.
+**Statement**: Critical business objects (orders) enforce lifecycle integrity through explicit, **code-validated state transitions** with **domain exceptions for invalid paths**.
 
 **Evidence**: The Order aggregate enforces permissible state transitions in Methods `SetAwaitingValidationStatus()`, `SetStockConfirmedStatus()`, `SetPaidStatus()`, `SetShippedStatus()`, and `SetCancelledStatus()`, raising `OrderingDomainException` for invalid progressions.
 

@@ -89,10 +89,10 @@ flowchart TB
 ## Key Design Decisions
 
 - **Database-per-Service** — `catalogdb`, `identitydb`, `orderingdb`, and `webhooksdb` are provisioned as separate PostgreSQL instances; cross-domain access is performed exclusively through integration events or synchronous API calls.
-- **Event-Driven Integration** — All cross-service communication uses a RabbitMQ-backed event bus with a transactional outbox (`IntegrationEventLogEF`) for at-least-once delivery guarantees.
+- **Event-Driven Integration** — All cross-service communication uses a RabbitMQ-backed event bus with a transactional outbox (`IntegrationEventLogEF`) for **at-least-once delivery guarantees**.
 - **AI-Powered Search** — The Catalog service stores 384-dimensional `pgvector` embeddings on `CatalogItem`, enabling semantic product search via Azure OpenAI or Ollama.
 - **Infrastructure as Code** — Two-layer IaC: Bicep (`infra/`) for Azure PaaS scaffolding and ACA YAML templates (`src/eShop.AppHost/infra/`) per container, deployed with `azd`.
-- **Zero-Trust Security** — External HTTPS ingress enforces `allowInsecure: false`; a User-Assigned Managed Identity handles ACR image pull; secrets are stored in the ACA secret store.
+- **Zero-Trust Security** — External HTTPS ingress enforces `allowInsecure: false`; a **User-Assigned Managed Identity** handles ACR image pull; secrets are stored in the ACA secret store.
 
 ## Framework & Standards
 
