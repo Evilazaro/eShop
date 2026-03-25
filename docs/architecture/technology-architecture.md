@@ -475,17 +475,17 @@ _(accTitle ✅ · accDescr ✅ · style directives on subgraphs ✅ · semantic 
 
 ---
 
-### 5.3 Network Infrastructure
+### 🌐 5.3 Network Infrastructure
 
-| Resource Name                         | Resource Type    | Deployment Model | SKU         | Region         | Availability SLA    | Cost Tag    | Source                                                 |
-| ------------------------------------- | ---------------- | ---------------- | ----------- | -------------- | ------------------- | ----------- | ------------------------------------------------------ |
-| External HTTPS ingress — webapp       | ACA Ingress Rule | ACA managed      | Consumption | AZURE_LOCATION | ACA managed (99.9%) | (inherited) | `src/eShop.AppHost/infra/webapp.tmpl.yaml:14-18`       |
-| External HTTPS ingress — identity-api | ACA Ingress Rule | ACA managed      | Consumption | AZURE_LOCATION | ACA managed (99.9%) | (inherited) | `src/eShop.AppHost/infra/identity-api.tmpl.yaml:14-18` |
-| External HTTPS ingress — mobile-bff   | ACA Ingress Rule | ACA managed      | Consumption | AZURE_LOCATION | ACA managed (99.9%) | (inherited) | `src/eShop.AppHost/infra/mobile-bff.tmpl.yaml:14-18`   |
-| Internal HTTP/2 ingress — basket-api  | ACA Ingress Rule | ACA managed      | Consumption | AZURE_LOCATION | ACA managed (99.9%) | (inherited) | `src/eShop.AppHost/infra/basket-api.tmpl.yaml:14-18`   |
-| Internal TCP ingress — postgres       | ACA Ingress Rule | ACA managed      | Consumption | AZURE_LOCATION | ACA managed (99.9%) | (inherited) | `src/eShop.AppHost/infra/postgres.tmpl.yaml:14-18`     |
-| Internal TCP ingress — redis          | ACA Ingress Rule | ACA managed      | Consumption | AZURE_LOCATION | ACA managed (99.9%) | (inherited) | `src/eShop.AppHost/infra/redis.tmpl.yaml:14-18`        |
-| Internal TCP ingress — eventbus       | ACA Ingress Rule | ACA managed      | Consumption | AZURE_LOCATION | ACA managed (99.9%) | (inherited) | `src/eShop.AppHost/infra/eventbus.tmpl.yaml:14-18`     |
+| 🌐 Resource Name                         | 🏷️ Resource Type    | 🚀 Deployment Model | 💰 SKU         | 🌍 Region         | 📊 Availability SLA    | 🏷️ Cost Tag    |
+| ------------------------------------- | ---------------- | ---------------- | ----------- | -------------- | ------------------- | ----------- |
+| External HTTPS ingress — webapp       | ACA Ingress Rule | ACA managed      | Consumption | AZURE_LOCATION | ACA managed (99.9%) | (inherited) |
+| External HTTPS ingress — identity-api | ACA Ingress Rule | ACA managed      | Consumption | AZURE_LOCATION | ACA managed (99.9%) | (inherited) |
+| External HTTPS ingress — mobile-bff   | ACA Ingress Rule | ACA managed      | Consumption | AZURE_LOCATION | ACA managed (99.9%) | (inherited) |
+| Internal HTTP/2 ingress — basket-api  | ACA Ingress Rule | ACA managed      | Consumption | AZURE_LOCATION | ACA managed (99.9%) | (inherited) |
+| Internal TCP ingress — postgres       | ACA Ingress Rule | ACA managed      | Consumption | AZURE_LOCATION | ACA managed (99.9%) | (inherited) |
+| Internal TCP ingress — redis          | ACA Ingress Rule | ACA managed      | Consumption | AZURE_LOCATION | ACA managed (99.9%) | (inherited) |
+| Internal TCP ingress — eventbus       | ACA Ingress Rule | ACA managed      | Consumption | AZURE_LOCATION | ACA managed (99.9%) | (inherited) |
 
 **Security Posture:**
 
@@ -510,13 +510,13 @@ _(accTitle ✅ · accDescr ✅ · style directives on subgraphs ✅ · semantic 
 
 ---
 
-### 5.4 Container Platforms
+### 📦 5.4 Container Platforms
 
-| Resource Name                    | Resource Type                | Deployment Model | SKU         | Region         | Availability SLA | Cost Tag            | Source                              |
-| -------------------------------- | ---------------------------- | ---------------- | ----------- | -------------- | ---------------- | ------------------- | ----------------------------------- |
-| Azure Container Apps Environment | Managed Container Runtime    | Azure PaaS       | Consumption | AZURE_LOCATION | Azure managed    | azd-env-name: {env} | `infra/resources.bicep:44-61`       |
-| Azure Container Registry (ACR)   | Container Image Registry     | Azure PaaS       | Basic       | AZURE_LOCATION | Azure managed    | azd-env-name: {env} | `infra/resources.bicep:17-23`       |
-| .NET Aspire 13 Orchestration     | Application Orchestrator SDK | Developer SDK    | Open source | Local / Cloud  | N/A (tooling)    | N/A                 | `src/eShop.AppHost/Program.cs:1-95` |
+| 📦 Resource Name                    | 🏷️ Resource Type                | 🚀 Deployment Model | 💰 SKU         | 🌍 Region         | 📊 Availability SLA | 🏷️ Cost Tag            |
+| -------------------------------- | ---------------------------- | ---------------- | ----------- | -------------- | ---------------- | ------------------- |
+| Azure Container Apps Environment | Managed Container Runtime    | Azure PaaS       | Consumption | AZURE_LOCATION | Azure managed    | azd-env-name: {env} |
+| Azure Container Registry (ACR)   | Container Image Registry     | Azure PaaS       | Basic       | AZURE_LOCATION | Azure managed    | azd-env-name: {env} |
+| .NET Aspire 13 Orchestration     | Application Orchestrator SDK | Developer SDK    | Open source | Local / Cloud  | N/A (tooling)    | N/A                 |
 
 **Security Posture:**
 
@@ -542,15 +542,15 @@ _(accTitle ✅ · accDescr ✅ · style directives on subgraphs ✅ · semantic 
 
 ---
 
-### 5.5 Cloud Services (PaaS/SaaS)
+### ☁️ 5.5 Cloud Services (PaaS/SaaS)
 
-| Resource Name                 | Resource Type             | Deployment Model | SKU            | Region             | Availability SLA | Cost Tag            | Source                        |
-| ----------------------------- | ------------------------- | ---------------- | -------------- | ------------------ | ---------------- | ------------------- | ----------------------------- |
-| Azure Container Apps (ACA)    | Serverless Container PaaS | Azure managed    | Consumption    | AZURE_LOCATION     | 99.9% (SLA)      | azd-env-name: {env} | `infra/resources.bicep:44-61` |
-| Azure Container Registry      | Image Registry PaaS       | Azure managed    | Basic          | AZURE_LOCATION     | 99.9% (SLA)      | azd-env-name: {env} | `infra/resources.bicep:17-23` |
-| Azure Log Analytics Workspace | Managed Logging PaaS      | Azure managed    | PerGB2018      | AZURE_LOCATION     | 99.9% (SLA)      | azd-env-name: {env} | `infra/resources.bicep:33-41` |
-| Azure Managed Identity        | IAM PaaS                  | Azure managed    | User-Assigned  | AZURE_LOCATION     | 99.9% (SLA)      | azd-env-name: {env} | `infra/resources.bicep:11-16` |
-| Azure DevOps (CI Pipeline)    | Managed CI/CD SaaS        | SaaS             | 1ES Unofficial | Azure DevOps cloud | 99.9% (SLA)      | N/A (external)      | `ci.yml:1-45`                 |
+| ☁️ Resource Name                 | 🏷️ Resource Type             | 🚀 Deployment Model | 💰 SKU            | 🌍 Region             | 📊 Availability SLA | 🏷️ Cost Tag            |
+| ----------------------------- | ------------------------- | ---------------- | -------------- | ------------------ | ---------------- | ------------------- |
+| Azure Container Apps (ACA)    | Serverless Container PaaS | Azure managed    | Consumption    | AZURE_LOCATION     | 99.9% (SLA)      | azd-env-name: {env} |
+| Azure Container Registry      | Image Registry PaaS       | Azure managed    | Basic          | AZURE_LOCATION     | 99.9% (SLA)      | azd-env-name: {env} |
+| Azure Log Analytics Workspace | Managed Logging PaaS      | Azure managed    | PerGB2018      | AZURE_LOCATION     | 99.9% (SLA)      | azd-env-name: {env} |
+| Azure Managed Identity        | IAM PaaS                  | Azure managed    | User-Assigned  | AZURE_LOCATION     | 99.9% (SLA)      | azd-env-name: {env} |
+| Azure DevOps (CI Pipeline)    | Managed CI/CD SaaS        | SaaS             | 1ES Unofficial | Azure DevOps cloud | 99.9% (SLA)      | N/A (external)      |
 
 **Security Posture:**
 
