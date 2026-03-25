@@ -1,4 +1,4 @@
-# Data Architecture - eShop
+﻿# Data Architecture - eShop
 
 ## 🗂️ Quick Table of Contents
 
@@ -155,135 +155,135 @@ Cross-domain data integration is achieved through 14 integration event types, al
 
 | 📛 Name                  | 📝 Description                                                          | 🏷️ Classification |
 | ------------------------ | ----------------------------------------------------------------------- | ----------------- |
-| CatalogItem              | Product entity with pricing, stock levels, and AI embedding vector      | Internal          |
-| CatalogBrand             | Brand reference entity for product classification                       | Internal          |
-| CatalogType              | Product type/category reference entity                                  | Internal          |
-| Order                    | Order aggregate root with lifecycle status and address                  | Financial         |
-| OrderItem                | Line item within an order; references product by ID                     | Financial         |
-| Buyer                    | Buyer aggregate root; maps identity GUID to domain buyer                | PII               |
-| PaymentMethod            | Payment method with card details; associated with buyer                 | PII + Financial   |
-| CardType                 | Card type enumeration (Visa, Mastercard, etc.)                          | Internal          |
-| ApplicationUser          | Identity user extending ASP.NET Identity; includes PII fields           | PII               |
-| WebhookSubscription      | External webhook subscription record with destination URL               | Internal          |
-| CustomerBasket           | Basket aggregate stored in Redis; maps to buyer ID                      | Internal          |
-| BasketItem               | Line item in a customer basket with price and quantity                  | Internal          |
-| IntegrationEventLogEntry | Outbox record for reliable integration event publishing                 | Internal          |
-| ClientRequest            | Idempotency guard record for command deduplication                      | Internal          |
-| Address                  | Value object representing a physical address; persisted as owned entity | PII               |
+| CatalogItem              | Product entity with pricing, stock levels, and AI embedding vector      | 🔵 Internal |
+| CatalogBrand             | Brand reference entity for product classification                       | 🔵 Internal |
+| CatalogType              | Product type/category reference entity                                  | 🔵 Internal |
+| Order                    | Order aggregate root with lifecycle status and address                  | 💰 Financial |
+| OrderItem                | Line item within an order; references product by ID                     | 💰 Financial |
+| Buyer                    | Buyer aggregate root; maps identity GUID to domain buyer                | 🔒 PII |
+| PaymentMethod            | Payment method with card details; associated with buyer                 | 🔒💰 PII + Financial |
+| CardType                 | Card type enumeration (Visa, Mastercard, etc.)                          | 🔵 Internal |
+| ApplicationUser          | Identity user extending ASP.NET Identity; includes PII fields           | 🔒 PII |
+| WebhookSubscription      | External webhook subscription record with destination URL               | 🔵 Internal |
+| CustomerBasket           | Basket aggregate stored in Redis; maps to buyer ID                      | 🔵 Internal |
+| BasketItem               | Line item in a customer basket with price and quantity                  | 🔵 Internal |
+| IntegrationEventLogEntry | Outbox record for reliable integration event publishing                 | 🔵 Internal |
+| ClientRequest            | Idempotency guard record for command deduplication                      | 🔵 Internal |
+| Address                  | Value object representing a physical address; persisted as owned entity | 🔒 PII |
 
 ### 🗃️ 2.2 Data Models
 
 | 📛 Name                              | 📝 Description                                                                       | 🏷️ Classification |
 | ------------------------------------ | ------------------------------------------------------------------------------------ | ----------------- |
-| CatalogContext                       | EF Core DbContext for CatalogItem, CatalogBrand, CatalogType with pgvector extension | Internal          |
-| OrderingContext                      | EF Core DbContext for Ordering domain; implements IUnitOfWork; schema: `ordering`    | Internal          |
-| ApplicationDbContext                 | EF Core IdentityDbContext for ApplicationUser; ASP.NET Core Identity schema          | Internal          |
-| WebhooksContext                      | EF Core DbContext for WebhookSubscription with indexed UserId and Type               | Internal          |
-| basket.proto                         | Protocol Buffers schema defining gRPC Basket service contract                        | Internal          |
-| CatalogItemEntityTypeConfiguration   | EF Fluent API model for CatalogItem (table: Catalog, vector(384) column)             | Internal          |
-| CatalogBrandEntityTypeConfiguration  | EF Fluent API model for CatalogBrand                                                 | Internal          |
-| CatalogTypeEntityTypeConfiguration   | EF Fluent API model for CatalogType                                                  | Internal          |
-| OrderEntityTypeConfiguration         | EF Fluent API model for Order (table: orders, HiLo sequence, owned Address)          | Internal          |
-| OrderItemEntityTypeConfiguration     | EF Fluent API model for OrderItem (table: orderitems)                                | Internal          |
-| PaymentMethodEntityTypeConfiguration | EF Fluent API model for PaymentMethod (table: paymentmethods, private field mapping) | Internal          |
+| CatalogContext                       | EF Core DbContext for CatalogItem, CatalogBrand, CatalogType with pgvector extension | 🔵 Internal |
+| OrderingContext                      | EF Core DbContext for Ordering domain; implements IUnitOfWork; schema: `ordering`    | 🔵 Internal |
+| ApplicationDbContext                 | EF Core IdentityDbContext for ApplicationUser; ASP.NET Core Identity schema          | 🔵 Internal |
+| WebhooksContext                      | EF Core DbContext for WebhookSubscription with indexed UserId and Type               | 🔵 Internal |
+| basket.proto                         | Protocol Buffers schema defining gRPC Basket service contract                        | 🔵 Internal |
+| CatalogItemEntityTypeConfiguration   | EF Fluent API model for CatalogItem (table: Catalog, vector(384) column)             | 🔵 Internal |
+| CatalogBrandEntityTypeConfiguration  | EF Fluent API model for CatalogBrand                                                 | 🔵 Internal |
+| CatalogTypeEntityTypeConfiguration   | EF Fluent API model for CatalogType                                                  | 🔵 Internal |
+| OrderEntityTypeConfiguration         | EF Fluent API model for Order (table: orders, HiLo sequence, owned Address)          | 🔵 Internal |
+| OrderItemEntityTypeConfiguration     | EF Fluent API model for OrderItem (table: orderitems)                                | 🔵 Internal |
+| PaymentMethodEntityTypeConfiguration | EF Fluent API model for PaymentMethod (table: paymentmethods, private field mapping) | 🔵 Internal |
 
 ### 🗄️ 2.3 Data Stores
 
 | 📛 Name                 | 📝 Description                                                                      | 🏷️ Classification |
 | ----------------------- | ----------------------------------------------------------------------------------- | ----------------- |
-| catalogdb (PostgreSQL)  | Relational store for Catalog domain; uses pgvector extension for AI embeddings      | Internal          |
-| orderingdb (PostgreSQL) | Relational store for Ordering domain; uses `ordering` schema isolation              | Internal          |
-| identitydb (PostgreSQL) | Relational store for Identity domain; ASP.NET Core Identity schema                  | Internal          |
-| webhooksdb (PostgreSQL) | Relational store for Webhooks domain                                                | Internal          |
-| Redis (basket)          | Key-value store for Basket domain; keys: `/basket/{userId}`; JSON-serialized values | Internal          |
+| catalogdb (PostgreSQL)  | Relational store for Catalog domain; uses pgvector extension for AI embeddings      | 🔵 Internal |
+| orderingdb (PostgreSQL) | Relational store for Ordering domain; uses `ordering` schema isolation              | 🔵 Internal |
+| identitydb (PostgreSQL) | Relational store for Identity domain; ASP.NET Core Identity schema                  | 🔵 Internal |
+| webhooksdb (PostgreSQL) | Relational store for Webhooks domain                                                | 🔵 Internal |
+| Redis (basket)          | Key-value store for Basket domain; keys: `/basket/{userId}`; JSON-serialized values | 🔵 Internal |
 
 ### 🔄 2.4 Data Flows
 
 | 📛 Name                                                | 📝 Description                                                                  | 🏷️ Classification |
 | ------------------------------------------------------ | ------------------------------------------------------------------------------- | ----------------- |
-| OrderStartedIntegrationEvent                           | Flow: Basket → Ordering when order checkout initiated; triggers basket deletion | Internal          |
-| ProductPriceChangedIntegrationEvent                    | Flow: Catalog → Basket/Webhooks when product price changes                      | Internal          |
-| OrderStatusChangedToAwaitingValidationIntegrationEvent | Flow: Ordering → Catalog for stock validation request                           | Internal          |
-| OrderStockConfirmedIntegrationEvent                    | Flow: Catalog → Ordering confirming stock availability                          | Internal          |
-| OrderStockRejectedIntegrationEvent                     | Flow: Catalog → Ordering rejecting insufficient stock                           | Internal          |
-| OrderStatusChangedToPaidIntegrationEvent               | Flow: Ordering → Catalog to decrement stock on payment                          | Internal          |
-| GracePeriodConfirmedIntegrationEvent                   | Flow: OrderProcessor → Ordering to advance order workflow                       | Internal          |
-| OrderStatusChangedToStockConfirmedIntegrationEvent     | Flow: Ordering → PaymentProcessor for payment processing                        | Internal          |
-| OrderPaymentSucceededIntegrationEvent                  | Flow: PaymentProcessor → Ordering on successful payment                         | Internal          |
-| OrderPaymentFailedIntegrationEvent                     | Flow: PaymentProcessor → Ordering on payment failure                            | Internal          |
-| OrderStatusChangedToShippedIntegrationEvent            | Flow: Ordering → Webhooks for external notification                             | Internal          |
-| gRPC Basket CRUD                                       | Flow: WebApp/ClientApp → Basket.API via gRPC for basket read/write/delete       | Internal          |
+| OrderStartedIntegrationEvent                           | Flow: Basket → Ordering when order checkout initiated; triggers basket deletion | 🔵 Internal |
+| ProductPriceChangedIntegrationEvent                    | Flow: Catalog → Basket/Webhooks when product price changes                      | 🔵 Internal |
+| OrderStatusChangedToAwaitingValidationIntegrationEvent | Flow: Ordering → Catalog for stock validation request                           | 🔵 Internal |
+| OrderStockConfirmedIntegrationEvent                    | Flow: Catalog → Ordering confirming stock availability                          | 🔵 Internal |
+| OrderStockRejectedIntegrationEvent                     | Flow: Catalog → Ordering rejecting insufficient stock                           | 🔵 Internal |
+| OrderStatusChangedToPaidIntegrationEvent               | Flow: Ordering → Catalog to decrement stock on payment                          | 🔵 Internal |
+| GracePeriodConfirmedIntegrationEvent                   | Flow: OrderProcessor → Ordering to advance order workflow                       | 🔵 Internal |
+| OrderStatusChangedToStockConfirmedIntegrationEvent     | Flow: Ordering → PaymentProcessor for payment processing                        | 🔵 Internal |
+| OrderPaymentSucceededIntegrationEvent                  | Flow: PaymentProcessor → Ordering on successful payment                         | 🔵 Internal |
+| OrderPaymentFailedIntegrationEvent                     | Flow: PaymentProcessor → Ordering on payment failure                            | 🔵 Internal |
+| OrderStatusChangedToShippedIntegrationEvent            | Flow: Ordering → Webhooks for external notification                             | 🔵 Internal |
+| gRPC Basket CRUD                                       | Flow: WebApp/ClientApp → Basket.API via gRPC for basket read/write/delete       | 🔵 Internal |
 
 ### ⚙️ 2.5 Data Services
 
 | 📛 Name                                                  | 📝 Description                                                              | 🏷️ Classification |
 | -------------------------------------------------------- | --------------------------------------------------------------------------- | ----------------- |
-| IBasketRepository / RedisBasketRepository                | Repository abstraction for CustomerBasket CRUD via Redis                    | Internal          |
-| IOrderRepository / OrderRepository                       | Repository abstraction for Order aggregate persistence via EF Core          | Internal          |
-| IBuyerRepository / BuyerRepository                       | Repository abstraction for Buyer aggregate retrieval via EF Core            | Internal          |
-| IIntegrationEventLogService / IntegrationEventLogService | Outbox service for querying, marking, and publishing integration events     | Internal          |
-| ICatalogAI / CatalogAI                                   | AI embedding service generating 384-dim float vectors from CatalogItem text | Internal          |
-| IRequestManager / RequestManager                         | Idempotency manager checking and registering command requests               | Internal          |
+| IBasketRepository / RedisBasketRepository                | Repository abstraction for CustomerBasket CRUD via Redis                    | 🔵 Internal |
+| IOrderRepository / OrderRepository                       | Repository abstraction for Order aggregate persistence via EF Core          | 🔵 Internal |
+| IBuyerRepository / BuyerRepository                       | Repository abstraction for Buyer aggregate retrieval via EF Core            | 🔵 Internal |
+| IIntegrationEventLogService / IntegrationEventLogService | Outbox service for querying, marking, and publishing integration events     | 🔵 Internal |
+| ICatalogAI / CatalogAI                                   | AI embedding service generating 384-dim float vectors from CatalogItem text | 🔵 Internal |
+| IRequestManager / RequestManager                         | Idempotency manager checking and registering command requests               | 🔵 Internal |
 
 ### 🏛️ 2.6 Data Governance
 
 | 📛 Name                                | 📝 Description                                                                                                   | 🏷️ Classification |
 | -------------------------------------- | ---------------------------------------------------------------------------------------------------------------- | ----------------- |
-| Outbox Pattern (IntegrationEventLogEF) | Reliable event publishing via database-local log; tracks EventStateEnum (NotPublished/Published/PublishedFailed) | Internal          |
-| EF Core Schema Migrations              | Version-controlled schema changes tracked in /Migrations folders across 4 DbContexts                             | Internal          |
-| IDbSeeder Pattern                      | Typed data seeding interface (CatalogContextSeed, OrderingContextSeed, UsersSeed) called during startup          | Internal          |
-| Schema Isolation (ordering schema)     | PostgreSQL schema namespacing (`ordering`) applied to all Ordering domain tables via `HasDefaultSchema`          | Internal          |
+| Outbox Pattern (IntegrationEventLogEF) | Reliable event publishing via database-local log; tracks EventStateEnum (NotPublished/Published/PublishedFailed) | 🔵 Internal |
+| EF Core Schema Migrations              | Version-controlled schema changes tracked in /Migrations folders across 4 DbContexts                             | 🔵 Internal |
+| IDbSeeder Pattern                      | Typed data seeding interface (CatalogContextSeed, OrderingContextSeed, UsersSeed) called during startup          | 🔵 Internal |
+| Schema Isolation (ordering schema)     | PostgreSQL schema namespacing (`ordering`) applied to all Ordering domain tables via `HasDefaultSchema`          | 🔵 Internal |
 
 ### ✅ 2.7 Data Quality Rules
 
 | 📛 Name                                | 📝 Description                                                                                                                | 🏷️ Classification |
 | -------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- | ----------------- |
-| [Required] attribute enforcement       | All critical string fields (Name, IdentityGuid, CardHolderName, DestUrl, UserId) annotated with [Required]                    | Internal          |
-| HasMaxLength constraints               | String field length caps: CardHolderName/Alias (200), CardNumber (25), OrderStatus (30), IdentityGuid (200), BuyerName (text) | Internal          |
-| BasketItem.IValidatableObject          | Quantity must be ≥ 1; enforced via IValidatableObject.Validate                                                                | Internal          |
-| OrderItem unit validation              | Units must be > 0 and (unitPrice × units) must be ≥ discount; throws OrderingDomainException                                  | Internal          |
-| Order domain exception guards          | Null/whitespace guards on Buyer/PaymentMethod construction; expiration date future check                                      | Internal          |
-| IntegrationEventLogEntry state machine | State transitions: NotPublished → InProgress → Published/PublishedFailed                                                      | Internal          |
-| CatalogItem stock invariants           | AvailableStock, RestockThreshold, MaxStockThreshold fields with business logic for reorder detection                          | Internal          |
-| ClientRequest idempotency              | Command deduplication via RequestManager.ExistAsync(Guid id) before processing                                                | Internal          |
+| [Required] attribute enforcement       | All critical string fields (Name, IdentityGuid, CardHolderName, DestUrl, UserId) annotated with [Required]                    | 🔵 Internal |
+| HasMaxLength constraints               | String field length caps: CardHolderName/Alias (200), CardNumber (25), OrderStatus (30), IdentityGuid (200), BuyerName (text) | 🔵 Internal |
+| BasketItem.IValidatableObject          | Quantity must be ≥ 1; enforced via IValidatableObject.Validate                                                                | 🔵 Internal |
+| OrderItem unit validation              | Units must be > 0 and (unitPrice × units) must be ≥ discount; throws OrderingDomainException                                  | 🔵 Internal |
+| Order domain exception guards          | Null/whitespace guards on Buyer/PaymentMethod construction; expiration date future check                                      | 🔵 Internal |
+| IntegrationEventLogEntry state machine | State transitions: NotPublished → InProgress → Published/PublishedFailed                                                      | 🔵 Internal |
+| CatalogItem stock invariants           | AvailableStock, RestockThreshold, MaxStockThreshold fields with business logic for reorder detection                          | 🔵 Internal |
+| ClientRequest idempotency              | Command deduplication via RequestManager.ExistAsync(Guid id) before processing                                                | 🔵 Internal |
 
 ### 📚 2.8 Master Data
 
 | 📛 Name      | 📝 Description                                                                                    | 🏷️ Classification |
 | ------------ | ------------------------------------------------------------------------------------------------- | ----------------- |
-| CatalogBrand | Authoritative list of product brands; seeded from catalog.json via CatalogContextSeed             | Internal          |
-| CatalogType  | Authoritative list of product types/categories; seeded from catalog.json via CatalogContextSeed   | Internal          |
-| CardType     | Authoritative list of payment card types (e.g., Visa, Mastercard); seeded via OrderingContextSeed | Internal          |
-| OrderStatus  | Enum-backed lookup table defining valid order lifecycle states (Submitted through Cancelled)      | Internal          |
+| CatalogBrand | Authoritative list of product brands; seeded from catalog.json via CatalogContextSeed             | 🔵 Internal |
+| CatalogType  | Authoritative list of product types/categories; seeded from catalog.json via CatalogContextSeed   | 🔵 Internal |
+| CardType     | Authoritative list of payment card types (e.g., Visa, Mastercard); seeded via OrderingContextSeed | 🔵 Internal |
+| OrderStatus  | Enum-backed lookup table defining valid order lifecycle states (Submitted through Cancelled)      | 🔵 Internal |
 
 ### 🔄 2.9 Data Transformations
 
 | 📛 Name                             | 📝 Description                                                                                                | 🏷️ Classification |
 | ----------------------------------- | ------------------------------------------------------------------------------------------------------------- | ----------------- |
-| JSON Basket Serialization           | CustomerBasket and BasketItem serialized to UTF-8 JSON bytes for Redis storage via BasketSerializationContext | Internal          |
-| IntegrationEvent JSON Serialization | Integration events serialized to JSON string Content via System.Text.Json for Outbox storage                  | Internal          |
-| Vector Embedding Generation         | CatalogItem text (name + description) transformed to 384-dimensional float vector via IEmbeddingGenerator     | Internal          |
-| gRPC Protobuf Serialization         | Basket request/response models serialized via Protocol Buffers (basket.proto schema)                          | Internal          |
-| EF Core Value Conversion            | OrderStatus enum serialized as string in PostgreSQL; Address value object serialized as owned entity columns  | Internal          |
+| JSON Basket Serialization           | CustomerBasket and BasketItem serialized to UTF-8 JSON bytes for Redis storage via BasketSerializationContext | 🔵 Internal |
+| IntegrationEvent JSON Serialization | Integration events serialized to JSON string Content via System.Text.Json for Outbox storage                  | 🔵 Internal |
+| Vector Embedding Generation         | CatalogItem text (name + description) transformed to 384-dimensional float vector via IEmbeddingGenerator     | 🔵 Internal |
+| gRPC Protobuf Serialization         | Basket request/response models serialized via Protocol Buffers (basket.proto schema)                          | 🔵 Internal |
+| EF Core Value Conversion            | OrderStatus enum serialized as string in PostgreSQL; Address value object serialized as owned entity columns  | 🔵 Internal |
 
 ### 📜 2.10 Data Contracts
 
 | 📛 Name                             | 📝 Description                                                                                             | 🏷️ Classification |
 | ----------------------------------- | ---------------------------------------------------------------------------------------------------------- | ----------------- |
-| basket.proto                        | gRPC Protocol Buffers contract defining GetBasket, UpdateBasket, DeleteBasket operations and message types | Internal          |
-| IntegrationEvent base record        | Base record (Id: Guid, CreationDate: DateTime) for all 14 integration event types across the system        | Internal          |
-| IBasketRepository                   | C# interface contract for basket data access (GetBasketAsync, UpdateBasketAsync, DeleteBasketAsync)        | Internal          |
-| IOrderRepository / IBuyerRepository | C# interface contracts for ordering domain aggregate access with IUnitOfWork                               | Internal          |
-| EF Entity Type Configurations       | Implicit data model contracts defined via IEntityTypeConfiguration Fluent API for all relational entities  | Internal          |
+| basket.proto                        | gRPC Protocol Buffers contract defining GetBasket, UpdateBasket, DeleteBasket operations and message types | 🔵 Internal |
+| IntegrationEvent base record        | Base record (Id: Guid, CreationDate: DateTime) for all 14 integration event types across the system        | 🔵 Internal |
+| IBasketRepository                   | C# interface contract for basket data access (GetBasketAsync, UpdateBasketAsync, DeleteBasketAsync)        | 🔵 Internal |
+| IOrderRepository / IBuyerRepository | C# interface contracts for ordering domain aggregate access with IUnitOfWork                               | 🔵 Internal |
+| EF Entity Type Configurations       | Implicit data model contracts defined via IEntityTypeConfiguration Fluent API for all relational entities  | 🔵 Internal |
 
 ### 🔒 2.11 Data Security
 
 | 📛 Name                             | 📝 Description                                                                                                | 🏷️ Classification |
 | ----------------------------------- | ------------------------------------------------------------------------------------------------------------- | ----------------- |
-| JWT Bearer Authentication           | ASP.NET Core JWT Bearer middleware validates tokens issued by Identity API; applied to all protected services | Internal          |
-| ASP.NET Core Identity               | Identity user management providing password hashing, claims, role management for ApplicationUser              | Internal          |
-| SecurityHeadersAttribute            | HTTP security headers (X-Frame-Options, CSP, etc.) applied to Identity API endpoints                          | Internal          |
-| Unmasked Card Number Storage (Risk) | PaymentMethod.\_cardNumber stored as plain text in PostgreSQL paymentmethods table — PCI-DSS violation risk   | PII + Financial   |
+| JWT Bearer Authentication           | ASP.NET Core JWT Bearer middleware validates tokens issued by Identity API; applied to all protected services | 🔵 Internal |
+| ASP.NET Core Identity               | Identity user management providing password hashing, claims, role management for ApplicationUser              | 🔵 Internal |
+| SecurityHeadersAttribute            | HTTP security headers (X-Frame-Options, CSP, etc.) applied to Identity API endpoints                          | 🔵 Internal |
+| Unmasked Card Number Storage (Risk) | PaymentMethod.\_cardNumber stored as plain text in PostgreSQL paymentmethods table — PCI-DSS violation risk   | 🔒💰 PII + Financial |
 
 ---
 
@@ -483,6 +483,50 @@ Privacy-by-design is partially implemented: ASP.NET Core Identity provides passw
 | 💰 Financial         | Financial record data               | Order (total is derived from OrderItems), OrderItem (UnitPrice, Discount)                                                                     | Access control, audit logging, immutable records             |
 | 🔵 Internal          | Non-sensitive operational data      | All catalog, basket, webhook, event log entities                                                                                              | Standard access controls                                     |
 | 🟢 Public            | Publicly accessible reference data  | CatalogBrand, CatalogType (displayed in storefront)                                                                                           | Read-only public access acceptable                           |
+
+```mermaid
+---
+title: eShop Data Classification Hierarchy
+config:
+  theme: base
+  look: classic
+  layout: dagre
+  themeVariables:
+    fontSize: '16px'
+  flowchart:
+    htmlLabels: true
+---
+flowchart TD
+    accTitle: eShop Data Classification Hierarchy
+    accDescr: Shows the five-tier data classification hierarchy from highest sensitivity PII + Financial down to Public, with required controls for each tier
+
+    %% ═══════════════════════════════════════════════════════════════════════════
+    %% AZURE / FLUENT ARCHITECTURE PATTERN v2.0
+    %% (Semantic + Structural + Font + Accessibility Governance)
+    %% ═══════════════════════════════════════════════════════════════════════════
+    %% PHASE 1 - FLUENT UI: All styling uses approved Fluent UI palette only
+    %% PHASE 2 - GROUPS: Every subgraph has semantic color via style directive
+    %% PHASE 3 - COMPONENTS: Every node has semantic classDef + icon prefix
+    %% PHASE 4 - ACCESSIBILITY: accTitle/accDescr present, WCAG AA contrast
+    %% PHASE 5 - STANDARD: Governance block present, classDefs centralized
+    %% ═══════════════════════════════════════════════════════════════════════════
+
+    piiFinancial("🔒💰 PII + Financial\nPaymentMethod.CardNumber\nPCI-DSS controls required"):::danger
+    pii("🔒 PII\nApplicationUser, Buyer\nAddress, CardHolderName"):::warning
+    financial("💰 Financial\nOrder, OrderItem\nAudit + immutable records"):::warning
+    internal("🔵 Internal\nCatalog, Basket, Events\nWebhooks, Idempotency"):::core
+    public("🟢 Public\nCatalogBrand, CatalogType\nRead-only access"):::success
+
+    piiFinancial -->|"highest sensitivity"| pii
+    pii -->|"financial overlap"| financial
+    financial -->|"standard operational"| internal
+    internal -->|"open reference data"| public
+
+    classDef danger fill:#FDE7E9,stroke:#D83B01,stroke-width:2px,color:#323130
+    classDef warning fill:#FFF4CE,stroke:#C19C00,stroke-width:2px,color:#323130
+    classDef core fill:#EFF6FC,stroke:#0078D4,stroke-width:2px,color:#323130
+    classDef success fill:#DFF6DD,stroke:#107C10,stroke-width:2px,color:#323130
+```
 
 ---
 
@@ -1315,9 +1359,16 @@ The access control model is JWT-based: clients authenticate with Identity.API us
 | All 9 sections present                                    | ✅ PASS | Sections 1-9 all generated                                          |
 | Sections 1,2,3,4,5,8 score 100/100                        | ✅ PASS | Full comprehensive content with all required sub-elements           |
 | All 11 data component type subsections (2.1-2.11)         | ✅ PASS | All 11 subsections present with data or "Not detected"              |
-| All 11 component type subsections (5.1-5.11)              | ✅ PASS | All 11 subsections present with 10-column table schema              |
+| All 11 component type subsections (5.1-5.11)              | ✅ PASS | All 11 subsections present with 8-column table schema (Source Systems + Source File removed) |
 | Section 2 table schema (3 columns)                        | ✅ PASS | Name, Description, Classification in all 2.x tables                 |
-| Section 5 table schema (10 columns)                       | ✅ PASS | All 10 mandatory columns in all 5.x tables                          |
+| Section 5 table schema (8 columns)                        | ✅ PASS | Source Systems + Source File columns removed; 8 mandatory columns in all 5.x tables |
+| Evidence column removed from 6 tables                     | ✅ PASS | Sections 1, 3, 4, 7 tables updated                                  |
+| Quick TOC added                                           | ✅ PASS | Jump links to all 9 sections at document top                        |
+| data_layer_reasoning YAML block present                   | ✅ PASS | YAML block included immediately before Section 1 heading            |
+| Emoji headings on all sections and subsections            | ✅ PASS | All ## and ### headings have contextual emoji prefixes               |
+| Emoji column headers on all tables                        | ✅ PASS | All table headers across all sections updated                       |
+| Emoji cell values in Classification columns               | ✅ PASS | 🔵💰🔒🔒💰🟢 prefixes applied to all Classification cells         |
+| Classification Taxonomy Mermaid diagram                   | ✅ PASS | Hierarchy flowchart added in Section 3 after taxonomy table         |
 | Section 5 Summary presence (E-016)                        | ✅ PASS | Summary paragraph after 5.11                                        |
 | Section 2 Summary presence                                | ✅ PASS | Summary paragraph at end of Section 2                               |
 | Section 4 Summary presence                                | ✅ PASS | Summary paragraph at end of Section 4                               |
