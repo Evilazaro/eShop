@@ -948,24 +948,24 @@ _(accTitle ✅ · accDescr ✅ · style directives on subgraphs ✅ · semantic 
 
 ### ✅ Pre-Execution Checklist: 16/16 Passed
 
-| 🔢 # | 📝 Criterion                                                              | 🟢 Status |
-| --- | -------------------------------------------------------------------------- | ------ |
-| 1   | All 11 component types analyzed (Sections 5.1–5.11)                        | ✅     |
-| 2   | Every component has source traceability (`path/file.ext:line-range`)       | ✅     |
-| 3   | Deployment model and availability SLA specified for each resource          | ✅     |
-| 4   | Confidence scores ≥ 0.7 for all classified components (range: 0.86–0.99)   | ✅     |
-| 5   | Mermaid diagrams score ≥ 95/100 (2 diagrams: 98/100 and 97/100)            | ✅     |
-| 6   | No placeholder text (`[TODO]`, `[TBD]`)                                    | ✅     |
-| 7   | Sections 1, 2, 3, 4, 5, 8 present (as per `output_sections` input)         | ✅     |
-| 8   | No fabricated components — all have source file evidence                   | ✅     |
-| 9   | No credentials or secrets extracted from source files                      | ✅     |
-| 10  | Negative constraints N-1 through N-9 satisfied                             | ✅     |
-| 11  | Mermaid diagrams: `accTitle` + `accDescr` present                          | ✅     |
-| 12  | Mermaid diagrams: `style` directive on all subgraphs (MRM-S001)            | ✅     |
-| 13  | Mermaid diagrams: semantic classDefs ≤ 5 per diagram                       | ✅     |
-| 14  | Mermaid diagrams: governance block present                                 | ✅     |
-| 15  | Source, Evidence, Confidence, Maturity columns removed from all tables      | ✅     |
-| 16  | Section titles match exact canonical list (E-014 gate)                     | ✅     |
+| 🔢 # | 📝 Criterion                                                             | 🟢 Status |
+| ---- | ------------------------------------------------------------------------ | --------- |
+| 1    | All 11 component types analyzed (Sections 5.1–5.11)                      | ✅        |
+| 2    | Every component has source traceability (`path/file.ext:line-range`)     | ✅        |
+| 3    | Deployment model and availability SLA specified for each resource        | ✅        |
+| 4    | Confidence scores ≥ 0.7 for all classified components (range: 0.86–0.99) | ✅        |
+| 5    | Mermaid diagrams score ≥ 95/100 (2 diagrams: 98/100 and 97/100)          | ✅        |
+| 6    | No placeholder text (`[TODO]`, `[TBD]`)                                  | ✅        |
+| 7    | Sections 1, 2, 3, 4, 5, 8 present (as per `output_sections` input)       | ✅        |
+| 8    | No fabricated components — all have source file evidence                 | ✅        |
+| 9    | No credentials or secrets extracted from source files                    | ✅        |
+| 10   | Negative constraints N-1 through N-9 satisfied                           | ✅        |
+| 11   | Mermaid diagrams: `accTitle` + `accDescr` present                        | ✅        |
+| 12   | Mermaid diagrams: `style` directive on all subgraphs (MRM-S001)          | ✅        |
+| 13   | Mermaid diagrams: semantic classDefs ≤ 5 per diagram                     | ✅        |
+| 14   | Mermaid diagrams: governance block present                               | ✅        |
+| 15   | Source, Evidence, Confidence, Maturity columns removed from all tables   | ✅        |
+| 16   | Section titles match exact canonical list (E-014 gate)                   | ✅        |
 
 ### 🎯 Final Score: 100/100
 
