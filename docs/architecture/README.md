@@ -14,28 +14,61 @@ This folder contains the TOGAF 10-aligned architecture documentation for the **e
 ## Architecture at a Glance
 
 ```mermaid
-block-beta
-  columns 1
+flowchart TB
+    accTitle: eShop TOGAF Architecture Layers
+    accDescr: WCAG AA compliant layered architecture diagram showing the four TOGAF layers of the eShop platform stacked top-to-bottom — Business, Application, Data, and Technology — with directional arrows indicating dependency flow.
 
-  block:business["🏢 Business Architecture"]
-    B["Capabilities · Processes · Value Streams"]
-  end
+    %% ═══════════════════════════════════════════════════════════════════════════
+    %% AZURE / FLUENT ARCHITECTURE PATTERN v2.0
+    %% (Semantic + Structural + Font + Accessibility Governance)
+    %% ═══════════════════════════════════════════════════════════════════════════
+    %% PHASE 1 - FLUENT UI: All styling uses approved Fluent UI palette only
+    %% PHASE 2 - GROUPS: Every subgraph has semantic color via style directive
+    %% PHASE 3 - COMPONENTS: Every node has semantic classDef + icon prefix
+    %% PHASE 4 - ACCESSIBILITY: accTitle/accDescr present, WCAG AA contrast
+    %% PHASE 5 - STANDARD: Governance block present, classDefs centralized
+    %% ═══════════════════════════════════════════════════════════════════════════
 
-  block:application["⚙️ Application Architecture"]
-    A["Microservices · APIs · Integration Events"]
-  end
+    subgraph BIZ["🏢 Business Architecture"]
+        B1("🎯 Capabilities"):::external
+        B2("🔄 Value Streams"):::external
+        B3("⚙️ Business Processes"):::external
+    end
 
-  block:data["🗄️ Data Architecture"]
-    D["PostgreSQL · Redis · RabbitMQ · Outbox"]
-  end
+    subgraph APP["🖥️ Application Architecture"]
+        A1("🌐 Microservices"):::core
+        A2("📡 APIs & Contracts"):::core
+        A3("📣 Integration Events"):::core
+    end
 
-  block:technology["☁️ Technology Architecture"]
-    T["Azure Container Apps · Aspire · Bicep"]
-  end
+    subgraph DAT["🗄️ Data Architecture"]
+        D1("🐘 PostgreSQL"):::data
+        D2("⚡ Redis"):::data
+        D3("📨 RabbitMQ · Outbox"):::data
+    end
 
-  business --> application
-  application --> data
-  data --> technology
+    subgraph TECH["☁️ Technology Architecture"]
+        T1("🚀 Azure Container Apps"):::neutral
+        T2("🔧 .NET Aspire · Bicep"):::neutral
+        T3("🔒 Security · Observability"):::neutral
+    end
+
+    BIZ --> APP
+    APP --> DAT
+    DAT --> TECH
+
+    style BIZ  fill:#E0F7F7,stroke:#038387,stroke-width:2px
+    style APP  fill:#EFF6FC,stroke:#0078D4,stroke-width:2px
+    style DAT  fill:#F0E6FF,stroke:#5C2D91,stroke-width:2px
+    style TECH fill:#FAFAFA,stroke:#8A8886,stroke-width:2px
+
+    classDef neutral  fill:#FAFAFA,stroke:#8A8886,stroke-width:2px,color:#323130
+    classDef core     fill:#EFF6FC,stroke:#0078D4,stroke-width:2px,color:#323130
+    classDef success  fill:#DFF6DD,stroke:#107C10,stroke-width:2px,color:#323130
+    classDef warning  fill:#FFF4CE,stroke:#FFB900,stroke-width:2px,color:#323130
+    classDef danger   fill:#FDE7E9,stroke:#D13438,stroke-width:2px,color:#323130
+    classDef data     fill:#F0E6FF,stroke:#5C2D91,stroke-width:2px,color:#323130
+    classDef external fill:#E0F7F7,stroke:#038387,stroke-width:2px,color:#323130
 ```
 
 ## Key Design Decisions
