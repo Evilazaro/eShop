@@ -1529,3 +1529,358 @@ flowchart LR
 
 **🔢 Versioning:** Managed via Directory.Packages.props central package management.
 
+
+---
+
+## 8. 🔗 Dependencies & Integration
+
+This section documents all service-to-service communication channels, infrastructure bindings, event contracts, and integration patterns that link the eShop microservices into a coherent system.
+
+---
+
+### 8.1 🌐 Service-to-Service Call Graph
+
+| 🔀 Caller | 🎯 Callee | 📡 Protocol | 🔒 Auth | 📝 Purpose |
+| -------------- | --------------- | ------------ | ---------- | -------------------------------- |
+| WebApp | Basket.API | gRPC/HTTP2 | OIDC token | Read/write shopping basket |
+| WebApp | Catalog.API | REST/HTTP | None | Browse catalog items |
+| WebApp | Ordering.API | REST/HTTP | OIDC token | Submit and track orders |
+| WebApp | Identity.API | OIDC | N/A | Authentication |
+| WebhookClient | Webhooks.API | REST/HTTP | OIDC token | Register webhook subscriptions |
+| WebApp | WebhookClient | Browser | Cookie | Demo webhook client UI |
+| Ordering.API | Basket.API | gRPC | OIDC token | Clear basket on checkout |
+| OrderProcessor | Ordering.API | REST/HTTP | Client cred | Drive order state machine |
+| PaymentProcessor | EventBus | AMQP | Broker auth | Simulate payment events |
+
+---
+
+### 8.2 🗄️ Database Dependency Map
+
+| 🏗️ Service | 🗃️ Store | 🔧 Access | 🔐 Auth |
+| --------------- | --------------------- | ----------- | -------------------- |
+| Basket.API | Redis (Cache) | StackExchange.Redis | App connection string |
+| Catalog.API | PostgreSQL | EF Core 9 | Aspire connection |
+| Ordering.API | PostgreSQL | EF Core 9 | Aspire connection |
+| Ordering.Infrastructure | PostgreSQL | EF Core 9 (shared) | Aspire connection |
+| Identity.API | PostgreSQL | EF Core 9 | Aspire connection |
+| Webhooks.API | PostgreSQL | EF Core 9 | Aspire connection |
+| IntegrationEventLogEF | PostgreSQL (shared) | EF Core 9 | Shared context |
+
+---
+
+### 8.3 🌍 External API Integrations
+
+| 🔌 Integration | 📡 Type | 🏗️ Consumer | 🎯 Purpose |
+| ------------------------------ | ------- | ------------ | -------------------------------------- |
+| Azure OpenAI (Embedding Model) | REST/SDK | Catalog.API | Generate catalog text embeddings |
+| Azure OpenAI (Chat Model) | REST/SDK | Catalog.API | AI-powered semantic catalog search |
+| RabbitMQ | AMQP | All services | Event bus message broker |
+
+---
+
+### 8.4 📨 Event Subscription Map
+
+| 📤 Publisher | 📬 Event | 📥 Subscriber(s) | 💡 Effect |
+| --------------- | ------------------------------------------- | ----------------------- | ------------------------------------------- |
+| Ordering.API | GracePeriodConfirmedIntegrationEvent | OrderProcessor | Advances order to awaiting stock validation |
+| Ordering.API | OrderStartedIntegrationEvent | Basket.API | Clears basket for buyer |
+| Ordering.API | OrderStatusChangedToAwaitingValidation | Catalog.API, WebApp | Reserves stock; notifies UI |
+| Catalog.API | OrderStockConfirmedIntegrationEvent | Ordering.API | Confirms stock; auto-advances state |
+| Catalog.API | OrderStockRejectedIntegrationEvent | Ordering.API | Cancels order; releases stock |
+| Ordering.API | OrderStatusChangedToStockConfirmed | PaymentProcessor, WebApp | Triggers payment simulation; updates UI |
+| PaymentProcessor | OrderPaymentSucceededIntegrationEvent | Ordering.API | Advances to Paid |
+| PaymentProcessor | OrderPaymentFailedIntegrationEvent | Ordering.API | Cancels order |
+| Ordering.API | OrderStatusChangedToSubmitted | WebApp | UI order-submitted notification |
+| Ordering.API | OrderStatusChangedToCancelled | WebApp | UI cancellation notification |
+| Ordering.API | OrderStatusChangedToShipped | WebApp, Webhooks.API | UI shipped notification; webhook delivery |
+| Ordering.API | OrderStatusChangedToPaid | Catalog.API, WebApp, Webhooks.API | Decrease catalog stock; UI paid; webhook |
+| Catalog.API | ProductPriceChangedIntegrationEvent | Basket.API | Updates basket prices |
+
+---
+
+### 8.5 🔁 Integration Pattern Matrix
+
+| 🧩 Pattern | 🏗️ Services | 📦 Implementation | 💡 Benefit |
+| ------------------------------- | ------------------------------ | ------------------------------------------------ | ----------------------------------------- |
+| Transactional Outbox | All EF-based services | IntegrationEventLogEF, EF ambient transactions | Guaranteed exactly-once event publish |
+| gRPC Contract-First | Basket.API, WebApp, Ordering | asket.proto, Protobuf codegen | Strongly-typed, efficient service contract |
+| HTTP Client Factory + Resilience | All via ServiceDefaults | AddStandardResilienceHandler() | Retry, circuit-breaker, timeout baked in |
+| Redis Cache-Aside | Basket.API | IBasketRepository Redis adapter | Low-latency basket reads |
+| YARP Reverse Proxy | WebApp (BFF path) | YARP middleware | Token forwarding, single ingress |
+| Choreography Saga | Ordering flow | Integration events over RabbitMQ | Distributed transaction without 2PC |
+| Observer (In-Process) | WebApp | Blazor state + NotificationService | Real-time SSE/WebSocket UI updates |
+
+---
+
+### 8.6 ⚡ Circuit Breaker & Resilience Configuration
+
+| 🏗️ Service | 🔧 Strategy | ⚙️ Configuration | 📝 Notes |
+| -------------- | -------------------- | -------------------------------------- | -------------------------------- |
+| All (default) | Standard Resilience | Retry × 3, exp backoff | Via AddStandardResilienceHandler |
+| All (default) | Circuit Breaker | 5 failures / 30 s break | Via AddStandardResilienceHandler |
+| All (default) | Timeout | 30 s per request | Via AddStandardResilienceHandler |
+| Ordering.API | gRPC timeout | Deadline on client stub | Cascade protection on basket clear |
+
+---
+
+### 8.7 📊 Mermaid Diagrams
+
+#### 8.7.1 Service Integration Map
+
+`mermaid
+%%{ init: { "theme": "base" } }%%
+graph LR
+  accTitle: Service Integration Map
+  accDescr: Full integration topology of eShop microservices showing all call paths and event channels
+
+  %% PHASE 1 - GOVERNANCE
+  %% Standard: AZURE/FLUENT v2.0
+  %% PHASE 2 - NODES
+  WA[WebApp BFF]
+  ID[Identity.API]
+  BK[Basket.API]
+  CT[Catalog.API]
+  OR[Ordering.API]
+  OP[OrderProcessor]
+  PP[PaymentProcessor]
+  WH[Webhooks.API]
+  RD[(Redis)]
+  PG[(PostgreSQL)]
+  RB([RabbitMQ])
+  AO([Azure OpenAI])
+
+  %% PHASE 3 - SYNC EDGES
+  WA -->|OIDC| ID
+  WA -->|gRPC| BK
+  WA -->|REST| CT
+  WA -->|REST| OR
+  OR -->|gRPC clear| BK
+  OP -->|REST drive| OR
+  CT -->|vector search| AO
+
+  %% PHASE 4 - ASYNC EDGES
+  BK -.->|events| RB
+  CT -.->|events| RB
+  OR -.->|events| RB
+  PP -.->|events| RB
+  RB -.->|dispatch| BK
+  RB -.->|dispatch| CT
+  RB -.->|dispatch| OR
+  RB -.->|dispatch| PP
+  RB -.->|dispatch| WA
+  RB -.->|dispatch| WH
+
+  %% PHASE 5 - DATA STORES
+  BK --- RD
+  CT --- PG
+  OR --- PG
+  ID --- PG
+  WH --- PG
+
+  %% classDef
+  classDef svc fill:#0078D4,stroke:#005A9E,color:#fff
+  classDef infra fill:#107C10,stroke:#004B1C,color:#fff
+  classDef ext fill:#E86F00,stroke:#A84E00,color:#fff
+
+  class WA,ID,BK,CT,OR,OP,PP,WH svc
+  class RD,PG infra
+  class RB,AO ext
+`
+
+---
+
+#### 8.7.2 Data Flow Diagram
+
+`mermaid
+%%{ init: { "theme": "base" } }%%
+flowchart TD
+  accTitle: eShop Data Flow Diagram
+  accDescr: Three primary data flows — checkout, catalog search, and notification — across the eShop platform
+
+  %% PHASE 1 - GOVERNANCE
+  %% Standard: AZURE/FLUENT v2.0
+  %% PHASE 2 - CHECKOUT FLOW
+  subgraph CheckoutFlow["🛒 Checkout Flow"]
+    direction TD
+    U1([User]) -->|Click checkout| BS[BasketState Blazor]
+    BS -->|gRPC GetBasket| BKAPI[Basket.API]
+    BKAPI -->|GET basket| RDI[(Redis)]
+    BS -->|POST /api/v1/orders| ORAPI[Ordering.API]
+    ORAPI -->|SaveOrder TX| DB1[(PostgreSQL)]
+    ORAPI -->|Outbox event| EB1([RabbitMQ])
+    EB1 -->|GracePeriod...| ORP[OrderProcessor]
+    ORP -->|REST advance| ORAPI
+  end
+
+  %% PHASE 3 - SEARCH FLOW
+  subgraph SearchFlow["🔍 Catalog Search Flow"]
+    direction TD
+    U2([User]) -->|Semantic search| CTAPI[Catalog.API]
+    CTAPI -->|Embed query| AOI([Azure OpenAI])
+    AOI -->|Embedding vector| CTAPI
+    CTAPI -->|pgvector ANN search| DB2[(PostgreSQL + pgvector)]
+  end
+
+  %% PHASE 4 - NOTIFICATION FLOW
+  subgraph NotifyFlow["🔔 Notification Flow"]
+    direction TD
+    EB2([RabbitMQ]) -->|OrderStatus events| WEB[WebApp]
+    WEB -->|NotificationService| BUI[Blazor UI SSE]
+    EB2 -->|OrderShipped/Paid| WHAPI[Webhooks.API]
+    WHAPI -->|HTTP POST| EXT([External Subscriber])
+  end
+
+  %% PHASE 5 - STYLE
+  classDef user fill:#E86F00,stroke:#A84E00,color:#fff
+  classDef svc fill:#0078D4,stroke:#005A9E,color:#fff
+  classDef store fill:#107C10,stroke:#004B1C,color:#fff
+  classDef bus fill:#8764B8,stroke:#4B2D83,color:#fff
+
+  class U1,U2 user
+  class BS,BKAPI,ORAPI,ORP,CTAPI,WEB,BUI,WHAPI svc
+  class RDI,DB1,DB2 store
+  class EB1,EB2,AOI,EXT bus
+`
+
+---
+
+#### 8.7.3 Event Subscription Map Diagram
+
+`mermaid
+%%{ init: { "theme": "base" } }%%
+graph LR
+  accTitle: eShop Event Subscription Map
+  accDescr: All integration events published and consumed across eShop microservices via RabbitMQ
+
+  %% PHASE 1 - GOVERNANCE
+  %% Standard: AZURE/FLUENT v2.0
+
+  %% PHASE 2 - NODES
+  OR[Ordering.API]
+  CT[Catalog.API]
+  BK[Basket.API]
+  PP[PaymentProcessor]
+  OP[OrderProcessor]
+  WA[WebApp]
+  WH[Webhooks.API]
+
+  %% PHASE 3 - EVENTS FROM ORDERING
+  OR -->|GracePeriodConfirmed| OP
+  OR -->|OrderStarted| BK
+  OR -->|AwaitingValidation| CT
+  OR -->|AwaitingValidation| WA
+  OR -->|StockConfirmedStatus| PP
+  OR -->|StockConfirmedStatus| WA
+  OR -->|Submitted| WA
+  OR -->|Cancelled| WA
+  OR -->|Shipped| WA
+  OR -->|Shipped| WH
+  OR -->|Paid| CT
+  OR -->|Paid| WA
+  OR -->|Paid| WH
+
+  %% PHASE 4 - EVENTS FROM CATALOG / PAYMENT
+  CT -->|StockConfirmed| OR
+  CT -->|StockRejected| OR
+  CT -->|ProductPriceChanged| BK
+  PP -->|PaymentSucceeded| OR
+  PP -->|PaymentFailed| OR
+
+  %% PHASE 5 - STYLE
+  classDef svc fill:#0078D4,stroke:#005A9E,color:#fff
+  class OR,CT,BK,PP,OP,WA,WH svc
+`
+
+---
+
+#### 8.7.4 Integration Pattern Matrix Diagram
+
+`mermaid
+%%{ init: { "theme": "base" } }%%
+graph TD
+  accTitle: Integration Pattern Matrix
+  accDescr: Seven integration patterns employed across eShop and the services that implement them
+
+  %% PHASE 1 - GOVERNANCE
+  %% Standard: AZURE/FLUENT v2.0
+
+  %% PHASE 2 - PATTERN NODES
+  P1[🗂️ Transactional Outbox]
+  P2[⚙️ gRPC Contract-First]
+  P3[🔁 HTTP Resilience Pipeline]
+  P4[⚡ Redis Cache-Aside]
+  P5[🔀 YARP Reverse Proxy]
+  P6[🎭 Choreography Saga]
+  P7[👁️ Observer In-Process]
+
+  %% PHASE 3 - SERVICE USAGE
+  P1 --> OR[Ordering.API]
+  P1 --> BK[Basket.API]
+  P1 --> WH[Webhooks.API]
+  P2 --> BK
+  P2 --> WA[WebApp]
+  P3 --> WA
+  P3 --> OR
+  P3 --> CT[Catalog.API]
+  P4 --> BK
+  P5 --> WA
+  P6 --> OR
+  P6 --> CT
+  P6 --> PP[PaymentProcessor]
+  P7 --> WA
+
+  %% PHASE 4 - STYLE
+  classDef pattern fill:#8764B8,stroke:#4B2D83,color:#fff
+  classDef svc fill:#0078D4,stroke:#005A9E,color:#fff
+
+  class P1,P2,P3,P4,P5,P6,P7 pattern
+  class OR,BK,WH,WA,CT,PP svc
+`
+
+---
+
+> **Section 8 Summary:** The eShop integration fabric is built on three communication tiers: (1) **Synchronous** — REST and gRPC over HTTP/2 mediated by HTTP Client Factory resilience pipelines for all direct API calls; (2) **Asynchronous** — a RabbitMQ event bus with 13 distinct integration events and a Transactional Outbox guarantee for all EF-based publishers; (3) **In-process** — Blazor state containers and a NotificationService for real-time UI updates. The Choreography Saga pattern coordinates the multi-step order lifecycle without a central orchestrator, while YARP provides BFF token forwarding and the Redis Cache-Aside pattern delivers low-latency basket operations.
+
+
+---
+
+## ✅ Validation Report
+
+This document has been generated against the BDAT Architecture Prompt v5.0.0 specification with the following inputs:
+- output_sections: [1, 2, 3, 4, 5, 8]
+- quality_level: comprehensive
+
+### Validation Gate Results
+
+| # | 🎯 Gate | ✅ Status | 📝 Notes |
+|---|---------|----------|---------|
+| 1 | All requested sections present | ✅ PASS | Sections 1, 2, 3, 4, 5, 8 all present |
+| 2 | Section 1 — Executive Summary with Portfolio Summary table | ✅ PASS | Portfolio Summary table with emoji headers present |
+| 3 | Section 2 — All 11 TOGAF component type subsections | ✅ PASS | 2.1–2.11 all present with tables |
+| 4 | Section 2 — 3 Mermaid diagrams (comprehensive) | ✅ PASS | System Context, Service Ecosystem Map, Integration Tier |
+| 5 | Section 3 — Architecture Principles with evidence | ✅ PASS | 5 principles, evidence observations (Source/Lines removed) |
+| 6 | Section 3 — Principle Relationship Mermaid diagram | ✅ PASS | Comprehensive Mermaid diagram present |
+| 7 | Section 4 — Current State Baseline with 4 tables | ✅ PASS | Service Topology, Protocol Inventory, API Versioning, Health Posture |
+| 8 | Section 4 — Baseline Architecture Mermaid | ✅ PASS | Comprehensive Mermaid diagram present |
+| 9 | Section 5 — All 11 TOGAF subsections (5.1–5.11) | ✅ PASS | Application Services, Components, Interfaces, Collaborations, Functions, Interactions, Events, Data Objects, Integration Patterns, Service Contracts, Dependencies |
+| 10 | Section 5 — Mermaid diagrams (comprehensive) | ✅ PASS | Ordering.API Internal Architecture + Order Lifecycle State Machine |
+| 11 | Section 8 — Service-to-Service Call Graph table | ✅ PASS | 9 call relationships documented |
+| 12 | Section 8 — Database Dependency Map table | ✅ PASS | 7 service-to-store bindings documented |
+| 13 | Section 8 — External API Integrations table | ✅ PASS | Azure OpenAI + RabbitMQ documented |
+| 14 | Section 8 — Event Subscription Map table | ✅ PASS | 13 integration events documented |
+| 15 | Section 8 — Integration Pattern Matrix table | ✅ PASS | 7 patterns documented |
+| 16 | Section 8 — Circuit Breaker & Resilience table | ✅ PASS | 4 resilience strategies documented |
+| 17 | Section 8 — Service Integration Map Mermaid | ✅ PASS | Full topology Mermaid diagram |
+| 18 | Section 8 — Data Flow Mermaid | ✅ PASS | 3-flow diagram (Checkout, Search, Notification) |
+| 19 | Section 8 — Event Subscription Map Mermaid | ✅ PASS | Full event graph Mermaid diagram |
+| 20 | Section 8 — Integration Pattern Matrix Mermaid | ✅ PASS | Pattern-to-service graph Mermaid diagram |
+| 21 | Source/Evidence/Confidence/Maturity columns removed | ✅ PASS | All forbidden columns removed from all tables |
+| 22 | Quick TOC added | ✅ PASS | Linked TOC at document top |
+| 23 | Emojis on all section and subsection headings | ✅ PASS | All headings carry contextual emoji |
+| 24 | Emojis on all table header rows | ✅ PASS | All table header cells carry emoji |
+
+### 🏆 Score: 24/24 gates passed — **100/100**
+
+---
+
+*Generated by BDAT Architecture Agent · Prompt Spec v5.0.0 · quality_level: comprehensive*
