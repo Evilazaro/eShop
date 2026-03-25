@@ -1021,36 +1021,36 @@ For mature data platforms, formal standards should be codified as schema policy 
 
 ### 🏷️ Data Naming Conventions
 
-| Element                | Convention                                   | Example                                      | Evidence                                                                                      |
-| ---------------------- | -------------------------------------------- | -------------------------------------------- | --------------------------------------------------------------------------------------------- |
-| Table names (Ordering) | lowercase snake_case under `ordering` schema | `ordering.orders`, `ordering.paymentmethods` | `src/Ordering.Infrastructure/EntityConfigurations/OrderEntityTypeConfiguration.cs:7`          |
-| Table names (Catalog)  | PascalCase                                   | `Catalog`, `CatalogBrand`, `CatalogType`     | `src/Catalog.API/Infrastructure/EntityConfigurations/CatalogItemEntityTypeConfiguration.cs:8` |
-| Entity class names     | PascalCase, noun-based                       | `CatalogItem`, `PaymentMethod`               | Convention across all /Model/ and /AggregatesModel/ directories                               |
-| DbContext names        | PascalCase + Context suffix                  | `CatalogContext`, `OrderingContext`          | `src/Catalog.API/Infrastructure/CatalogContext.cs:8`                                          |
-| Repository interfaces  | I + Entity + Repository                      | `IBasketRepository`, `IOrderRepository`      | `src/Basket.API/Repositories/IBasketRepository.cs:5`                                          |
-| Integration events     | PascalCase + IntegrationEvent suffix         | `OrderStartedIntegrationEvent`               | `src/EventBus/Events/IntegrationEvent.cs:3`                                                   |
-| Redis key prefix       | lowercase path-style                         | `/basket/{userId}`                           | `src/Basket.API/Repositories/RedisBasketRepository.cs:13`                                     |
+| 🏷️ Element             | 📐 Convention                                | 💡 Example                                   |
+| ---------------------- | -------------------------------------------- | -------------------------------------------- |
+| Table names (Ordering) | lowercase snake_case under `ordering` schema | `ordering.orders`, `ordering.paymentmethods` |
+| Table names (Catalog)  | PascalCase                                   | `Catalog`, `CatalogBrand`, `CatalogType`     |
+| Entity class names     | PascalCase, noun-based                       | `CatalogItem`, `PaymentMethod`               |
+| DbContext names        | PascalCase + Context suffix                  | `CatalogContext`, `OrderingContext`          |
+| Repository interfaces  | I + Entity + Repository                      | `IBasketRepository`, `IOrderRepository`      |
+| Integration events     | PascalCase + IntegrationEvent suffix         | `OrderStartedIntegrationEvent`               |
+| Redis key prefix       | lowercase path-style                         | `/basket/{userId}`                           |
 
 ### 📐 Schema Design Standards
 
-| Standard                                   | Description                                                                               | Evidence                                                                                         |
-| ------------------------------------------ | ----------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
-| EF Core Fluent API as authoritative schema | `IEntityTypeConfiguration<T>` defines all column types, constraints, and FK relationships | All EntityConfigurations                                                                         |
-| HiLo sequences for Ordering IDs            | `UseHiLo("orderseq")` and friends for performance-optimized ID gen                        | `src/Ordering.Infrastructure/EntityConfigurations/OrderEntityTypeConfiguration.cs:13`            |
-| Owned entities for value objects           | `OwnsOne()` for Address persisted as inline columns in orders                             | `src/Ordering.Infrastructure/EntityConfigurations/OrderEntityTypeConfiguration.cs:17`            |
-| String enum storage                        | `HasConversion<string>()` for OrderStatus ensuring human-readable DB values               | `src/Ordering.Infrastructure/EntityConfigurations/OrderEntityTypeConfiguration.cs:20`            |
-| pgvector column type                       | `HasColumnType("vector(384)")` for AI embedding columns                                   | `src/Catalog.API/Infrastructure/EntityConfigurations/CatalogItemEntityTypeConfiguration.cs:13`   |
-| Private field mapping                      | `Property("_fieldName").HasColumnName("ColumnName")` for encapsulation in PaymentMethod   | `src/Ordering.Infrastructure/EntityConfigurations/PaymentMethodEntityTypeConfiguration.cs:18-31` |
+| 📐 Standard                                | 📝 Description                                                                            |
+| ------------------------------------------ | ----------------------------------------------------------------------------------------- |
+| EF Core Fluent API as authoritative schema | `IEntityTypeConfiguration<T>` defines all column types, constraints, and FK relationships |
+| HiLo sequences for Ordering IDs            | `UseHiLo("orderseq")` and friends for performance-optimized ID gen                        |
+| Owned entities for value objects           | `OwnsOne()` for Address persisted as inline columns in orders                             |
+| String enum storage                        | `HasConversion<string>()` for OrderStatus ensuring human-readable DB values               |
+| pgvector column type                       | `HasColumnType("vector(384)")` for AI embedding columns                                   |
+| Private field mapping                      | `Property("_fieldName").HasColumnName("ColumnName")` for encapsulation in PaymentMethod   |
 
 ### ✅ Data Quality Standards
 
-| Standard                       | Description                                                                                                     | Evidence                                   |
-| ------------------------------ | --------------------------------------------------------------------------------------------------------------- | ------------------------------------------ |
-| Required field enforcement     | All critical string fields annotated `[Required]` for API model validation; `IsRequired()` in EF configurations | Multiple entity files                      |
-| MaxLength constraints          | All user-supplied string fields have explicit `HasMaxLength()` constraints                                      | EntityConfigurations/                      |
-| Business invariant enforcement | Domain entities throw `OrderingDomainException` on invariant violations (not generic exceptions)                | `src/Ordering.Domain/AggregatesModel/`     |
-| Idempotent commands            | Commands registered via `RequestManager` before processing to prevent duplicate execution                       | `src/Ordering.Infrastructure/Idempotency/` |
-| Seed-if-empty pattern          | `CatalogContextSeed` and `OrderingContextSeed` use `if (!context.X.Any())` guard                                | Seed files                                 |
+| ✅ Standard                    | 📝 Description                                                                                                  |
+| ------------------------------ | --------------------------------------------------------------------------------------------------------------- |
+| Required field enforcement     | All critical string fields annotated `[Required]` for API model validation; `IsRequired()` in EF configurations |
+| MaxLength constraints          | All user-supplied string fields have explicit `HasMaxLength()` constraints                                      |
+| Business invariant enforcement | Domain entities throw `OrderingDomainException` on invariant violations (not generic exceptions)                |
+| Idempotent commands            | Commands registered via `RequestManager` before processing to prevent duplicate execution                       |
+| Seed-if-empty pattern          | `CatalogContextSeed` and `OrderingContextSeed` use `if (!context.X.Any())` guard                                |
 
 ---
 
