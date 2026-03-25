@@ -10,26 +10,39 @@
 
 ---
 
-## Section 1: Executive Summary
+## 📋 Quick Table of Contents
+
+| #   | Section                                                               | Description                                                         |
+| --- | --------------------------------------------------------------------- | ------------------------------------------------------------------- |
+| 1   | [🏆 Executive Summary](#section-1-executive-summary)                  | Component inventory, key observations, confidence summary           |
+| 2   | [🗺️ Architecture Landscape](#section-2-architecture-landscape)        | All 11 infrastructure component types classified and mapped         |
+| 3   | [📐 Architecture Principles](#section-3-architecture-principles)      | IaC, least-privilege, defense-in-depth, cloud-native, observability |
+| 4   | [📍 Current State Baseline](#section-4-current-state-baseline)        | Deployment model, runtime stack, networking, topology diagram       |
+| 5   | [📦 Component Catalog](#section-5-component-catalog)                  | Detailed specs for all 11 component types (5.1–5.11)                |
+| 8   | [🔗 Dependencies & Integration](#section-8-dependencies--integration) | Service bindings, network map, pipeline integration                 |
+
+---
+
+## 🏆 Section 1: Executive Summary
 
 The eShop reference application is deployed as a **cloud-native, container-first microservices platform** on **Azure Container Apps (ACA)**, orchestrated by **.NET Aspire 13.x**. The infrastructure is codified entirely in **Bicep** (`infra/`) and **Azure Container Apps templates** (`src/eShop.AppHost/infra/*.tmpl.yaml`), deployed via **Azure Developer CLI (azd)** and an **Azure DevOps CI pipeline** (`ci.yml`).
 
-### Infrastructure Component Inventory
+### 📊 Infrastructure Component Inventory
 
-| Technology Type            | Count  | Avg Confidence | Primary Source                                                     |
-| -------------------------- | ------ | -------------- | ------------------------------------------------------------------ |
-| Compute Resources          | 13     | 0.99           | `src/eShop.AppHost/infra/*.tmpl.yaml`                              |
-| Storage Systems            | 1      | 0.99           | `src/eShop.AppHost/infra/postgres.tmpl.yaml`                       |
-| Network Infrastructure     | 7      | 0.86           | `src/eShop.AppHost/infra/*.tmpl.yaml`                              |
-| Container Platforms        | 3      | 0.99           | `infra/resources.bicep`                                            |
-| Cloud Services (PaaS/SaaS) | 5      | 0.98           | `infra/resources.bicep`                                            |
-| Security Infrastructure    | 6      | 0.97           | `infra/resources.bicep`, `infra/main.bicep`                        |
-| Messaging Infrastructure   | 1      | 0.99           | `src/eShop.AppHost/infra/eventbus.tmpl.yaml`                       |
-| Monitoring & Observability | 4      | 0.97           | `infra/resources.bicep`, `src/eShop.ServiceDefaults/Extensions.cs` |
-| Identity & Access          | 4      | 0.94           | `src/Identity.API/Program.cs`, `infra/resources.bicep`             |
-| API Management             | 1      | 0.99           | `src/eShop.AppHost/infra/mobile-bff.tmpl.yaml`                     |
-| Caching Infrastructure     | 1      | 0.99           | `src/eShop.AppHost/infra/redis.tmpl.yaml`                          |
-| **Total**                  | **46** | **0.97**       |                                                                    |
+| 🏷️ Technology Type            | 🔢 Count |
+| ----------------------------- | -------- |
+| 🖥️ Compute Resources          | 13       |
+| 🗄️ Storage Systems            | 1        |
+| 🌐 Network Infrastructure     | 7        |
+| 📦 Container Platforms        | 3        |
+| ☁️ Cloud Services (PaaS/SaaS) | 5        |
+| 🔒 Security Infrastructure    | 6        |
+| 📨 Messaging Infrastructure   | 1        |
+| 📈 Monitoring & Observability | 4        |
+| 🔑 Identity & Access          | 4        |
+| 🔀 API Management             | 1        |
+| ⚡ Caching Infrastructure     | 1        |
+| **Total**                     | **46**   |
 
 ### Key Observations
 
@@ -42,117 +55,117 @@ The eShop reference application is deployed as a **cloud-native, container-first
 
 ---
 
-## Section 2: Architecture Landscape
+## 🗺️ Section 2: Architecture Landscape
 
-### 2.1 Compute Resources (13)
+### 🖥️ 2.1 Compute Resources (13)
 
-| Component Name    | Component Type | Classification  | Deployment Model | Source                                                  |
-| ----------------- | -------------- | --------------- | ---------------- | ------------------------------------------------------- |
-| webapp            | Container App  | Web Front-end   | Serverless (ACA) | `src/eShop.AppHost/infra/webapp.tmpl.yaml:*`            |
-| identity-api      | Container App  | API Service     | Serverless (ACA) | `src/eShop.AppHost/infra/identity-api.tmpl.yaml:*`      |
-| mobile-bff        | Container App  | Reverse Proxy   | Serverless (ACA) | `src/eShop.AppHost/infra/mobile-bff.tmpl.yaml:*`        |
-| basket-api        | Container App  | API Service     | Serverless (ACA) | `src/eShop.AppHost/infra/basket-api.tmpl.yaml:*`        |
-| catalog-api       | Container App  | API Service     | Serverless (ACA) | `src/eShop.AppHost/infra/catalog-api.tmpl.yaml:*`       |
-| ordering-api      | Container App  | API Service     | Serverless (ACA) | `src/eShop.AppHost/infra/ordering-api.tmpl.yaml:*`      |
-| order-processor   | Container App  | Worker Service  | Serverless (ACA) | `src/eShop.AppHost/infra/order-processor.tmpl.yaml:*`   |
-| payment-processor | Container App  | Worker Service  | Serverless (ACA) | `src/eShop.AppHost/infra/payment-processor.tmpl.yaml:*` |
-| webhooks-api      | Container App  | API Service     | Serverless (ACA) | `src/eShop.AppHost/infra/webhooks-api.tmpl.yaml:*`      |
-| webhooksclient    | Container App  | Web Client      | Serverless (ACA) | `src/eShop.AppHost/infra/webhooksclient.tmpl.yaml:*`    |
-| redis             | Container App  | Cache Server    | Serverless (ACA) | `src/eShop.AppHost/infra/redis.tmpl.yaml:*`             |
-| postgres          | Container App  | Database Server | Serverless (ACA) | `src/eShop.AppHost/infra/postgres.tmpl.yaml:*`          |
-| eventbus          | Container App  | Message Broker  | Serverless (ACA) | `src/eShop.AppHost/infra/eventbus.tmpl.yaml:*`          |
+| 🖥️ Component Name | 🏷️ Component Type | 📂 Classification | 🚀 Deployment Model |
+| ----------------- | ----------------- | ----------------- | ------------------- |
+| webapp            | Container App     | Web Front-end     | Serverless (ACA)    |
+| identity-api      | Container App     | API Service       | Serverless (ACA)    |
+| mobile-bff        | Container App     | Reverse Proxy     | Serverless (ACA)    |
+| basket-api        | Container App     | API Service       | Serverless (ACA)    |
+| catalog-api       | Container App     | API Service       | Serverless (ACA)    |
+| ordering-api      | Container App     | API Service       | Serverless (ACA)    |
+| order-processor   | Container App     | Worker Service    | Serverless (ACA)    |
+| payment-processor | Container App     | Worker Service    | Serverless (ACA)    |
+| webhooks-api      | Container App     | API Service       | Serverless (ACA)    |
+| webhooksclient    | Container App     | Web Client        | Serverless (ACA)    |
+| redis             | Container App     | Cache Server      | Serverless (ACA)    |
+| postgres          | Container App     | Database Server   | Serverless (ACA)    |
+| eventbus          | Container App     | Message Broker    | Serverless (ACA)    |
 
-### 2.2 Storage Systems (1)
+### 🗄️ 2.2 Storage Systems (1)
 
-| Component Name                 | Component Type      | Classification     | Deployment Model | Source                                         |
-| ------------------------------ | ------------------- | ------------------ | ---------------- | ---------------------------------------------- |
-| postgres (PostgreSQL+pgvector) | Relational Database | Persistent Storage | Container (ACA)  | `src/eShop.AppHost/infra/postgres.tmpl.yaml:*` |
+| 🗄️ Component Name              | 🏷️ Component Type   | 📂 Classification  | 🚀 Deployment Model |
+| ------------------------------ | ------------------- | ------------------ | ------------------- |
+| postgres (PostgreSQL+pgvector) | Relational Database | Persistent Storage | Container (ACA)     |
 
-**Logical Databases** (4 databases on the shared PostgreSQL instance):
+**🗄️ Logical Databases** (4 databases on the shared PostgreSQL instance):
 
-| Database Name | Tenant Service | Source                            |
-| ------------- | -------------- | --------------------------------- |
-| catalogdb     | catalog-api    | `src/eShop.AppHost/Program.cs:16` |
-| identitydb    | identity-api   | `src/eShop.AppHost/Program.cs:17` |
-| orderingdb    | ordering-api   | `src/eShop.AppHost/Program.cs:18` |
-| webhooksdb    | webhooks-api   | `src/eShop.AppHost/Program.cs:19` |
+| 🏦 Database Name | 📦 Tenant Service |
+| ---------------- | ----------------- |
+| catalogdb        | catalog-api       |
+| identitydb       | identity-api      |
+| orderingdb       | ordering-api      |
+| webhooksdb       | webhooks-api      |
 
-### 2.3 Network Infrastructure (7)
+### 🌐 2.3 Network Infrastructure (7)
 
-| Component Name                       | Component Type | Classification | Deployment Model | Source                                                 |
-| ------------------------------------ | -------------- | -------------- | ---------------- | ------------------------------------------------------ |
-| External HTTP ingress (webapp)       | Ingress Rule   | External/HTTPS | ACA managed      | `src/eShop.AppHost/infra/webapp.tmpl.yaml:14-18`       |
-| External HTTP ingress (identity-api) | Ingress Rule   | External/HTTPS | ACA managed      | `src/eShop.AppHost/infra/identity-api.tmpl.yaml:14-18` |
-| External HTTP ingress (mobile-bff)   | Ingress Rule   | External/HTTP  | ACA managed      | `src/eShop.AppHost/infra/mobile-bff.tmpl.yaml:14-18`   |
-| Internal TCP ingress (redis)         | Ingress Rule   | Internal/TCP   | ACA managed      | `src/eShop.AppHost/infra/redis.tmpl.yaml:14-18`        |
-| Internal TCP ingress (postgres)      | Ingress Rule   | Internal/TCP   | ACA managed      | `src/eShop.AppHost/infra/postgres.tmpl.yaml:14-18`     |
-| Internal TCP ingress (eventbus)      | Ingress Rule   | Internal/TCP   | ACA managed      | `src/eShop.AppHost/infra/eventbus.tmpl.yaml:14-18`     |
-| Internal HTTP2 ingress (basket)      | Ingress Rule   | Internal/HTTP2 | ACA managed      | `src/eShop.AppHost/infra/basket-api.tmpl.yaml:14-18`   |
+| 🌐 Component Name                    | 🏷️ Component Type | 📂 Classification | 🚀 Deployment Model |
+| ------------------------------------ | ----------------- | ----------------- | ------------------- |
+| External HTTP ingress (webapp)       | Ingress Rule      | External/HTTPS    | ACA managed         |
+| External HTTP ingress (identity-api) | Ingress Rule      | External/HTTPS    | ACA managed         |
+| External HTTP ingress (mobile-bff)   | Ingress Rule      | External/HTTP     | ACA managed         |
+| Internal TCP ingress (redis)         | Ingress Rule      | Internal/TCP      | ACA managed         |
+| Internal TCP ingress (postgres)      | Ingress Rule      | Internal/TCP      | ACA managed         |
+| Internal TCP ingress (eventbus)      | Ingress Rule      | Internal/TCP      | ACA managed         |
+| Internal HTTP2 ingress (basket)      | Ingress Rule      | Internal/HTTP2    | ACA managed         |
 
-### 2.4 Container Platforms (3)
+### 📦 2.4 Container Platforms (3)
 
-| Component Name                   | Component Type            | Classification | Deployment Model | Source                              |
-| -------------------------------- | ------------------------- | -------------- | ---------------- | ----------------------------------- |
-| Azure Container Apps Environment | Managed Container Runtime | PaaS           | Azure managed    | `infra/resources.bicep:44-61`       |
-| Azure Container Registry (ACR)   | Container Image Registry  | PaaS           | Azure managed    | `infra/resources.bicep:17-23`       |
-| .NET Aspire Orchestration        | Local/Cloud Orchestrator  | SDK Tooling    | Developer host   | `src/eShop.AppHost/Program.cs:1-95` |
+| 📦 Component Name                | 🏷️ Component Type         | 📂 Classification | 🚀 Deployment Model |
+| -------------------------------- | ------------------------- | ----------------- | ------------------- |
+| Azure Container Apps Environment | Managed Container Runtime | PaaS              | Azure managed       |
+| Azure Container Registry (ACR)   | Container Image Registry  | PaaS              | Azure managed       |
+| .NET Aspire Orchestration        | Local/Cloud Orchestrator  | SDK Tooling       | Developer host      |
 
-### 2.5 Cloud Services — PaaS/SaaS (5)
+### ☁️ 2.5 Cloud Services — PaaS/SaaS (5)
 
-| Component Name                | Component Type            | Classification | Deployment Model | Source                        |
-| ----------------------------- | ------------------------- | -------------- | ---------------- | ----------------------------- |
-| Azure Container Apps (ACA)    | Serverless Container PaaS | PaaS           | Azure managed    | `infra/resources.bicep:44-61` |
-| Azure Container Registry      | Container Image Registry  | PaaS           | Azure managed    | `infra/resources.bicep:17-23` |
-| Azure Log Analytics Workspace | Managed Logging Platform  | PaaS/SaaS      | Azure managed    | `infra/resources.bicep:33-41` |
-| Azure Managed Identity        | Managed IAM Service       | PaaS           | Azure managed    | `infra/resources.bicep:11-16` |
-| Azure Developer CLI (azd)     | Deployment Automation     | Developer Tool | Client-side      | `azure.yaml:1-7`              |
+| ☁️ Component Name             | 🏷️ Component Type         | 📂 Classification | 🚀 Deployment Model |
+| ----------------------------- | ------------------------- | ----------------- | ------------------- |
+| Azure Container Apps (ACA)    | Serverless Container PaaS | PaaS              | Azure managed       |
+| Azure Container Registry      | Container Image Registry  | PaaS              | Azure managed       |
+| Azure Log Analytics Workspace | Managed Logging Platform  | PaaS/SaaS         | Azure managed       |
+| Azure Managed Identity        | Managed IAM Service       | PaaS              | Azure managed       |
+| Azure Developer CLI (azd)     | Deployment Automation     | Developer Tool    | Client-side         |
 
-### 2.6 Security Infrastructure (6)
+### 🔒 2.6 Security Infrastructure (6)
 
-| Component Name                 | Component Type             | Classification     | Deployment Model  | Source                                               |
-| ------------------------------ | -------------------------- | ------------------ | ----------------- | ---------------------------------------------------- |
-| User Assigned Managed Identity | IAM Principal              | Passwordless Auth  | Azure managed     | `infra/resources.bicep:11-16`                        |
-| AcrPull Role Assignment        | RBAC Policy                | Least Privilege    | Azure managed     | `infra/resources.bicep:18-30`                        |
-| ACA Secrets Store              | Secret Management          | Secrets at Rest    | ACA native        | `src/eShop.AppHost/infra/basket-api.tmpl.yaml:22-30` |
-| HTTPS External Ingress         | TLS Enforcement            | Transport Security | ACA managed       | `src/eShop.AppHost/infra/webapp.tmpl.yaml:18`        |
-| SCRAM-SHA-256 PostgreSQL Auth  | Authentication Protocol    | DB Auth            | Container runtime | `src/eShop.AppHost/infra/postgres.tmpl.yaml:36-39`   |
-| ASP.NET Core Anti-Forgery      | CSRF Protection Middleware | Web Security       | Runtime           | `src/WebApp/Program.cs:23`                           |
+| 🔒 Component Name              | 🏷️ Component Type          | 📂 Classification  | 🚀 Deployment Model |
+| ------------------------------ | -------------------------- | ------------------ | ------------------- |
+| User Assigned Managed Identity | IAM Principal              | Passwordless Auth  | Azure managed       |
+| AcrPull Role Assignment        | RBAC Policy                | Least Privilege    | Azure managed       |
+| ACA Secrets Store              | Secret Management          | Secrets at Rest    | ACA native          |
+| HTTPS External Ingress         | TLS Enforcement            | Transport Security | ACA managed         |
+| SCRAM-SHA-256 PostgreSQL Auth  | Authentication Protocol    | DB Auth            | Container runtime   |
+| ASP.NET Core Anti-Forgery      | CSRF Protection Middleware | Web Security       | Runtime             |
 
-### 2.7 Messaging Infrastructure (1)
+### 📨 2.7 Messaging Infrastructure (1)
 
-| Component Name      | Component Type | Classification   | Deployment Model | Source                                         |
-| ------------------- | -------------- | ---------------- | ---------------- | ---------------------------------------------- |
-| RabbitMQ (eventbus) | Message Broker | AMQP Message Bus | Container (ACA)  | `src/eShop.AppHost/infra/eventbus.tmpl.yaml:*` |
+| 📨 Component Name   | 🏷️ Component Type | 📂 Classification | 🚀 Deployment Model |
+| ------------------- | ----------------- | ----------------- | ------------------- |
+| RabbitMQ (eventbus) | Message Broker    | AMQP Message Bus  | Container (ACA)     |
 
-### 2.8 Monitoring & Observability (4)
+### 📈 2.8 Monitoring & Observability (4)
 
-| Component Name                | Component Type                | Classification          | Deployment Model    | Source                                           |
-| ----------------------------- | ----------------------------- | ----------------------- | ------------------- | ------------------------------------------------ |
-| Azure Log Analytics Workspace | Centralized Log Repository    | Log Aggregation         | Azure PaaS          | `infra/resources.bicep:33-41`                    |
-| Aspire Dashboard              | Distributed Traces/Metrics UI | Developer Observability | ACA dotNetComponent | `infra/resources.bicep:51-57`                    |
-| OpenTelemetry SDK (OTel)      | Instrumentation Framework     | Metrics/Tracing/Logging | In-process SDK      | `src/eShop.ServiceDefaults/Extensions.cs:46-80`  |
-| ASP.NET Core Health Checks    | Readiness/Liveness Probes     | Health Monitoring       | Runtime middleware  | `src/eShop.ServiceDefaults/Extensions.cs:97-104` |
+| 📈 Component Name             | 🏷️ Component Type             | 📂 Classification       | 🚀 Deployment Model |
+| ----------------------------- | ----------------------------- | ----------------------- | ------------------- |
+| Azure Log Analytics Workspace | Centralized Log Repository    | Log Aggregation         | Azure PaaS          |
+| Aspire Dashboard              | Distributed Traces/Metrics UI | Developer Observability | ACA dotNetComponent |
+| OpenTelemetry SDK (OTel)      | Instrumentation Framework     | Metrics/Tracing/Logging | In-process SDK      |
+| ASP.NET Core Health Checks    | Readiness/Liveness Probes     | Health Monitoring       | Runtime middleware  |
 
-### 2.9 Identity & Access (4)
+### 🔑 2.9 Identity & Access (4)
 
-| Component Name                  | Component Type              | Classification    | Deployment Model | Source                              |
-| ------------------------------- | --------------------------- | ----------------- | ---------------- | ----------------------------------- |
-| Duende IdentityServer 7.3.2     | OpenID Connect / OAuth2 IdP | Identity Provider | Container (ACA)  | `src/Identity.API/Program.cs:12-35` |
-| ASP.NET Core Identity (EF)      | User Identity Store         | User Management   | In-process       | `src/Identity.API/Program.cs:13-17` |
-| Azure User-Assigned Managed Id. | Service Principal           | Workload Identity | Azure PaaS       | `infra/resources.bicep:11-16`       |
-| JWT Bearer Authentication       | Token Validation Middleware | API Authorization | In-process       | `Directory.Packages.props:37`       |
+| 🔑 Component Name               | 🏷️ Component Type           | 📂 Classification | 🚀 Deployment Model |
+| ------------------------------- | --------------------------- | ----------------- | ------------------- |
+| Duende IdentityServer 7.3.2     | OpenID Connect / OAuth2 IdP | Identity Provider | Container (ACA)     |
+| ASP.NET Core Identity (EF)      | User Identity Store         | User Management   | In-process          |
+| Azure User-Assigned Managed Id. | Service Principal           | Workload Identity | Azure PaaS          |
+| JWT Bearer Authentication       | Token Validation Middleware | API Authorization | In-process          |
 
-### 2.10 API Management (1)
+### 🔀 2.10 API Management (1)
 
-| Component Name    | Component Type      | Classification            | Deployment Model | Source                                           |
-| ----------------- | ------------------- | ------------------------- | ---------------- | ------------------------------------------------ |
-| Mobile BFF (YARP) | Reverse Proxy / BFF | API Gateway / BFF Pattern | Container (ACA)  | `src/eShop.AppHost/infra/mobile-bff.tmpl.yaml:*` |
+| 🔀 Component Name | 🏷️ Component Type   | 📂 Classification         | 🚀 Deployment Model |
+| ----------------- | ------------------- | ------------------------- | ------------------- |
+| Mobile BFF (YARP) | Reverse Proxy / BFF | API Gateway / BFF Pattern | Container (ACA)     |
 
-### 2.11 Caching Infrastructure (1)
+### ⚡ 2.11 Caching Infrastructure (1)
 
-| Component Name | Component Type  | Classification     | Deployment Model | Source                                      |
-| -------------- | --------------- | ------------------ | ---------------- | ------------------------------------------- |
-| Redis          | In-Memory Cache | Session/Data Cache | Container (ACA)  | `src/eShop.AppHost/infra/redis.tmpl.yaml:*` |
+| ⚡ Component Name | 🏷️ Component Type | 📂 Classification  | 🚀 Deployment Model |
+| ----------------- | ----------------- | ------------------ | ------------------- |
+| Redis             | In-Memory Cache   | Session/Data Cache | Container (ACA)     |
 
 ---
 
