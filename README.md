@@ -90,7 +90,7 @@ graph TB
     WEB -->|gRPC| BASKET
     WEB -->|HTTP| ORDERING
     WEB -->|OIDC| IDENTITY
-    WEB -->|HTTP| RABBIT
+    WEB -.->|events| RABBIT
 
     MAUI -->|HTTP| BFF
     HYBRID -->|HTTP| CATALOG
@@ -318,7 +318,7 @@ The application deploys to **Azure Container Apps** using the [Azure Developer C
 
 ### Browsing the Online Store
 
-Navigate to the Web App URL shown in the Aspire Dashboard. You can:
+Navigate to the Web App URL shown in the Aspire Dashboard <| displayed as `Online Store (http/https)` |>. You can:
 
 - Browse products by category or search by keyword
 - View product details and images
@@ -420,6 +420,9 @@ Contributions are welcome! Please read [CONTRIBUTING.md](CONTRIBUTING.md) for gu
 - Issues labelled [`help wanted`](https://github.com/Evilazaro/eShop/issues?q=label%3A%22help+wanted%22) or [`good first issue`](https://github.com/Evilazaro/eShop/issues?q=label%3A%22good+first+issue%22)
 - Writing or improving tests
 - Fixing typos in code comments or documentation
+
+> [!NOTE]
+> This repository does not currently maintain a formal `CHANGELOG.md`. Refer to the [commit history](https://github.com/Evilazaro/eShop/commits/main) and [releases](https://github.com/Evilazaro/eShop/releases) for change information.
 
 ---
 
