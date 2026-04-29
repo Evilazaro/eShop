@@ -22,10 +22,4 @@
     <ProjectReference Include="..\..\src\Basket.API\Basket.API.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Update="Microsoft.Testing.Extensions.CodeCoverage">
-      <VersionOverride>18.5.2</VersionOverride>
-    </PackageReference>
-  </ItemGroup>
-
 </Project>
