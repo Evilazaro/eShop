@@ -55,22 +55,9 @@ config:
     fontFamily: "-apple-system, BlinkMacSystemFont, \"Segoe UI\", system-ui, \"Apple Color Emoji\", \"Segoe UI Emoji\", sans-serif"
     fontSize: 16
 ---
-flowchart TB
+flowchart LR
 
   %% ── Class Definitions ─────────────────────────────────────────────────────
-  %% All hex values are Fluent UI React v9 global color tokens (Light theme).
-  %% actor:       blue    — tint50 fill / primary stroke / grey14 text
-  %% service:     grey    — grey96 fill / grey38 stroke / grey14 text
-  %% gateway:     lightTeal — tint40 fill / primary stroke / shade50 text
-  %% datastore:   green   — tint60 fill / primary stroke / shade10 text
-  %% external:    orange  — tint60 fill / primary stroke / marigold shade30 text
-  %% ai:          purple  — tint60 fill / primary stroke / shade20 text
-  %% compute:     lightBlue — tint60 fill / primary stroke / shade40 text
-  %% identity:    marigold — tint60 fill / primary stroke / shade40 text
-  %% integration: lightTeal — tint60 fill / primary stroke / shade40 text
-  %% monitor:     darkBlue — tint60 fill / primary stroke / shade40 text
-  %% storage:     seafoam — tint60 fill / primary stroke / shade40 text
-  %% web:         blue    — tint60 fill / primary stroke / shade40 text
   classDef actor        fill:#d0e7f8,stroke:#0078d4,color:#242424,font-weight:bold
   classDef service      fill:#f5f5f5,stroke:#616161,color:#242424,font-weight:bold
   classDef gateway      fill:#a6e9ed,stroke:#00b7c3,color:#001d1f,font-weight:bold
@@ -86,12 +73,14 @@ flowchart TB
 
   %% ── Actors ─────────────────────────────────────────────────────────────────
   subgraph ACTORS["👥 Actors"]
+    direction TB
     BROWSER(["👤 Browser User"])
     MOBILE_USER(["📱 Mobile User"])
   end
 
   %% ── Frontend Layer ─────────────────────────────────────────────────────────
   subgraph FRONTEND["🖥️ Frontend Layer"]
+    direction TB
     WEBAPP("🌐 WebApp<br/>Blazor Server")
     CLIENT_APP("📱 ClientApp<br/>.NET MAUI")
     HYBRID_APP("📱 HybridApp<br/>.NET MAUI Hybrid")
@@ -100,12 +89,14 @@ flowchart TB
 
   %% ── Gateway and Identity Layer ──────────────────────────────────────────────
   subgraph GATEWAY_IDENTITY["🔀 Gateway and Identity"]
+    direction TB
     MOBILE_BFF("🔀 Mobile BFF<br/>YARP Reverse Proxy")
     IDENTITY_API("🔐 Identity API<br/>Duende IdentityServer")
   end
 
   %% ── Core Services ───────────────────────────────────────────────────────────
   subgraph CORE_SERVICES["⚙️ Core Services"]
+    direction TB
     CATALOG_API("🌐 Catalog API<br/>REST + pgvector AI")
     BASKET_API("🌐 Basket API<br/>gRPC")
     ORDERING_API("🌐 Ordering API<br/>REST")
@@ -114,17 +105,14 @@ flowchart TB
 
   %% ── Background Workers ──────────────────────────────────────────────────────
   subgraph WORKERS["⚙️ Background Workers"]
+    direction TB
     ORDER_PROCESSOR("⚙️ Order Processor<br/>Worker Service")
     PAYMENT_PROCESSOR("⚙️ Payment Processor<br/>Worker Service")
   end
 
-  %% ── Messaging ───────────────────────────────────────────────────────────────
-  subgraph MESSAGING["🚌 Messaging"]
-    EVENT_BUS("🚌 RabbitMQ<br/>Event Bus")
-  end
-
   %% ── Data Layer ──────────────────────────────────────────────────────────────
   subgraph DATA["🗄️ Data Layer"]
+    direction TB
     CATALOG_DB[("🐘 Catalog DB<br/>PostgreSQL + pgvector")]
     IDENTITY_DB[("🐘 Identity DB<br/>PostgreSQL")]
     ORDER_DB[("🐘 Order DB<br/>PostgreSQL")]
@@ -132,13 +120,21 @@ flowchart TB
     REDIS_CACHE[("⚡ Redis Cache")]
   end
 
+  %% ── Messaging ───────────────────────────────────────────────────────────────
+  subgraph MESSAGING["🚌 Messaging"]
+    direction TB
+    EVENT_BUS("🚌 RabbitMQ<br/>Event Bus")
+  end
+
   %% ── AI Integration ──────────────────────────────────────────────────────────
   subgraph AI_LAYER["🤖 AI Integration"]
+    direction TB
     AI_SERVICE(["🤖 Azure OpenAI<br/>or Ollama"])
   end
 
   %% ── Monitoring ──────────────────────────────────────────────────────────────
   subgraph MONITORING["📊 Monitoring"]
+    direction TB
     ASPIRE("📊 Aspire Dashboard<br/>OpenTelemetry")
   end
 
