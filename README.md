@@ -4,11 +4,11 @@
 [![.NET 10](https://img.shields.io/badge/.NET-10.0-512BD4?logo=dotnet&logoColor=white)](https://dotnet.microsoft.com)
 [![.NET Aspire](https://img.shields.io/badge/.NET%20Aspire-13.2-512BD4?logo=dotnet&logoColor=white)](https://learn.microsoft.com/dotnet/aspire)
 
-**eShop** is a reference .NET application that demonstrates how to build a production-quality, cloud-native e-commerce platform using a microservices architecture. It serves as a canonical example of best practices for .NET 10 development, covering everything from gRPC-based inter-service communication to event-driven workflows and AI-ready product search powered by the pgvector extension.
+**eShop** is a reference .NET application that demonstrates how to build a production-quality, cloud-native e-commerce platform using a microservices architecture. It serves as a canonical example of best practices for .NET 10 development, covering everything from gRPC-based inter-service communication to event-driven workflows and AI-ready product search powered by the `pgvector` extension.
 
-The application addresses the challenge of building a scalable, maintainable online store from multiple loosely coupled services. Each service owns its own data, communicates asynchronously through an integration event bus, and is independently deployable — a pattern that removes the bottlenecks of a traditional monolith without sacrificing developer ergonomics.
+The application addresses the challenge of building a scalable, maintainable online store from multiple loosely coupled services. Each service owns its own data, communicates asynchronously through an **integration event bus**, and is independently deployable — a pattern that removes the bottlenecks of a traditional monolith without sacrificing developer ergonomics.
 
-The technology stack spans **.NET 10**, Blazor Server for the web storefront, .NET MAUI for native mobile and hybrid clients, Duende IdentityServer for OpenID Connect authentication, RabbitMQ for async messaging, PostgreSQL with pgvector for AI-assisted semantic search, Redis for basket caching, YARP as a mobile backend-for-frontend proxy, and .NET Aspire for developer orchestration and one-command cloud deployment to Azure Container Apps.
+The technology stack spans **.NET 10**, Blazor Server for the web storefront, .NET MAUI for native mobile and hybrid clients, Duende IdentityServer for OpenID Connect authentication, RabbitMQ for async messaging, PostgreSQL with `pgvector` for AI-assisted semantic search, Redis for basket caching, YARP as a mobile backend-for-frontend proxy, and .NET Aspire for developer orchestration and one-command cloud deployment to Azure Container Apps.
 
 ## Table of Contents
 
@@ -44,12 +44,34 @@ The eShop architecture is divided into two sub-diagrams for clarity. The first c
 Shows how end users interact with the client applications, the gateway layer, and the core backend services.
 
 ```mermaid
-%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#cce4f6", "primaryTextColor": "#242424", "primaryBorderColor": "#0078d4", "lineColor": "#605e5c", "secondaryColor": "#f5f5f5"}}}%%
-graph TB
+---
+config:
+  description: "Application services diagram showing actors, client layer, gateway, and core API services for the eShop e-commerce platform."
+  theme: base
+  themeVariables:
+    htmlLabels: true
+    fontFamily: "-apple-system, BlinkMacSystemFont, \"Segoe UI\", system-ui, \"Apple Color Emoji\", \"Segoe UI Emoji\", sans-serif"
+    fontSize: 16
+    primaryColor: "#cce4f6"
+    primaryTextColor: "#242424"
+    primaryBorderColor: "#0078d4"
+    lineColor: "#605e5c"
+    secondaryColor: "#f5f5f5"
+---
+flowchart TB
+
+    %% ── Class Definitions ────────────────────────────────────────
+    classDef actor     fill:#d0e7f8,stroke:#0078d4,color:#242424,font-weight:bold
+    classDef service   fill:#f5f5f5,stroke:#616161,color:#242424,font-weight:bold
+    classDef gateway   fill:#a6e9ed,stroke:#00b7c3,color:#242424,font-weight:bold
+    classDef apiSvc    fill:#ddeeff,stroke:#0078d4,color:#242424,font-weight:bold
+    classDef stub      fill:#f0f0f0,stroke:#d1d1d1,color:#605e5c,font-weight:bold
 
     %% ── Actors ──────────────────────────────────────────────────
-    Shopper(["👤 Shopper"])
-    ExternalSubscriber(["🔗 Webhook Subscriber"])
+    subgraph ACTORS["👥 Actors"]
+        Shopper(["👤 Shopper"])
+        ExternalSubscriber(["🔗 Webhook Subscriber"])
+    end
 
     %% ── Client Layer ─────────────────────────────────────────────
     subgraph ClientLayer["🖥️ Client Layer"]
@@ -103,18 +125,18 @@ graph TB
     OrderingAPI -.->|"async events"| InfraStub
     WebhooksAPI -.->|"async events"| InfraStub
 
-    %% ── Styles ───────────────────────────────────────────────────
-    classDef actor fill:#f5f5f5,stroke:#0078d4,color:#242424
-    classDef service fill:#cce4f6,stroke:#0078d4,color:#242424
-    classDef gateway fill:#e7f9e6,stroke:#107c10,color:#242424
-    classDef apiSvc fill:#ddeeff,stroke:#0078d4,color:#242424
-    classDef stub fill:#f0f0f0,stroke:#d1d1d1,color:#605e5c
-
+    %% ── Class Assignments ────────────────────────────────────────
     class Shopper,ExternalSubscriber actor
     class WebApp,HybridApp,ClientApp,WebhookClient service
     class MobileBFF,IdentityAPI gateway
     class CatalogAPI,BasketAPI,OrderingAPI,WebhooksAPI apiSvc
     class InfraStub stub
+
+    %% ── Subgraph Styles ──────────────────────────────────────────
+    style ACTORS      fill:#f0f0f0,stroke:#d1d1d1,color:#424242
+    style ClientLayer fill:#f0f0f0,stroke:#d1d1d1,color:#424242
+    style GatewayLayer fill:#f0f0f0,stroke:#d1d1d1,color:#424242
+    style APILayer    fill:#f0f0f0,stroke:#d1d1d1,color:#424242
 ```
 
 ### Infrastructure and Async Processing Diagram
@@ -122,11 +144,30 @@ graph TB
 Shows the event-driven messaging backbone, background worker services, and the data storage layer.
 
 ```mermaid
-%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#cce4f6", "primaryTextColor": "#242424", "primaryBorderColor": "#0078d4", "lineColor": "#605e5c", "secondaryColor": "#f5f5f5"}}}%%
+---
+config:
+  description: "Infrastructure diagram showing the event-driven messaging backbone, background workers, and data stores for the eShop e-commerce platform."
+  theme: base
+  themeVariables:
+    htmlLabels: true
+    fontFamily: "-apple-system, BlinkMacSystemFont, \"Segoe UI\", system-ui, \"Apple Color Emoji\", \"Segoe UI Emoji\", sans-serif"
+    fontSize: 16
+    primaryColor: "#cce4f6"
+    primaryTextColor: "#242424"
+    primaryBorderColor: "#0078d4"
+    lineColor: "#605e5c"
+    secondaryColor: "#f5f5f5"
+---
 flowchart TB
 
+    %% ── Class Definitions ────────────────────────────────────────
+    classDef stub      fill:#f0f0f0,stroke:#d1d1d1,color:#605e5c,font-weight:bold
+    classDef worker    fill:#fef7b2,stroke:#9c5e00,color:#242424,font-weight:bold
+    classDef bus       fill:#cce4f6,stroke:#0078d4,color:#242424,font-weight:bold
+    classDef datastore fill:#f1faf1,stroke:#107c10,color:#0e700e,font-weight:bold
+
     %% ── Service stubs ────────────────────────────────────────────
-    subgraph ServiceStubs["Application Services stubs - see Application Services Diagram"]
+    subgraph ServiceStubs["Application Services — see Application Services Diagram"]
         CatalogStub(["🌐 Catalog API"])
         BasketStub(["🛒 Basket API"])
         OrderingStub(["🌐 Ordering API"])
@@ -144,8 +185,8 @@ flowchart TB
 
     %% ── Data Stores ──────────────────────────────────────────────
     subgraph DataStores["💾 Data Stores"]
-        PostgreSQL[("🐘 PostgreSQL and pgvector<br/>Catalog - Identity - Ordering - Webhooks")]
-        Redis[("💾 Redis Cache<br/>Basket sessions")]
+        PostgreSQL[("🐘 PostgreSQL and pgvector<br/>Catalog · Identity · Ordering · Webhooks")]
+        Redis[("⚡ Redis Cache<br/>Basket sessions")]
     end
 
     %% ── Edges ────────────────────────────────────────────────────
@@ -164,18 +205,18 @@ flowchart TB
     OrderingStub -->|"reads and writes order data"| PostgreSQL
     WebhooksStub -->|"reads and writes webhook data"| PostgreSQL
     OrderProcessor -->|"updates order state"| PostgreSQL
-    BasketStub -->|"caches basket data"| Redis
+    BasketStub -->|"caches basket sessions"| Redis
 
-    %% ── Styles ───────────────────────────────────────────────────
-    classDef stub fill:#f0f0f0,stroke:#d1d1d1,color:#605e5c
-    classDef worker fill:#fef7b2,stroke:#9c5e00,color:#242424
-    classDef bus fill:#cce4f6,stroke:#0078d4,color:#242424
-    classDef store fill:#f5f5f5,stroke:#605e5c,color:#242424
-
+    %% ── Class Assignments ────────────────────────────────────────
     class CatalogStub,BasketStub,OrderingStub,WebhooksStub stub
     class OrderProcessor,PaymentProcessor worker
     class RabbitMQ bus
-    class PostgreSQL,Redis store
+    class PostgreSQL,Redis datastore
+
+    %% ── Subgraph Styles ──────────────────────────────────────────
+    style ServiceStubs fill:#f0f0f0,stroke:#d1d1d1,color:#424242
+    style Workers      fill:#f0f0f0,stroke:#d1d1d1,color:#424242
+    style DataStores   fill:#f0f0f0,stroke:#d1d1d1,color:#424242
 ```
 
 ## Technologies Used
