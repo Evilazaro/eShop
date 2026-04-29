@@ -114,7 +114,7 @@ graph TB
     PaymentProcessor -.->|"subscribe / publish"| EventBus
     WebhooksAPI -.->|"subscribe"| EventBus
 
-    %% ── Styles (Microsoft Fluent UI React v9 tokens) ───────────────────────────
+    %% ── Node styles (Microsoft Fluent UI React v9 tokens) ─────────────────────
     style BrowserUser fill:#cce4f6,stroke:#0078d4,color:#242424
     style MobileUser fill:#cce4f6,stroke:#0078d4,color:#242424
     style WebApp fill:#e8f4fd,stroke:#0078d4,color:#242424
@@ -130,10 +130,16 @@ graph TB
     style EventBus fill:#fff4ce,stroke:#f7630c,color:#242424
     style Redis fill:#c7eaf1,stroke:#0099bc,color:#242424
     style PostgreSQL fill:#c7eaf1,stroke:#0099bc,color:#242424
-    style ClientTier fill:#f0f6ff,stroke:#0078d4,color:#242424
-    style CoreAPIs fill:#f7fdf7,stroke:#107c10,color:#242424
-    style Workers fill:#faf5ff,stroke:#8661c5,color:#242424
-    style DataLayer fill:#f0fafe,stroke:#0099bc,color:#242424
+
+    %% ── Subgraph styles via classDef (style directive does not apply to subgraphs)
+    classDef clientTierClass fill:#f0f6ff,stroke:#0078d4,color:#242424
+    classDef coreAPIsClass fill:#f7fdf7,stroke:#107c10,color:#242424
+    classDef workersClass fill:#faf5ff,stroke:#8661c5,color:#242424
+    classDef dataLayerClass fill:#f0fafe,stroke:#0099bc,color:#242424
+    class ClientTier clientTierClass
+    class CoreAPIs coreAPIsClass
+    class Workers workersClass
+    class DataLayer dataLayerClass
 ```
 
 **Solid arrows (`→`)** indicate synchronous HTTP, gRPC, or SQL calls. **Dashed arrows (`⇢`)** indicate asynchronous integration events published to or consumed from the RabbitMQ event bus.
