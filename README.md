@@ -52,14 +52,14 @@ config:
 flowchart TB
 
   %% ── Class Definitions ──────────────────────────────────────────────────────
-  classDef actor     fill:#d0e7f8,stroke:#0078d4,color:#242424,font-weight:bold
-  classDef service   fill:#f5f5f5,stroke:#616161,color:#242424,font-weight:bold
-  classDef gateway   fill:#a6e9ed,stroke:#00b7c3,color:#242424,font-weight:bold
-  classDef datastore fill:#f1faf1,stroke:#107c10,color:#0e700e,font-weight:bold
-  classDef external  fill:#fff9f5,stroke:#f7630c,color:#835b00,font-weight:bold
-  classDef worker    fill:#fdf6e3,stroke:#d08770,color:#242424,font-weight:bold
-  classDef identity  fill:#f0e6ff,stroke:#7c3aed,color:#242424,font-weight:bold
-  classDef messaging fill:#fef3c7,stroke:#d97706,color:#242424,font-weight:bold
+  classDef actor     fill:#0078d4,stroke:#004578,color:#ffffff,font-weight:bold
+  classDef service   fill:#292929,stroke:#424242,color:#f5f5f5,font-weight:bold
+  classDef gateway   fill:#00b7c3,stroke:#007b82,color:#ffffff,font-weight:bold
+  classDef datastore fill:#107c10,stroke:#054b05,color:#ffffff,font-weight:bold
+  classDef external  fill:#f7630c,stroke:#a93e00,color:#ffffff,font-weight:bold
+  classDef worker    fill:#8764b8,stroke:#4f2b7a,color:#ffffff,font-weight:bold
+  classDef identity  fill:#7c3aed,stroke:#4c1d8d,color:#ffffff,font-weight:bold
+  classDef messaging fill:#d97706,stroke:#92400e,color:#ffffff,font-weight:bold
 
   %% ── Actors ──────────────────────────────────────────────────────────────────
   subgraph ACTORS["👥 Actors"]
