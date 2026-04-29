@@ -123,7 +123,7 @@ Shows the event-driven messaging backbone, background worker services, and the d
 
 ```mermaid
 %%{init: {"theme": "base", "themeVariables": {"primaryColor": "#cce4f6", "primaryTextColor": "#242424", "primaryBorderColor": "#0078d4", "lineColor": "#605e5c", "secondaryColor": "#f5f5f5"}}}%%
-graph TB
+flowchart TB
 
     %% ── Service stubs ────────────────────────────────────────────
     subgraph ServiceStubs["Application Services stubs - see Application Services Diagram"]
