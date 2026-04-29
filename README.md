@@ -158,15 +158,15 @@ flowchart TB
   class RABBITMQ messaging
 
   %% ── Subgraph Styles ──────────────────────────────────────────────────────────
-  style ACTORS          fill:#dbeafe,stroke:#0078d4,color:#1e3a5f,stroke-width:2px
-  style FRONTEND        fill:#f0fdf4,stroke:#616161,color:#1e3a5f,stroke-width:2px
-  style BFF             fill:#e0f7fa,stroke:#00b7c3,color:#1e3a5f,stroke-width:2px
-  style IDENTITY_LAYER  fill:#f3e8ff,stroke:#7c3aed,color:#1e3a5f,stroke-width:2px
+  style ACTORS          fill:#f5f5f5,stroke:#616161,color:#1e3a5f,stroke-width:2px
+  style FRONTEND        fill:#f5f5f5,stroke:#616161,color:#1e3a5f,stroke-width:2px
+  style BFF             fill:#f5f5f5,stroke:#616161,color:#1e3a5f,stroke-width:2px
+  style IDENTITY_LAYER  fill:#f5f5f5,stroke:#616161,color:#1e3a5f,stroke-width:2px
   style API_LAYER       fill:#f5f5f5,stroke:#616161,color:#1e3a5f,stroke-width:2px
-  style MESSAGING_LAYER fill:#fef9c3,stroke:#d97706,color:#1e3a5f,stroke-width:2px
-  style WORKERS         fill:#fff7ed,stroke:#d08770,color:#1e3a5f,stroke-width:2px
-  style DATA            fill:#ecfdf5,stroke:#107c10,color:#0e700e,stroke-width:2px
-  style EXT_AI          fill:#fff9f5,stroke:#f7630c,color:#835b00,stroke-width:2px
+  style MESSAGING_LAYER fill:#f5f5f5,stroke:#616161,color:#1e3a5f,stroke-width:2px
+  style WORKERS         fill:#f5f5f5,stroke:#616161,color:#1e3a5f,stroke-width:2px
+  style DATA            fill:#f5f5f5,stroke:#616161,color:#1e3a5f,stroke-width:2px
+  style EXT_AI          fill:#f5f5f5,stroke:#616161,color:#1e3a5f,stroke-width:2px
 ```
 
 ## Technologies Used
