@@ -44,11 +44,14 @@ The eShop architecture centers on an ASP.NET Core 10 back end composed of indepe
 ```mermaid
 ---
 config:
-  description: "High-level architecture diagram showing actors, primary flows, and major components of the eShop reference application."
   theme: base
-  align: center
-  themeVariables:
+  flowchart:
     htmlLabels: true
+    nodeSpacing: 50
+    rankSpacing: 60
+    padding: 20
+    curve: basis
+  themeVariables:
     fontFamily: "-apple-system, BlinkMacSystemFont, \"Segoe UI\", system-ui, \"Apple Color Emoji\", \"Segoe UI Emoji\", sans-serif"
     fontSize: 16
 ---
