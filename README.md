@@ -46,6 +46,7 @@ The eShop architecture centers on an ASP.NET Core 10 back end composed of indepe
 config:
   description: "High-level architecture diagram showing actors, primary flows, and major components of the eShop reference application."
   theme: base
+  align: center
   themeVariables:
     htmlLabels: true
     fontFamily: "-apple-system, BlinkMacSystemFont, \"Segoe UI\", system-ui, \"Apple Color Emoji\", \"Segoe UI Emoji\", sans-serif"
