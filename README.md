@@ -55,7 +55,7 @@ config:
     fontFamily: "-apple-system, BlinkMacSystemFont, \"Segoe UI\", system-ui, \"Apple Color Emoji\", \"Segoe UI Emoji\", sans-serif"
     fontSize: 16
 ---
-flowchart LR
+flowchart TB
 
   %% ── Class Definitions ─────────────────────────────────────────────────────
   classDef actor        fill:#d0e7f8,stroke:#0078d4,color:#242424,font-weight:bold
@@ -73,14 +73,12 @@ flowchart LR
 
   %% ── Actors ─────────────────────────────────────────────────────────────────
   subgraph ACTORS["👥 Actors"]
-    direction TB
     BROWSER(["👤 Browser User"])
     MOBILE_USER(["📱 Mobile User"])
   end
 
   %% ── Frontend Layer ─────────────────────────────────────────────────────────
   subgraph FRONTEND["🖥️ Frontend Layer"]
-    direction TB
     WEBAPP("🌐 WebApp<br/>Blazor Server")
     CLIENT_APP("📱 ClientApp<br/>.NET MAUI")
     HYBRID_APP("📱 HybridApp<br/>.NET MAUI Hybrid")
@@ -89,14 +87,12 @@ flowchart LR
 
   %% ── Gateway and Identity Layer ──────────────────────────────────────────────
   subgraph GATEWAY_IDENTITY["🔀 Gateway and Identity"]
-    direction TB
     MOBILE_BFF("🔀 Mobile BFF<br/>YARP Reverse Proxy")
     IDENTITY_API("🔐 Identity API<br/>Duende IdentityServer")
   end
 
   %% ── Core Services ───────────────────────────────────────────────────────────
   subgraph CORE_SERVICES["⚙️ Core Services"]
-    direction TB
     CATALOG_API("🌐 Catalog API<br/>REST + pgvector AI")
     BASKET_API("🌐 Basket API<br/>gRPC")
     ORDERING_API("🌐 Ordering API<br/>REST")
@@ -105,14 +101,17 @@ flowchart LR
 
   %% ── Background Workers ──────────────────────────────────────────────────────
   subgraph WORKERS["⚙️ Background Workers"]
-    direction TB
     ORDER_PROCESSOR("⚙️ Order Processor<br/>Worker Service")
     PAYMENT_PROCESSOR("⚙️ Payment Processor<br/>Worker Service")
   end
 
+  %% ── Messaging ───────────────────────────────────────────────────────────────
+  subgraph MESSAGING["🚌 Messaging"]
+    EVENT_BUS("🚌 RabbitMQ<br/>Event Bus")
+  end
+
   %% ── Data Layer ──────────────────────────────────────────────────────────────
   subgraph DATA["🗄️ Data Layer"]
-    direction TB
     CATALOG_DB[("🐘 Catalog DB<br/>PostgreSQL + pgvector")]
     IDENTITY_DB[("🐘 Identity DB<br/>PostgreSQL")]
     ORDER_DB[("🐘 Order DB<br/>PostgreSQL")]
@@ -120,21 +119,13 @@ flowchart LR
     REDIS_CACHE[("⚡ Redis Cache")]
   end
 
-  %% ── Messaging ───────────────────────────────────────────────────────────────
-  subgraph MESSAGING["🚌 Messaging"]
-    direction TB
-    EVENT_BUS("🚌 RabbitMQ<br/>Event Bus")
-  end
-
   %% ── AI Integration ──────────────────────────────────────────────────────────
   subgraph AI_LAYER["🤖 AI Integration"]
-    direction TB
-    AI_SERVICE(["🤖 Azure OpenAI<br/>or Ollama"])
+    AI_SERVICE(["🤖 Azure OpenAI / Ollama"])
   end
 
   %% ── Monitoring ──────────────────────────────────────────────────────────────
   subgraph MONITORING["📊 Monitoring"]
-    direction TB
     ASPIRE("📊 Aspire Dashboard<br/>OpenTelemetry")
   end
 
