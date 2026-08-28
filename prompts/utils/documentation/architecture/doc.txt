@@ -1,0 +1,353 @@
+<instructions>
+
+<workflow>
+
+<phase id="0" name="Plan">
+
+<step id="0.1" name="Create the Todo List">
+
+Create, with the `todo` tool, a list whose entries are, in order, every step of this `<workflow>`.
+Mark exactly one entry in progress at a time, and mark each complete when its outputs have been produced.
+
+**Produces** — the `<todo_list>` variable, which `binding_rules` item 7 orders execution by.
+
+</step>
+
+</phase>
+
+<phase id="1" name="Collect Data">
+
+<step id="1.1" name="Collect Workspace Data">
+
+Comprehensively analyze this workspace to collect all **necessary and relevant data** required to the execution of the tasks in this prompt. Do not analyze any file present in the `.gitignore` file. Do not analyze any file present in the `.git` directory.
+
+</step>
+
+Retain in memory all data collected and generated in this phase to use in subsequent phases.
+Set all data collected in this phase as the `<workspace_data>` variable: one record per artifact, carrying its workspace path, the line range read, and whether the artifact belongs to the system under description or is supplied by a third party or vendor.
+Do not emit any data collected and generated in this phase in the chat.
+
+</phase>
+
+<phase id="2" name="Analyze">
+
+<step id="2.1" name="Analyze Data">
+
+Comprehensively analyze all data collected and generated in `<phase id="1">` to:
+
+**Software Systems**: Identify all software systems present in the workspace:
+
+Record, for every element identified below, the workspace path and the line range that evidences it.
+An element with no such evidence **MUST NOT** be placed in a diagram; **MUST** instead be dropped and the omission recorded.
+
+1. The `Software Systems` in the workspace.
+2. The `Actors` in each `Software System`.
+3. The `Interactions` in the `Software Systems`
+4. The `Relationships` in the `Software Systems`
+5. The `Bounded Contexts` in the `Software Systems`
+6. The `Domains` in the `Software Systems`
+7. The `Subdomains` in the `Software Systems`
+
+**External Systems**: Identify all external systems present in the workspace:
+
+1. The `External Systems` in the workspace.
+2. The `Actors` in each `External System`.
+3. The `Interactions` in the `External Systems`
+4. The `Relationships` in the `External Systems`
+5. The `Category` of each `External System`. **MUST** be assigned exactly one `Category`.
+
+**Containers**: Identify all containers present in the workspace:
+
+1. The `Containers` in the workspace.
+2. The `Actors` in each `Container`.
+3. The `Interactions` in the `Containers`
+4. The `Relationships` in the `Containers`
+5. The `Bounded Contexts` in the `Containers`
+6. The `Domains` in the `Containers`
+7. The `Subdomains` in the `Containers`
+8. The `Software Boundary` each `Container` falls inside, being the `Software System` that owns it.
+
+Apply all C4 model best practices and principles to the analysis of the data collected and generated in `<phase id="1">`.
+Ground all C4 model best practices and principles in `C4`.
+Set all data collected, generated, and analyzed in this phase as the `<workspace_analysis>` variable.
+
+</step>
+
+Retain in memory all data collected and generated in this phase to use in subsequent phases.
+Do not emit any data collected and generated in this phase in the chat.
+
+</phase>
+
+<phase id="3" name="Generate Diagrams">
+
+<step id="3.1" name="Generate System context diagram">
+
+Comprehensively analyze the, `<workspace_data>`, and `<workspace_analysis>` variables, to:
+
+1. Generate a **System context diagram** for each `Software System` identified in `<workspace_analysis>`. Generate the diagram in **Mermaid** flowchart TD format.
+   - Group the External Systems by their `Category` in the **System context diagram**.
+   - Apply all C4 model best practices and principles to the generation of the **System context diagram**.
+   - Ground all C4 model best practices and principles in `C4`.
+2. Apply all Mermaid best practices and principles to the generation of the **System context diagram**.
+   - Ground all Mermaid best practices and principles in `MMD`.
+
+Set the generated **System context diagram** as the `<system_context_diagrams>` variable.
+
+</step>
+
+<step id="3.2" name="Generate Container diagram">
+
+Comprehensively analyze the, `<workspace_data>`, and `<workspace_analysis>` variables, to:
+
+1. Generate a **Container diagram** for each `Software System` identified in `<workspace_analysis>`. Generate the diagram in **Mermaid** flowchart TD format.
+   - Group the containers in the **Container diagram** by the `Software Boundary`.
+   - Group the External Systems in the **Container diagram** by their `Category`.
+   - Apply all C4 model best practices and principles to the generation of the **Container diagram**.
+   - Ground all C4 model best practices and principles in `C4`.
+2. Apply all Mermaid best practices and principles to the generation of the **Container diagram**.
+   - Ground all Mermaid best practices and principles in `MMD`.
+
+Set the generated **Container diagram** as the `<container_diagrams>` variable.
+
+</step>
+
+Retain in memory all data collected and generated in this phase to use in subsequent phases.
+**MUST**, before this phase completes, validate every diagram in `<system_context_diagrams>` and `<container_diagrams>` with `MermaidChart.vscode-mermaid-chart/mermaid-diagram-validator`, and **MUST NOT** enter `<phase id="4">` until every diagram validates without error.
+Do not emit any data collected and generated in this phase in the chat.
+
+</phase>
+
+<phase id="4" name="Formatting">
+
+<phase_contract>
+
+Every `<step>` in this phase is a **read-modify-write** operation on the diagram source, not an annotation.
+
+1. **MUST** read the current, complete Mermaid source of every diagram in `<system_context_diagrams>` and `<container_diagrams>`.
+2. **MUST** rewrite that source so the step's decisions are materialised in the Mermaid syntax itself.
+3. **MUST** re-assign the rewritten source back to `<system_context_diagrams>` and `<container_diagrams>`, replacing the previous value.
+4. **MUST** preserve every change made by all preceding steps of this phase. A step **MUST NOT** revert, discard, or duplicate an earlier step's output.
+5. **MUST**, before completing the step, validate every rewritten diagram with `MermaidChart.vscode-mermaid-chart/mermaid-diagram-validator`, and **MUST NOT** begin the next step until every diagram validates without error.
+6. **MUST**, on completing each step, record one line per diagram naming the step, the elements it altered and the elements it left untouched, so that a reverted change is detectable. **MUST NOT** alter an element no task of that step names; **MUST** instead leave it untouched and record it as unchanged.
+
+</phase_contract>
+
+<step id="4.1" name="Grouping">
+
+Identify the **primary** `Architecture-style` of the each `Software System` identified in `<workspace_analysis>`. The `Architecture-style` **MUST** be most **relevant** one.
+Ground the identified `Architecture-style` in `CLEAN`.
+Set the identified `Architecture-style` as the `<architecture_styles>` variable.
+
+Identify the grouping best practices and principles to use for each `Architecture-style` identified in `<architecture_styles>` defined in the `Clean Architecture`.
+Ground the identified grouping best practices and principles in `CLEAN`.
+
+For each identified rule, capture the following fields; a rule that omits any field is **not** fully identified and **MUST** be redone:
+
+- **id** — a stable short identifier (e.g. `G1`).
+- **name** — the rule's name in the source (e.g. `Screaming Architecture`).
+- **source** — the exact document and section it comes from.
+- **scope** — which element or grouping level the rule constrains (e.g. `outermost visible group naming`, `ring assignment of a container`, `direction of edges between rings`).
+- **priority** — an integer; when two rules apply to the same grouping decision, the rule with the **lower** `priority` value wins. Priorities **MUST** be derived from the source (e.g. `Screaming Architecture` is a top-level concern per Martin, "Screaming Architecture" (2011), and therefore outranks ring naming).
+- **verification** — a testable statement of the form `"the rule is satisfied when X and would be falsified by Y"`, written so it can be checked against the diagram **without** consulting any derived mapping.
+
+Set the identified rules, with all fields populated, as the `<grouping_best_practices>` variable.
+
+Map the identified `Architecture-style` in the `<architecture_styles>` variable to the identified grouping best practices and principles in the `<grouping_best_practices>` variable for each `Software System` in `<workspace_analysis>`.
+Ground the mapping in `CLEAN`.
+Set the mapped grouping best practices and principles for each `Software System` in `<workspace_analysis>` as the `<system_grouping_best_practices>` variable.
+
+Map the identified `Grouping Rules` in the `<system_grouping_best_practices>` variable to each `Container` in the `<container_diagrams>` variable for each `Software System` in `<workspace_analysis>`.
+Ground the mapping in `CLEAN`.
+Set the mapped grouping rules for each `Container` in the `<container_diagrams>` variable as the `<container_groupings>` variable.
+
+Comprehensively analyze the `<workspace_data>` and `<workspace_analysis>` variables, to:
+
+1. Group the elements of each `Container` in the `<container_diagrams>` variable by the grouping rules in the `<container_groupings>` variable. It **MUST** match the grouping rules identified in the `<container_groupings>` variable.
+   - Apply all Mermaid best practices and principles for grouping to the `<container_diagrams>` variable.
+   - Ground all Mermaid best practices and principles for grouping in `[MMD §Flowcharts]`.
+
+2. Verify that the grouping of the elements of each `Container Diagram` in the `<container_diagrams>` variable matches the grouping best practices in the `<container_groupings>` variable. It **MUST** match the grouping best practices identified in the `<container_groupings>` variable.
+
+Re-assign the grouped diagrams back to the `<system_context_diagrams>` variable, replacing its previous value. Do not create a separate variable for the grouped diagrams.
+Re-assign the grouped diagrams back to the `<container_diagrams>` variable, replacing its previous value. Do not create a separate variable for the grouped diagrams.
+
+</step>
+
+<step id="4.2" name="Shapes">
+
+Comprehensively analyze the, `<workspace_data>`, and `<workspace_analysis>` variables, to:
+
+1. Identify the Mermaid shape per element type used in the `<system_context_diagrams>` variable.
+   - Each element type **MUST** be represented by a Mermaid shape in the `<system_context_diagrams>` variable.
+   - Ground the Mermaid shapes in `MMD`.
+   - Set the identified shapes as the `<system_context_diagram_shapes>` variable.
+2. Identify the Mermaid shape per element type used in the `<container_diagrams>` variable.
+   - Each element type **MUST** be represented by a Mermaid shape in the `<container_diagrams>` variable.
+   - Ground the Mermaid shapes in `MMD`.
+   - Set the identified shapes as the `<container_diagram_shapes>` variable.
+
+Apply the identified shapes in the `<system_context_diagram_shapes>` variable to each element of each System Diagram in the `<system_context_diagrams>` variable.
+Apply the identified shapes in the `<container_diagram_shapes>` variable to each element of each Container Diagram in the `<container_diagrams>` variable.
+
+</step>
+
+<step id="4.3" name="Icons">
+
+Comprehensively analyze the `<workspace_data>`, and `<workspace_analysis>` variables, to:
+
+1. Identify one Unicode glyph per element type used in the `<system_context_diagrams>` variable, placed at the start of the element's label, because `flowchart` does not accept an icon shape without a registered icon pack. Where an icon pack is registered in the workspace, name it and use `@{ icon: "…" }` instead.
+   - Ground the Mermaid icons in `MMD`.
+   - Set the icons as the `<system_context_diagram_icons>` variable.
+
+2. Identify Mermaid icon per element type used in the `<container_diagrams>` variable, under the same constraints.
+   - Set the icons as the `<container_diagram_icons>` variable.
+
+Apply the identified icons in the `<system_context_diagram_icons>` variable to each element of each System Diagram in the `<system_context_diagrams>` variable.
+Apply the identified icons in the `<container_diagram_icons>` variable to each element of each Container Diagram in the `<container_diagrams>` variable.
+
+</step>
+
+<step id="4.4" name="Colors">
+
+Comprehensively analyze the `<workspace_data>`, and `<workspace_analysis>` variables, to:
+
+1. Identify the Fluent UI color per element type used in the `<system_context_diagrams>` variable.
+   - Each element type **MUST** be assigned a background color, a stroke (border) color, and a text color.
+   - Each color **MUST** be expressed as a resolved literal hexadecimal value taken from the Fluent UI global color ramp. Fluent UI alias token names **MUST NOT** be emitted, because Mermaid `classDef` accepts CSS color values only.
+   - The text color and background color of each element type **MUST** meet a minimum contrast ratio of 4.5:1.
+   - Color **MUST NOT** be the only signal distinguishing two element types; shape, glyph or label **MUST** also differ.
+   - Ground the Fluent UI colors in `FLUENT`, and the contrast ratio in `WCAG`.
+   - Set the colors as the `<system_context_diagram_colors>` variable.
+
+2. Identify the Fluent UI color per element type used in the `<container_diagrams>` variable.
+   - Each element type **MUST** be assigned a background color, a stroke (border) color, and a text color.
+   - Each color **MUST** be expressed as a resolved literal hexadecimal value taken from the Fluent UI global color ramp. Fluent UI alias token names **MUST NOT** be emitted, because Mermaid `classDef` accepts CSS color values only.
+   - The text color and background color of each element type **MUST** meet a minimum contrast ratio of 4.5:1.
+   - Color **MUST NOT** be the only signal distinguishing two element types; shape, glyph or label **MUST** also differ.
+   - Ground the Fluent UI colors in `FLUENT`, and the contrast ratio in `WCAG`.
+   - Set the colors as the `<container_diagram_colors>` variable.
+
+3. Materialise the colors in each diagram as follows:
+   - Declare exactly one `classDef <name> fill:<hex>,stroke:<hex>,color:<hex>` statement per element type.
+   - Attach every declared class to its elements with a `class <id>,<id> <name>` statement or the `<id>:::<name>` operator. A `classDef` that is not attached to at least one element **MUST NOT** be emitted.
+   - Every element in the diagram **MUST** be attached to exactly one class.
+
+Apply the identified colors in the `<system_context_diagram_colors>` variable to each element of each System Diagram in the `<system_context_diagrams>` variable.
+Apply the identified colors in the `<container_diagram_colors>` variable to each element of each Container Diagram in the `<container_diagrams>` variable.
+
+</step>
+
+<step id="4.5" name="Labels">
+
+Comprehensively analyze the `<workspace_data>`, and `<workspace_analysis>` variables, to:
+
+1. Identify the label per element type used in the `<system_context_diagrams>` variable.
+   - Each element type **MUST** be represented by a label in the `<system_context_diagrams>` variable.
+   - Apply all C4 model best practices and principles to the identification of the labels.
+   - Ground all C4 model best practices and principles in `C4`.
+   - Set the labels as the `<system_context_diagram_labels>` variable.
+
+2. Identify the label per element type used in the `<container_diagrams>` variable.
+   - Each element type **MUST** be represented by a label in the `<container_diagrams>` variable.
+   - Apply all C4 model best practices and principles to the identification of the labels.
+   - Ground all C4 model best practices and principles in `C4`.
+   - Set the labels as the `<container_diagram_labels>` variable.
+
+3. Apply the identified labels in the `<system_context_diagram_labels>` variable to each element of each System Diagram in the `<system_context_diagrams>` variable.
+4. Apply the identified labels in the `<container_diagram_labels>` variable to each element of each Container Diagram in the `<container_diagrams>` variable.
+
+</step>
+
+<step id="4.6" name="Connections">
+
+Comprehensively analyze the `<workspace_data>`, and `<workspace_analysis>` variables, to:
+
+1. Identify the connection per element type used in the `<system_context_diagrams>` variable. For each connection, identify the Mermaid connection type, and the connection direction to use.
+   - Each connection **MUST** be represented by a Mermaid connection type and direction in the `<system_context_diagrams>` variable.
+   - Ground the connections in `C4`.
+   - Ground the Mermaid connection types and directions in `MMD`.
+   - Set the connections as the `<system_context_diagram_connections>` variable.
+2. Identify the connection per element type used in the `<container_diagrams>` variable. For each connection, identify the Mermaid connection type, and the connection direction to use.
+   - Each connection **MUST** be represented by a Mermaid connection type and direction in the `<container_diagrams>` variable.
+   - Ground the connections in `C4`.
+   - Ground the Mermaid connection types and directions in `MMD`.
+   - Set the connections as the `<container_diagram_connections>` variable.
+
+Apply the identified connections in the `<system_context_diagram_connections>` variable to each element of each System Diagram in the `<system_context_diagrams>` variable.
+Apply the identified connections in the `<container_diagram_connections>` variable to each element of each Container Diagram in the `<container_diagrams>` variable.
+
+</step>
+
+<step id="4.7" name="Layout">
+
+Comprehensively analyze the `<workspace_data>`, and `<workspace_analysis>` variables, to:
+
+1. Identify Mermaid layout directives, and best practices to use for each System Diagram in the `<system_context_diagrams>` variable.
+   - Apply all Mermaid best practices and principles to the identification of the layout directives.
+   - Ground all Mermaid best practices and principles in `MMD`.
+   - Set the layout directives as the `<system_context_diagram_layout>` variable.
+2. Identify Mermaid layout directives, and best practices to use for each Container Diagram in the `<container_diagrams>` variable.
+   - Apply all Mermaid best practices and principles to the identification of the layout directives.
+   - Ground all Mermaid best practices and principles in `MMD`.
+   - Set the layout directives as the `<container_diagram_layout>` variable.
+
+Apply the identified layout directives in the `<system_context_diagram_layout>` variable to each System Diagram in the `<system_context_diagrams>` variable.
+Apply the identified layout directives in the `<container_diagram_layout>` variable to each Container Diagram in the `<container_diagrams>` variable.
+
+</step>
+
+Retain in memory all data collected and generated in this phase to use in subsequent phases.
+Emit in the chat the following variables: `<architecture_styles>`, `<grouping_best_practices>`, `<system_grouping_best_practices>`, `<container_groupings>`, `<system_context_diagram_shapes>`, `<container_diagram_shapes>`, `<system_context_diagram_icons>`, `<container_diagram_icons>`, `<system_context_diagram_colors>`, `<container_diagram_colors>`, `<system_context_diagram_labels>`, `<container_diagram_labels>`, `<system_context_diagram_connections>`, `<container_diagram_connections>`, `<system_context_diagram_layout>`, and `<container_diagram_layout>`.
+
+</phase>
+
+<phase id="5" name="Verify">
+
+<step id="5.1" name="Verify Before Release">
+
+Apply these seven checks, and no others, to every diagram in `<system_context_diagrams>` and `<container_diagrams>`:
+
+- **V1** the diagram validates without error under `MermaidChart.vscode-mermaid-chart/mermaid-diagram-validator`;
+- **V2** every element carries exactly one `classDef` class;
+- **V3** every declared `classDef` is attached to at least one element;
+- **V4** every `fill`, `stroke` and `color` is a literal hexadecimal value;
+- **V5** every element resolves to a workspace artifact recorded in `<workspace_data>`;
+- **V6** every External System carries exactly one `Category`;
+- **V7** every element and every edge carries a label.
+
+Record the verification as a table with one row per diagram per check, and one column carrying either `PASS` or `FAIL`.
+Set the table as the `<release_verification>` variable.
+
+</step>
+
+Retain in memory all data collected and generated in this phase to use in subsequent phases.
+
+Emit `<release_verification>` and both diagram sets, then wait for the user to reply `APPROVE` or `CANCEL`.
+**MUST NOT** write any file before `APPROVE` has been received; **MUST** instead hold both documents in memory and report that the gate has not cleared.
+
+</phase>
+
+<phase id="6" name="Output">
+
+<step id="6.1" name="Emit Output">
+
+Only after the write gate closing `<phase id="5">` has cleared, and only where `<release_verification>` carries `PASS` in every row, write `./docs/diagrams/system-context-diagrams.md` and `./docs/diagrams/container-diagrams.md`.
+
+Open each document with a provenance block carrying: the date of the run, the workspace paths every diagram element rests on, and the `<release_verification>` table in full, so that the determination can be re-examined after the session ends.
+Each document carries one `##` section per Software System, in the ranked order of `<workspace_analysis>`, and each section carries exactly one diagram inside a fenced code block whose info string is `mermaid`.
+`system-context-diagrams.md` carries only diagrams from `<system_context_diagrams>`; `container-diagrams.md` carries only diagrams from `<container_diagrams>`.
+
+Where either path already exists, report its current content digest and the digest about to replace it before writing.
+Read both paths back and compare; where a read-back differs, report the write as failed and restore the prior content.
+
+**Produces** — the `<write_record>` variable: the two paths, the digests compared and the read-back result.
+
+</step>
+
+Emit a summary carrying, in this order: every diagram produced and the Software System it describes; the `<release_verification>` table; every element dropped for want of evidence; every grounding claim marked ungrounded; and the two output paths with the write result.
+
+</phase>
+
+</workflow>
+
+</instructions>
