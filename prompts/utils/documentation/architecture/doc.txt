@@ -23,9 +23,9 @@ Comprehensively analyze this workspace to collect all **necessary and relevant d
 
 </step>
 
-Retain in memory all data collected and generated in this phase to use in subsequent phases.
+Retain in memory all data collected or generated in this phase to use in subsequent phases.
 Set all data collected in this phase as the `<workspace_data>` variable: one record per artifact, carrying its workspace path, the line range read, and whether the artifact belongs to the system under description or is supplied by a third party or vendor.
-Do not emit any data collected and generated in this phase in the chat.
+Do not emit any data collected or generated in this phase in the chat.
 
 </phase>
 
@@ -33,7 +33,7 @@ Do not emit any data collected and generated in this phase in the chat.
 
 <step id="2.1" name="Analyze Data">
 
-Comprehensively analyze all data collected and generated in `<phase id="1">` to:
+Comprehensively analyze all data collected or generated in `<phase id="1">` to:
 
 **Software Systems**: Identify all software systems present in the workspace:
 
@@ -67,14 +67,14 @@ An element with no such evidence **MUST NOT** be placed in a diagram; **MUST** i
 7. The `Subdomains` in the `Containers`
 8. The `Software Boundary` each `Container` falls inside, being the `Software System` that owns it.
 
-Apply all C4 model best practices and principles to the analysis of the data collected and generated in `<phase id="1">`.
+Apply all C4 model best practices and principles to the analysis of the data collected or generated in `<phase id="1">`.
 Ground all C4 model best practices and principles in `C4`.
 Set all data collected, generated, and analyzed in this phase as the `<workspace_analysis>` variable.
 
 </step>
 
-Retain in memory all data collected and generated in this phase to use in subsequent phases.
-Do not emit any data collected and generated in this phase in the chat.
+Retain in memory all data collected or generated in this phase to use in subsequent phases.
+Do not emit any data collected or generated in this phase in the chat.
 
 </phase>
 
@@ -111,9 +111,9 @@ Set the generated **Container diagram** as the `<container_diagrams>` variable.
 
 </step>
 
-Retain in memory all data collected and generated in this phase to use in subsequent phases.
+Retain in memory all data collected or generated in this phase to use in subsequent phases.
 **MUST**, before this phase completes, validate every diagram in `<system_context_diagrams>` and `<container_diagrams>` with `MermaidChart.vscode-mermaid-chart/mermaid-diagram-validator`, and **MUST NOT** enter `<phase id="4">` until every diagram validates without error.
-Do not emit any data collected and generated in this phase in the chat.
+Do not emit any data collected or generated in this phase in the chat.
 
 </phase>
 
@@ -296,7 +296,7 @@ Apply the identified layout directives in the `<container_diagram_layout>` varia
 
 </step>
 
-Retain in memory all data collected and generated in this phase to use in subsequent phases.
+Retain in memory all data collected or generated in this phase to use in subsequent phases.
 Emit in the chat the following variables: `<architecture_styles>`, `<grouping_best_practices>`, `<system_grouping_best_practices>`, `<container_groupings>`, `<system_context_diagram_shapes>`, `<container_diagram_shapes>`, `<system_context_diagram_icons>`, `<container_diagram_icons>`, `<system_context_diagram_colors>`, `<container_diagram_colors>`, `<system_context_diagram_labels>`, `<container_diagram_labels>`, `<system_context_diagram_connections>`, `<container_diagram_connections>`, `<system_context_diagram_layout>`, and `<container_diagram_layout>`.
 
 </phase>
@@ -320,7 +320,7 @@ Set the table as the `<release_verification>` variable.
 
 </step>
 
-Retain in memory all data collected and generated in this phase to use in subsequent phases.
+Retain in memory all data collected or generated in this phase to use in subsequent phases.
 
 Emit `<release_verification>` and both diagram sets, then wait for the user to reply `APPROVE` or `CANCEL`.
 **MUST NOT** write any file before `APPROVE` has been received; **MUST** instead hold both documents in memory and report that the gate has not cleared.
