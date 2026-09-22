@@ -1,0 +1,67 @@
+---
+title: "High-level architecture — eShop"
+---
+flowchart TB
+    accTitle: High-level architecture of eShop
+    accDescr: A Blazor web storefront and a MAUI mobile client call the Identity, Catalog, Basket and Ordering APIs directly or through a YARP mobile BFF. The Ordering, Catalog, Basket and Webhooks APIs, plus the Order Processor and Payment Processor workers, publish and consume integration events over a RabbitMQ event bus. Catalog, Identity, Ordering and Webhooks persist to PostgreSQL; Basket persists to Redis.
+
+    subgraph CLIENTS["Client tier — src/WebApp, src/ClientApp, src/WebhookClient"]
+        WEBAPP["Web Storefront [Application: Blazor] — src/WebApp"]
+        MAUI["Mobile/Desktop Client [Application: .NET MAUI] — src/ClientApp"]
+        WEBHOOKCLIENT["Webhook Client sample [Application: Blazor] — src/WebhookClient"]
+    end
+
+    subgraph EDGE["Edge tier — src/eShop.AppHost"]
+        BFF["Mobile BFF [Reverse proxy: YARP] — eShop.AppHost/Program.cs"]
+    end
+
+    subgraph APIS["API tier"]
+        IDENTITY["Identity API [Application: Duende IdentityServer] — src/Identity.API"]
+        CATALOG["Catalog API [Application: ASP.NET Core + pgvector] — src/Catalog.API"]
+        BASKET["Basket API [Application: gRPC] — src/Basket.API"]
+        ORDERING["Ordering API [Application: ASP.NET Core, CQRS] — src/Ordering.API"]
+        WEBHOOKSAPI["Webhooks API [Application: ASP.NET Core] — src/Webhooks.API"]
+    end
+
+    subgraph WORKERS["Background processing"]
+        ORDERPROC["Order Processor [Worker] — src/OrderProcessor"]
+        PAYPROC["Payment Processor [Worker] — src/PaymentProcessor"]
+    end
+
+    subgraph DATA["Data and messaging tier"]
+        PG[("PostgreSQL + pgvector [Database] — eShop.AppHost/Program.cs")]
+        REDIS[("Redis [Cache] — eShop.AppHost/Program.cs")]
+        RMQ{{"RabbitMQ Event Bus [Broker] — src/EventBusRabbitMQ"}}
+    end
+
+    WEBAPP -->|"Calls REST/HTTPS"| CATALOG
+    WEBAPP -->|"Calls REST/HTTPS"| ORDERING
+    WEBAPP -->|"Calls gRPC"| BASKET
+    WEBAPP -->|"Signs in via OIDC"| IDENTITY
+    MAUI -->|"Calls REST/HTTPS"| BFF
+    BFF -->|"Routes to"| CATALOG
+    BFF -->|"Routes to"| ORDERING
+    BFF -->|"Routes to"| IDENTITY
+    WEBHOOKCLIENT -->|"Subscribes over REST"| WEBHOOKSAPI
+
+    CATALOG -->|"Reads/writes"| PG
+    IDENTITY -->|"Reads/writes"| PG
+    ORDERING -->|"Reads/writes"| PG
+    WEBHOOKSAPI -->|"Reads/writes"| PG
+    BASKET -->|"Reads/writes"| REDIS
+
+    CATALOG -->|"Publishes/consumes events"| RMQ
+    BASKET -->|"Publishes/consumes events"| RMQ
+    ORDERING -->|"Publishes/consumes events"| RMQ
+    WEBHOOKSAPI -->|"Publishes/consumes events"| RMQ
+    ORDERPROC -->|"Consumes events"| RMQ
+    PAYPROC -->|"Consumes events"| RMQ
+
+    classDef app fill:#1168bd,stroke:#0b4884,color:#ffffff
+    classDef worker fill:#6b4fbb,stroke:#4a3585,color:#ffffff
+    classDef data fill:#438dd5,stroke:#2e6295,color:#ffffff
+    classDef broker fill:#c46210,stroke:#8a4508,color:#ffffff
+    class WEBAPP,MAUI,WEBHOOKCLIENT,BFF,IDENTITY,CATALOG,BASKET,ORDERING,WEBHOOKSAPI app
+    class ORDERPROC,PAYPROC worker
+    class PG,REDIS data
+    class RMQ broker
